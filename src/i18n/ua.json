@@ -1,4 +1,7 @@
 {
+  "success-verified" : "Успішно підтверджено",
+  "forgot-message" : "Листа відправлено",
+  "reset-password-message" : "Ваш пароль був змінений",
   "test": "Тест",
   "massive": {
     "object1": "Об'єкт"

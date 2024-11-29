@@ -1,6 +1,28 @@
-<script setup>
-import {RouterLink, RouterView} from 'vue-router'
+<script>
+import { useI18n } from 'vue-i18n';
 
+export default {
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
+
+  mounted() {
+    this.checkToken()
+  },
+
+  methods: {
+
+    checkToken() {
+      this.axios.get(this.$store.getters.serverPath + '/api/checkAuth').then(res => {
+        this.$store.commit('setToken', res.data.token);
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    }
+
+  }
+};
 </script>
 
 <template>
@@ -8,7 +30,8 @@ import {RouterLink, RouterView} from 'vue-router'
 
     <nav>
       <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
+      <RouterLink to="/login">Login</RouterLink>
+      <RouterLink to="/register">Register</RouterLink>
     </nav>
 
   </header>
@@ -16,5 +39,5 @@ import {RouterLink, RouterView} from 'vue-router'
   <RouterView/>
 </template>
 
-<style scoped>
+<style>
 </style>

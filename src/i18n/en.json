@@ -1,4 +1,7 @@
 {
+  "success-verified" : "Verified success",
+  "forgot-message" : "Message have sent",
+  "reset-password-message" : "Your password has been reset.",
   "test": "Test",
   "massive": {
     "object1": "object"

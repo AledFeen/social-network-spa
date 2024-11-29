@@ -15,18 +15,15 @@ import {defaultLocale} from './i18n'
 import {createI18n, useI18n} from 'vue-i18n'
 
 const messages = Object.assign(languages)
+
 const i18n = createI18n({
   legacy: true,
   locale: defaultLocale,
   fallbackLocale: 'en',
   messages
 })
-const app = createApp(App, {
-  setup() {
-    const {t} = useI18n()
-    return {t}
-  }
-})
+
+const app = createApp(App)
 
 app.use(router)
 app.use(store)
