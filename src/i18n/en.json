@@ -2,6 +2,12 @@
   "success-verified" : "Verified success",
   "forgot-message" : "Message have sent",
   "reset-password-message" : "Your password has been reset.",
+  "email-placeholder": "Email",
+  "password-placeholder": "Password",
+  "login": "Login",
+  "register": "Register",
+  "forgot-link": "Forgot password?",
+
   "test": "Test",
   "massive": {
     "object1": "object"

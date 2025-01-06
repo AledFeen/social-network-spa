@@ -2,6 +2,12 @@
   "success-verified" : "Успішно підтверджено",
   "forgot-message" : "Листа відправлено",
   "reset-password-message" : "Ваш пароль був змінений",
+  "email-placeholder": "Пошта",
+  "password-placeholder": "Пароль",
+  "login": "Увійти",
+  "register": "Зареєструватись",
+  "forgot-link": "Забули пароль?",
+
   "test": "Тест",
   "massive": {
     "object1": "Об'єкт"
