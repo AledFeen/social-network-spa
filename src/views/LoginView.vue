@@ -39,7 +39,7 @@ export default {
       <div class="flex justify-center">
         <hr class="w-[90%] border-t-1 border-gray-a9 my-10">
       </div>
-      <RouterLink to="/forgot" class="text-center text-link-light dark:text-link-dark hover:underline">{{$t('forgot-link')}}</RouterLink>
+      <RouterLink to="/forgot-password" class="text-center text-link-light dark:text-link-dark hover:underline">{{$t('forgot-link')}}</RouterLink>
     </div>
   </div>
 

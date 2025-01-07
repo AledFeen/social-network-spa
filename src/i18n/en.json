@@ -1,12 +1,19 @@
 {
-  "success-verified" : "Verified success",
-  "forgot-message" : "Message have sent",
+  "success-verified": "Verified success",
+  "forgot-message": "Message have sent",
+  "send-btn": "Send",
   "reset-password-message" : "Your password has been reset.",
   "email-placeholder": "Email",
   "password-placeholder": "Password",
+  "confirm-pass-placeholder": "Confirm password",
+  "name-placeholder": "Nickname",
+
   "login": "Login",
   "register": "Register",
+  "login-link": "Already registered",
   "forgot-link": "Forgot password?",
+  "back-link": "Go back?",
+  "unverified_message": "Your email does not verified. Most features will not work. Check your email or resend letter.",
 
   "test": "Test",
   "massive": {
