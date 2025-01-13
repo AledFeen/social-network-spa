@@ -16,6 +16,13 @@
   "back-link": "Go back?",
   "unverified_message": "Your email does not verified. Most features will not work. Check your email or resend letter.",
 
+  "turn-label": "Close",
+  "home-link": "Home",
+  "search-link": "Search",
+  "notification-link": "Notifications",
+  "messenger-link": "Messenger",
+  "settings-link": "Settings",
+
   "test": "Test",
   "massive": {
     "object1": "object"

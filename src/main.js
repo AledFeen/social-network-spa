@@ -16,9 +16,11 @@ import {createI18n, useI18n} from 'vue-i18n'
 
 const messages = Object.assign(languages)
 
+const savedLocale = localStorage.getItem('appLocale') || defaultLocale;
+
 const i18n = createI18n({
   legacy: true,
-  locale: defaultLocale,
+  locale: savedLocale,
   fallbackLocale: 'en',
   messages
 })

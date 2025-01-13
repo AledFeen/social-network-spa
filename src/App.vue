@@ -3,8 +3,8 @@ import { useI18n } from 'vue-i18n';
 
 export default {
   setup() {
-    const { t } = useI18n();
-    return { t };
+    const { t, locale } = useI18n();
+    return { t, locale };
   },
 
   mounted() {
@@ -19,9 +19,8 @@ export default {
   },
 
   methods: {
-
     checkTheme() {
-      const theme = localStorage.getItem('theme');
+      const theme = localStorage.getItem('theme')
       console.log(theme)
       if (theme !== null) {
         const htmlElement = document.documentElement;
