@@ -29,7 +29,7 @@ export default {
           this.message = this.$t("success-verified")
         }
       }).catch(err => {
-        console.log(err)
+        this.message = this.$t('error-status') + " " + err.response.status
       })
     }
 
@@ -39,10 +39,12 @@ export default {
 </script>
 
 <template>
-  <main>
-    <p>{{ message }}</p>
-  </main>
-
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="flex flex-col sm:w-1/2 md:w-1/3 lg:w-1/4 pt-10 pb-10 ps-5 pe-5">
+      <div class="text-xl text-center text-primary_text-light dark:text-primary_text-dark">{{ message }}</div>
+      <RouterLink to="/" class="text-center mt-5 text-link-light dark:text-link-dark hover:underline">{{$t('back-link')}}</RouterLink>
+    </div>
+  </div>
 </template>
 
 <style>

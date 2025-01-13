@@ -51,7 +51,7 @@ export default {
 
   <div class="min-h-screen w-full bg-primary_back-light dark:bg-primary_back-dark">
     <div v-if="!hasConnect" class="flex items-center justify-center min-h-screen">
-      <div  class="text-btn_back-primary">Connection error. Server does not respond.</div>
+      <div class="text-btn_back-primary">Connection error. Server does not respond.</div>
     </div>
 
     <main>

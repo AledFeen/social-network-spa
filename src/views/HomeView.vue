@@ -1,7 +1,8 @@
 <script>
+  import LayoutWithSidebar from "/src/layouts/PageWithSidebarLayout.vue"
   export default {
     name: 'Home',
-
+    components: { LayoutWithSidebar },
     data() {
       return {
         path: this.$store.getters.serverPath
@@ -38,8 +39,10 @@
 </script>
 
 <template>
-  <main class="font-bold underline">
-    Home {{ path }}, {{$t('test')}}
-    <input @click.prevent="logout" type="submit" value="logout">
-  </main>
+  <LayoutWithSidebar :page="'Home'">
+    <main class="font-bold underline">
+      Home {{ path }}, {{$t('test')}}
+      <input @click.prevent="logout" type="submit" value="logout">
+    </main>
+  </LayoutWithSidebar>
 </template>

@@ -7,6 +7,7 @@
   "password-placeholder": "Password",
   "confirm-pass-placeholder": "Confirm password",
   "name-placeholder": "Nickname",
+  "error-status": "Error. status code",
 
   "login": "Login",
   "register": "Register",
