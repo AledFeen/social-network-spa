@@ -15,6 +15,9 @@ export default {
         this.axios.post(this.$store.getters.serverPath + '/login', {email: this.email, password: this.password})
           .then(() => {
             this.$store.commit('setToken', true);
+            this.axios.get(this.$store.getters.serverPath + '/api/user').then(res => {
+              this.$store.commit('setUser', res.data.data)
+            })
             this.$router.push('/')
           })
           .catch(err => {

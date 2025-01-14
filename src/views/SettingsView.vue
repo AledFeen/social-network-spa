@@ -1,6 +1,10 @@
 <script>
+import LayoutWithSidebar from "@/layouts/PageWithSidebarLayout.vue";
+import router from "@/router/index.js";
+
 export default {
   name: "Settings",
+  components: {LayoutWithSidebar},
   data() {
     return {
       currentLocale: this.$i18n.locale, // Устанавливаем начальное значение локали
@@ -23,6 +27,7 @@ export default {
         htmlElement.classList.remove('dark')
         localStorage.setItem('theme', 'light')
       }
+      location.reload();
     }
   }
 }
@@ -30,39 +35,41 @@ export default {
 </script>
 
 <template>
-  <main>
-    <button @click="toggleTheme">Тема</button>
-    {{$t('test')}}
-    <button @click="changeLocale">Язык</button>
-    <div class="flex flex-row items-center">
+  <LayoutWithSidebar :page="'Settings'">
+    <main>
+      <button @click="toggleTheme">Тема</button>
+      {{$t('test')}}
+      <button @click="changeLocale">Язык</button>
+      <div class="flex flex-row items-center">
 
-      <div class="flex items-center">
-        <label class="flex items-center space-x-2">
-          <input
-            type="radio"
-            name="locale"
-            value="en"
-            :checked="currentLocale === 'en'"
-            @change="() => changeLocale('en')"
-            class="text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-          />
-          <span>English</span>
-        </label>
-        <label class="flex items-center space-x-2 ms-2">
-          <input
-            type="radio"
-            name="locale"
-            value="ua"
-            :checked="currentLocale === 'ua'"
-            @change="() => changeLocale('ua')"
-            class="text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-          />
-          <span>Українська</span>
-        </label>
+        <div class="flex items-center">
+          <label class="flex items-center space-x-2">
+            <input
+              type="radio"
+              name="locale"
+              value="en"
+              :checked="currentLocale === 'en'"
+              @change="() => changeLocale('en')"
+              class="text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+            />
+            <span>English</span>
+          </label>
+          <label class="flex items-center space-x-2 ms-2">
+            <input
+              type="radio"
+              name="locale"
+              value="ua"
+              :checked="currentLocale === 'ua'"
+              @change="() => changeLocale('ua')"
+              class="text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+            />
+            <span>Українська</span>
+          </label>
+        </div>
+
       </div>
-
-    </div>
-  </main>
+    </main>
+  </LayoutWithSidebar>
 </template>
 
 <style>

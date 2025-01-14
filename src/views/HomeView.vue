@@ -5,30 +5,33 @@
     components: { LayoutWithSidebar },
     data() {
       return {
-        path: this.$store.getters.serverPath
+        path: this.$store.getters.serverPath,
       }
     },
 
     mounted() {
-      this.checkVerified()
+     this.checkVerified()
     },
 
     methods: {
       checkVerified() {
-        this.axios.get(this.$store.getters.serverPath + '/api/user').then(r => {
-          //console.log(r)
-          if(r.data.email_verified_at) {
-            // maybe will variable to protect routes
-          } else {
+        let user = this.$store.getters.user
+        if(user) {
+          if(!user.email_verified_at) {
             alert(this.$t('unverified_message'))
           }
-        })
+        } else {
+          setTimeout(() => {
+            this.checkVerified();
+          }, 500);
+        }
       },
 
       logout() {
         this.axios.post(this.$store.getters.serverPath + '/logout').then(() => {
         }).then(() => {
           this.$store.commit('setToken', false);
+          this.$store.commit('setUser', undefined)
           this.$router.push({name: 'login'})
         }).catch(err => {
           alert(err.response.data.message)

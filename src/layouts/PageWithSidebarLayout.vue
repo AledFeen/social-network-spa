@@ -7,18 +7,35 @@ export default {
   props: {
     page: String,
   },
+
   data() {
     return {
       isSidebarOpen: false,
-      theme: null
+      theme: null,
+      user: null
     }
   },
+
   mounted() {
     this.setTheme()
+    this.getUser()
   },
+
   methods: {
     setTheme() {
       this.theme = localStorage.getItem('theme')
+    },
+
+    getUser() {
+      let user = this.$store.getters.user;
+
+      if (user) {
+        this.user = user;
+      } else {
+        setTimeout(() => {
+          this.getUser();
+        }, 500);
+      }
     },
 
     openSidebar() {
@@ -92,9 +109,9 @@ export default {
       </router-link>
 
       <div class="hidden md:block h-px w-full bg-gray-a9 md:my-2"></div>
-      <router-link to="/" class="flex flex-row items-center md:m-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75 rounded" :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Profile'}">
+      <router-link v-if="user" :to="`/profile/${user.id}`" class="flex flex-row items-center md:m-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75 rounded" :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Profile'}">
         <img src="/public/favicon.ico" alt="Круглое изображение" class="w-7 h-6 md:ms-2 rounded-full object-cover hidden md:block" :class="{'md:ms-3': isSidebarOpen}" />
-        <div v-if="isSidebarOpen" class="ms-3">Нікнейм</div>
+        <div v-if="isSidebarOpen" class="ms-3">{{user.name}}</div>
       </router-link>
       <div class="hidden md:block h-px w-full bg-gray-a9 md:my-2"></div>
     </div>

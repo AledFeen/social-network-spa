@@ -1,19 +1,24 @@
 <script>
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n'
 
 export default {
   setup() {
-    const { t, locale } = useI18n();
-    return { t, locale };
+    const { t, locale } = useI18n()
+    return { t, locale }
   },
 
   mounted() {
     this.checkTheme()
     this.checkToken()
+    if (this.hasConnect) {
+      this.checkUser()
+    }
+    this.mount = true
   },
 
   data() {
     return {
+      mount: false,
       hasConnect: true
     };
   },
@@ -36,12 +41,20 @@ export default {
 
     checkToken() {
       this.axios.get(this.$store.getters.serverPath + '/api/checkAuth').then(res => {
-        this.$store.commit('setToken', res.data.token);
-      }).catch(err => {
-        this.hasConnect = false;
-        console.log(err.response.data.message)
+        this.$store.commit('setToken', res.data.token)
+        console.log('check token ' + res.data.token)
+      }).catch(() => {
+        this.hasConnect = false
       })
     },
+
+    checkUser() {
+      this.axios.get(this.$store.getters.serverPath + '/api/user').then(res => {
+        this.$store.commit('setUser', res.data.data)
+        console.log(res.data.data)
+      }).catch()
+    }
+
   }
 };
 </script>
@@ -53,7 +66,11 @@ export default {
       <div class="text-btn_back-primary">Connection error. Server does not respond.</div>
     </div>
 
-    <main>
+    <div v-if="!mount" class="flex items-center justify-center min-h-screen">
+      <img src="/wait-dark.svg" alt="wait"/>
+    </div>
+
+    <main v-if="mount">
       <RouterView/>
     </main>
 
