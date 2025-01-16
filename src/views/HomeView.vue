@@ -26,17 +26,6 @@
           }, 500);
         }
       },
-
-      logout() {
-        this.axios.post(this.$store.getters.serverPath + '/logout').then(() => {
-        }).then(() => {
-          this.$store.commit('setToken', false);
-          this.$store.commit('setUser', undefined)
-          this.$router.push({name: 'login'})
-        }).catch(err => {
-          alert(err.response.data.message)
-        })
-      }
     }
   }
 </script>
@@ -45,7 +34,6 @@
   <LayoutWithSidebar :page="'Home'">
     <main class="font-bold underline">
       Home {{ path }}, {{$t('test')}}
-      <input @click.prevent="logout" type="submit" value="logout">
     </main>
   </LayoutWithSidebar>
 </template>

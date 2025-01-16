@@ -7,7 +7,8 @@ export default {
   components: {LayoutWithSidebar},
   data() {
     return {
-      currentLocale: this.$i18n.locale, // Устанавливаем начальное значение локали
+      currentLocale: this.$i18n.locale,
+      currentTheme: localStorage.getItem('theme')
     };
   },
 
@@ -17,18 +18,12 @@ export default {
       localStorage.setItem('appLocale', locale); // Сохраняем выбор в localStorage
     },
 
-    toggleTheme() {
-      const theme = localStorage.getItem('theme')
-      const htmlElement = document.documentElement
-      if (theme === 'light') {
-        htmlElement.classList.add('dark')
-        localStorage.setItem('theme', 'dark')
-      } else {
-        htmlElement.classList.remove('dark')
-        localStorage.setItem('theme', 'light')
-      }
+    changeTheme(theme) {
+      this.currentTheme = theme
+      localStorage.setItem('theme', theme)
       location.reload();
     }
+
   }
 }
 
@@ -37,37 +32,51 @@ export default {
 <template>
   <LayoutWithSidebar :page="'Settings'">
     <main>
-      <button @click="toggleTheme">Тема</button>
       {{$t('test')}}
-      <button @click="changeLocale">Язык</button>
       <div class="flex flex-row items-center">
-
-        <div class="flex items-center">
-          <label class="flex items-center space-x-2">
+        <div class="flex items-center text-primary_text-light dark:text-primary_text-dark">
+          <label class="flex items-center space-x-2 hover:cursor-pointer">
             <input
               type="radio"
-              name="locale"
-              value="en"
-              :checked="currentLocale === 'en'"
-              @change="() => changeLocale('en')"
-              class="text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+              name="theme"
+              value="light"
+              :checked="currentTheme === 'light'"
+              @change="() => changeTheme('light')"
+              class=" bg-gray-100 border-gray-300 focus:ring-blue-500"
             />
-            <span>English</span>
+            <span>Світла</span>
           </label>
-          <label class="flex items-center space-x-2 ms-2">
+          <label class="flex items-center space-x-2 ms-2 hover:cursor-pointer ">
             <input
               type="radio"
-              name="locale"
-              value="ua"
-              :checked="currentLocale === 'ua'"
-              @change="() => changeLocale('ua')"
-              class="text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+              name="theme"
+              value="dark"
+              :checked="currentTheme=== 'dark'"
+              @change="() => changeTheme('dark')"
+              class="bg-gray-100 border-gray-300 focus:ring-blue-500"
             />
-            <span>Українська</span>
+            <span>Темна</span>
           </label>
         </div>
-
       </div>
+
+      <div class="flex flex-row items-center">
+        <div class="relative">
+          <label for="locale-select" class="sr-only">Choose language</label>
+          <select
+            id="locale-select"
+            class="block w-full px-3 py-2 text-sm border rounded-md shadow-sm bg-secondary_back-light dark:bg-secondary_back-dark
+              text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75"
+            v-model="currentLocale"
+            @change="changeLocale(currentLocale)">
+
+            <option value="en" class="hover:cursor-pointer hover:opacity-75">English</option>
+            <option value="ua" class="hover:cursor-pointer hover:opacity-75">Українська</option>
+          </select>
+        </div>
+      </div>
+
+
     </main>
   </LayoutWithSidebar>
 </template>

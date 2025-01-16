@@ -12,6 +12,7 @@ export default {
     this.checkToken()
     if (this.hasConnect) {
       this.checkUser()
+      this.getAvatar()
     }
     this.mount = true
   },
@@ -51,10 +52,15 @@ export default {
     checkUser() {
       this.axios.get(this.$store.getters.serverPath + '/api/user').then(res => {
         this.$store.commit('setUser', res.data.data)
-        console.log(res.data.data)
       }).catch()
-    }
+    },
 
+    getAvatar() {
+      this.axios.get(this.$store.getters.serverPath + '/api/my-avatar').then(res => {
+        this.$store.commit('setAvatar', res.data.data.image)
+        console.log(res.data.data.image)
+      }).catch()
+    },
   }
 };
 </script>
@@ -67,7 +73,7 @@ export default {
     </div>
 
     <div v-if="!mount" class="flex items-center justify-center min-h-screen">
-      <img src="/wait-dark.svg" alt="wait"/>
+      <img src="/src/assets/wait-dark.svg" alt="wait"/>
     </div>
 
     <main v-if="mount">

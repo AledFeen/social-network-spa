@@ -10,6 +10,7 @@
   "error-status": "Error. status code",
 
   "login": "Login",
+  "logout": "Logout",
   "register": "Register",
   "login-link": "Already registered",
   "forgot-link": "Forgot password?",

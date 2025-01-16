@@ -66,7 +66,7 @@ router.beforeEach(async (to, from, next) => {
   console.log(store.getters.token)
 
   if (token === false) {
-    if (to.name === 'login' || to.name === 'register' || to.name === 'forgot' || to.name === 'reset-password' || to.name === 'settings') { //delete settings later
+    if (to.name === 'login' || to.name === 'register' || to.name === 'forgot' || to.name === 'reset-password') {
       next();
     } else {
       next({ name: 'login' });

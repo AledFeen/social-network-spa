@@ -26,7 +26,7 @@ export default {
         if (response.status === 200) {
           this.profile = response.data.data
         } else {
-
+          //нужно добавить мультиязычные сообщения об ошибке
         }
       })
 
