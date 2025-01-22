@@ -24,6 +24,7 @@ export default {
     this.getAvatar()
   },
 
+
   methods: {
     setTheme() {
       this.theme = localStorage.getItem('theme')
@@ -31,24 +32,27 @@ export default {
 
     getUser() {
       let user = this.$store.getters.user;
-
-      if (user) {
-        this.user = user;
+      if (user === undefined) {
+        this.axios.get(this.$store.getters.serverPath + '/api/user').then(res => {
+          this.$store.commit('setUser', res.data.data)
+          this.user = res.data.data;
+        }).catch(error => {
+        })
       } else {
-        setTimeout(() => {
-          this.getUser();
-        }, 500);
+        this.user = user;
       }
     },
 
     getAvatar() {
       let avatar = this.$store.getters.avatar;
-      if (avatar) {
-        this.avatar = avatar;
+      if (avatar === undefined) {
+        this.axios.get(this.$store.getters.serverPath + '/api/my-avatar').then(res => {
+          this.$store.commit('setAvatar', res.data.data.image)
+          this.avatar = res.data.data.image
+        }).catch(error => {
+        })
       } else {
-        setTimeout(() => {
-          this.getAvatar();
-        }, 500);
+        this.avatar = avatar;
       }
     },
 
@@ -65,6 +69,7 @@ export default {
       }).then(() => {
         this.$store.commit('setToken', false);
         this.$store.commit('setUser', undefined)
+        this.$store.commit('setAvatar', undefined)
         this.$router.push({name: 'login'})
       }).catch(err => {
         alert(err.response.data.message)
@@ -76,7 +81,9 @@ export default {
 </script>
 <template>
   <div class="flex flex-col lg:flex-row md:flex-row min-h-screen">
-    <div class="border border-gray-a9 border-solid dark:border-none" :class="{'lg:w-1/6 md:w-1/8': isSidebarOpen}">
+    <div
+      class="fixed w-full md:h-screen z-10 border border-gray-a9 border-solid dark:border-none bg-primary_back-light dark:bg-primary_back-dark md:bg-transparent"
+      :class="{'md:w-60': isSidebarOpen, 'md:w-14': !isSidebarOpen}">
       <div class="flex flex-row md:flex-col justify-between">
         <div class="my-2 text-primary_text-light dark:text-primary_text-dark ms-2">Logo</div>
         <div class="block">
@@ -157,8 +164,8 @@ export default {
         <router-link v-if="user" :to="`/profile/${user.id}`"
                      class="flex flex-row items-center md:m-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75 rounded"
                      :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Profile'}">
-          <template v-if="avatar">
-            <img v-if="avatar === 'default_avatar'" src="/src/assets/default_avatar.png" alt="Круглое изображение"
+          <template v-if="avatar != null">
+            <img v-if="avatar === 'default_avatar'" src="/src/assets/default_avatar.jpg" alt="Круглое изображение"
                  class="w-7 h-6 md:ms-2 rounded-full object-cover hidden md:block" :class="{'md:ms-3': isSidebarOpen}"/>
             <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + avatar" alt="Круглое изображение"
                  class="w-7 h-6 md:ms-2 rounded-full object-cover hidden md:block" :class="{'md:ms-3': isSidebarOpen}"/>
@@ -191,10 +198,10 @@ export default {
       <div class="hidden md:block h-px w-full bg-gray-a9 md:my-2"></div>
     </div>
 
-    <div class="flex-item">
+    <div class="flex flex-row justify-center w-full flex-grow mt-8"
+         :class="{'md:ml-60 md:mt-0': isSidebarOpen, 'md:ml-14 md:mt-0': !isSidebarOpen}">
       <slot/>
     </div>
-
   </div>
 </template>
 

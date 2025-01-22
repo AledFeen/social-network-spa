@@ -10,17 +10,13 @@ export default {
   mounted() {
     this.checkTheme()
     this.checkToken()
-    if (this.hasConnect) {
-      this.checkUser()
-      this.getAvatar()
-    }
     this.mount = true
   },
 
   data() {
     return {
       mount: false,
-      hasConnect: true
+      hasConnect: true,
     };
   },
 
@@ -47,19 +43,6 @@ export default {
       }).catch(() => {
         this.hasConnect = false
       })
-    },
-
-    checkUser() {
-      this.axios.get(this.$store.getters.serverPath + '/api/user').then(res => {
-        this.$store.commit('setUser', res.data.data)
-      }).catch()
-    },
-
-    getAvatar() {
-      this.axios.get(this.$store.getters.serverPath + '/api/my-avatar').then(res => {
-        this.$store.commit('setAvatar', res.data.data.image)
-        console.log(res.data.data.image)
-      }).catch()
     },
   }
 };

@@ -32,7 +32,6 @@ export default {
 <template>
   <LayoutWithSidebar :page="'Settings'">
     <main>
-      {{$t('test')}}
       <div class="flex flex-row items-center">
         <div class="flex items-center text-primary_text-light dark:text-primary_text-dark">
           <label class="flex items-center space-x-2 hover:cursor-pointer">
@@ -46,7 +45,7 @@ export default {
             />
             <span>Світла</span>
           </label>
-          <label class="flex items-center space-x-2 ms-2 hover:cursor-pointer ">
+          <label class="flex items-center space-x-2 ms-2 hover:cursor-pointer">
             <input
               type="radio"
               name="theme"

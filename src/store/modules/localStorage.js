@@ -1,8 +1,8 @@
 const state = {
   serverPath: 'http://localhost:8000',
   token: undefined,
-  user: null,
-  avatar: null
+  user: undefined,
+  avatar: undefined
 }
 
 const getters = {
@@ -25,7 +25,9 @@ const mutations = {  // это сеттеры
 }
 
 const actions = { //сюда можно вынести методы
-
+  updateProfileImage({ commit }, avatar) {
+    commit('setAvatar', avatar);
+  },
 }
 
 export default {
