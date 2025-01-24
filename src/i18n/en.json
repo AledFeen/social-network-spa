@@ -24,6 +24,19 @@
   "messenger-link": "Messenger",
   "settings-link": "Settings",
 
+  "profile-real-name": "Your real name",
+  "profile-date": "Date of birth",
+  "profile-location": "Location",
+  "profile-about": "Describe yourself",
+
+  "save-btn": "Save",
+  "delete-btn": "Delete",
+  "reset-btn": "Reset",
+  "look-btn": "Open",
+
+  "success-request": "Success",
+  "success-failed": "Request failed",
+
   "test": "Test",
   "massive": {
     "object1": "object"

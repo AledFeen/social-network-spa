@@ -1,5 +1,5 @@
 <script>
-import SidebarItem from "/src/components/SidebarItem.vue";
+import SidebarItem from "/src/components/ModalMessage.vue";
 
 export default {
   name: "Sidebar",
@@ -161,7 +161,7 @@ export default {
       <div class="hidden md:block h-px w-full bg-gray-a9 md:my-2"></div>
 
       <div class="flex flex-row md:justify-between">
-        <router-link v-if="user" :to="`/profile/${user.id}`"
+        <router-link v-if="user" :to="`/profile/${user.name}`"
                      class="flex flex-row items-center md:m-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75 rounded"
                      :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Profile'}">
           <template v-if="avatar != null">

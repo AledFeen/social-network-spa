@@ -25,6 +25,18 @@
   "messenger-link": "Мессенджер",
   "settings-link": "Налаштування",
 
+  "profile-real-name": "ПІБ",
+  "profile-date": "Дата народження",
+  "profile-location": "Місце розташування",
+  "profile-about": "Щось про себе",
+
+  "save-btn": "Зберегти",
+  "delete-btn": "Видалити",
+  "reset-btn": "Cкинути",
+  "look-btn": "Дивитись",
+
+  "success-request": "Успішно виконано",
+  "success-failed": "Запит не виконано",
 
   "test": "Тест",
   "massive": {

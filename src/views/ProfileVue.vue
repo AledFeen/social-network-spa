@@ -1,18 +1,25 @@
 <script>
 import LayoutWithSidebar from "@/layouts/PageWithSidebarLayout.vue";
 import {data} from "autoprefixer";
+import ModalMessage from "@/components/ModalMessage.vue";
 
 export default {
   name: "Profile",
-  components: {LayoutWithSidebar},
-  props: ['id'],
+  components: {ModalMessage, LayoutWithSidebar},
+  props: ['username'],
 
   data() {
     return {
       profile: null,
       theme: localStorage.getItem('theme'),
       isDropdownOpen: false,
-      isSubscriber: null
+      subscriber: null,
+      isSubscriber: null,
+      banned: null,
+      isBanned: null,
+      wasRequestSent: null,
+      isModalVisible: false,
+      modalMessage: null
     }
   },
 
@@ -24,7 +31,7 @@ export default {
 
   mounted() {
     this.getProfile()
-    this.checkIsSubscriber()
+
   },
 
   computed: {
@@ -37,11 +44,12 @@ export default {
     getProfile() {
       this.axios.get(this.$store.getters.serverPath + '/api/profile', {
         params: {
-          'user_id': this.id
+          'username': this.username
         }
       }).then(response => {
         if (response.status === 200) {
           this.profile = response.data.data
+          this.checkRelations()
         } else {
           //нужно добавить мультиязычные сообщения об ошибке
         }
@@ -52,18 +60,127 @@ export default {
       this.isDropdownOpen = !this.isDropdownOpen
     },
 
-    checkIsSubscriber() {
-      this.axios.get(this.$store.getters.serverPath + '/api/check-subscription', {
+    checkRelations() {
+      this.axios.get(this.$store.getters.serverPath + '/api/check-relations', {
         params: {
-          'user_id': this.id
+          'user_id': this.profile.id
         }
       })
         .then(response => {
-          this.isSubscriber = response.data.success
+          this.subscriber = response.data.subscription
+          this.isSubscriber = response.data.subscriber
+          this.wasRequestSent = response.data.request
+          this.banned = response.data.banned
+          this.isBanned = response.data.isBanned
         })
         .catch(err => {
           console.log(err)
         })
+    },
+
+    subscribe() {
+      this.axios.post(this.$store.getters.serverPath + '/api/subscribe', {
+        'user_id': this.profile.id,
+      }).then(res => {
+        if (res.data.success) {
+          this.showModal(this.$t('success-request'))
+          this.getProfile()
+        } else {
+          this.showModal(this.$t('failed-request'))
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    unsubscribe() {
+      this.axios.delete(this.$store.getters.serverPath + '/api/unsubscribe', {
+        params: {
+          'user_id': this.profile.id
+        }
+      }).then(res => {
+        if (res.data.success) {
+          this.showModal(this.$t('success-request'))
+          this.getProfile()
+        } else {
+          this.showModal(this.$t('failed-request'))
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    sendSubscribeRequest() {
+      this.axios.post(this.$store.getters.serverPath + '/api/subscribe-request', {
+        'user_id': this.profile.id,
+      }).then(res => {
+        if (res.data.success) {
+          this.showModal(this.$t('success-request'))
+          this.getProfile()
+        } else {
+          this.showModal(this.$t('failed-request'))
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    deleteSubscriber() {
+      this.axios.delete(this.$store.getters.serverPath + '/api/delete-subscriber', {
+        params: {
+          'user_id': this.profile.id
+        }
+      }).then(res => {
+        if (res.data.success) {
+          this.showModal(this.$t('success-request'))
+          this.getProfile()
+        } else {
+          this.showModal(this.$t('failed-request'))
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    blockUser() {
+      this.axios.post(this.$store.getters.serverPath + '/api/block-user', {
+        'user_id': this.profile.id,
+      }).then(res => {
+        if (res.data.success) {
+          this.showModal(this.$t('success-request'))
+          this.getProfile()
+        } else {
+          this.showModal(this.$t('failed-request'))
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    unblockUser() {
+      this.axios.delete(this.$store.getters.serverPath + '/api/unblock-user', {
+        params: {
+          'user_id': this.profile.id
+        }
+      }).then(res => {
+        if (res.data.success) {
+          this.showModal(this.$t('success-request'))
+          this.getProfile()
+        } else {
+          this.showModal(this.$t('failed-request'))
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    showModal(message) {
+      this.modalMessage = message;
+      this.isModalVisible = true;
+
+      setTimeout(() => {
+        this.isModalVisible = false;
+      }, 500);
     },
 
   }
@@ -73,6 +190,9 @@ export default {
 
 <template>
   <LayoutWithSidebar :page="''">
+    <template v-if="isModalVisible">
+      <ModalMessage :message="modalMessage"/>
+    </template>
     <div class="block w-full mx-1 md:w-3/4 my-4 md:my-16 rounded-lg shadow-lg border border-gray-a9 border-solid">
       <div class="w-full rounded-lg bg-secondary_back-light dark:bg-secondary_back-dark">
         <div v-if="profile" class="w-full p-3 rounded-lg">
@@ -108,35 +228,47 @@ export default {
               <div class="w-1/3 flex flex-col">
                 <div class="flex flex-row justify-between">
                   <div>
-                    <div class="mb-2 mt-3 p-1 md:px-3 bg-btn_back-primary rounded-lg">
-                      <div class="text-primary_text-dark font-semibold hover:cursor-pointer hover:underline">Підписки:
+                    <div v-if="!isBanned" class="mb-2 mt-3 p-1 md:px-3 bg-btn_back-primary rounded-lg">
+                      <router-link :to="`/subscriptions/${profile.id}`"
+                                   class="text-primary_text-dark font-semibold hover:cursor-pointer hover:underline">
+                        Підписки:
                         {{ profile.countFollowings }}
+                      </router-link>
+                      <div>
+                        <router-link :to="`/subscribers/${profile.id}`"
+                                     class="text-primary_text-dark font-semibold hover:cursor-pointer hover:underline">
+                          Підписники:
+                          {{ profile.countFollowers }}
+                        </router-link>
                       </div>
-                      <div class="text-primary_text-dark font-semibold hover:cursor-pointer hover:underline">Підписники:
-                        {{ profile.countFollowers }}
-                      </div>
+
                     </div>
 
-                    <div>
+                    <div v-if="!isBanned">
                       <div v-if="isMyProfile" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
                   hover:cursor-pointer drop-shadow-md">
                         <router-link to="/edit-account">Редагувати</router-link>
                       </div>
                       <template v-else>
-                        <div v-if="!isSubscriber && profile.accountType === 'private'" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
+                        <div v-if="!subscriber && profile.accountType === 'private' && !wasRequestSent"
+                             @click.prevent="sendSubscribeRequest()" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
+                  hover:cursor-pointer drop-shadow-md">Запит на підписку
+                        </div>
+                        <div v-else-if="!subscriber && profile.accountType === 'private' && wasRequestSent" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
+                  hover:cursor-pointer drop-shadow-md">Запит відправлено
+                        </div>
+                        <div v-else-if="!subscriber" @click.prevent="subscribe()" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
                   hover:cursor-pointer drop-shadow-md">Підписатись
                         </div>
-                        <div v-else-if="!isSubscriber" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
-                  hover:cursor-pointer drop-shadow-md">Підписатись
-                        </div>
-                        <div v-else class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
+                        <div v-else @click.prevent="unsubscribe()" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
                   hover:cursor-pointer drop-shadow-md">Відписатись
                         </div>
                       </template>
                     </div>
+                    <div v-if="banned" class="text-btn_back-primary my-1">Користувач заблокований</div>
                   </div>
 
-                  <div>
+                  <div v-if="profile">
                     <div class="relative" @click.prevent="openDropdown">
                       <img v-if="theme === 'light'" src="/src/assets/options-light.svg" alt="Settings"
                            class="w-8 h-8 md:block image-class rounded  hover:opacity-75 hover:cursor-pointer "/>
@@ -147,8 +279,17 @@ export default {
             focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10">
                         <ul class="py-1 text-primary_text-light dark:text-primary_text-dark">
                           <li>
-                            <div class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
-                              Пункт меню
+                            <div v-if="isSubscriber" @click.prevent="deleteSubscriber()"
+                                 class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                              Delete subscriber
+                            </div>
+                            <div v-if="!banned && !isMyProfile" @click.prevent="blockUser()"
+                                 class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                              Block user
+                            </div>
+                            <div v-else-if="!isMyProfile" @click.prevent="unblockUser()"
+                                 class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                              Unblock user
                             </div>
                           </li>
                         </ul>
@@ -161,7 +302,8 @@ export default {
               </div>
             </div>
             <div class="flex flex-row mb-2">
-              <div v-if="profile.about" class="w-2/3 ms-2 mt-1 mb-2 text-primary_text-light dark:text-primary_text-dark break-words">
+              <div v-if="profile.about"
+                   class="w-2/3 ms-2 mt-1 mb-2 text-primary_text-light dark:text-primary_text-dark break-words">
                 {{ profile.about }}
               </div>
             </div>

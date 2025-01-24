@@ -44,7 +44,7 @@ const router = createRouter({
       component: () => import('../views/SettingsView.vue'),
     },
     {
-      path: '/profile/:id',
+      path: '/profile/:username',
       name: 'profile',
       props: true,
       component: () => import('../views/ProfileVue.vue'),
@@ -53,6 +53,18 @@ const router = createRouter({
       path: '/edit-account',
       name: 'edit-account',
       component: () => import('../views/EditAccountView.vue'),
+    },
+    {
+      path: '/subscriptions/:id',
+      name: 'subscriptions',
+      props: true,
+      component: () => import('../views/Subscriptions.vue'),
+    },
+    {
+      path: '/subscribers/:id',
+      name: 'subscribers',
+      props: true,
+      component: () => import('../views/Subscribers.vue'),
     },
   ],
 })
