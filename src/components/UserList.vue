@@ -68,6 +68,7 @@ export default {
           console.log(err)
         })
     },
+
   }
 }
 </script>
@@ -96,8 +97,14 @@ export default {
     </template>
 
     <div v-if="page === 'subscriptions' && this.lastPage >= this.page_id + 1" @click.prevent="getSubscriptions" class="flex justify-center text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
-      Загрузить
+      {{$t('download-btn') }}
+    </div>
+    <div v-else-if="page === 'subscribers' && this.lastPage >= this.page_id + 1" @click.prevent="getSubscribers" class="flex justify-center text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
+      {{$t('download-btn') }}
     </div>
 
+  </div>
+  <div v-if="!users">
+    <div class="h-screen flex flex-col justify-center items-center text-primary_text-light dark:text-primary_text-dark">{{$t('nothing-found')}}</div>
   </div>
 </template>

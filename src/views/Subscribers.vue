@@ -3,7 +3,7 @@
   import LayoutWithSidebar from "@/layouts/PageWithSidebarLayout.vue";
 
   export default {
-    name: 'UserList',
+    name: 'Subscribers',
     components: {LayoutWithSidebar, UserListChild },
     props: ['id'],
   }

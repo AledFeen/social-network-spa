@@ -29,13 +29,30 @@
   "profile-location": "Location",
   "profile-about": "Describe yourself",
 
+  "subscribers-label": "Subscribers",
+  "subscriptions-label": "Subscriptions",
+
   "save-btn": "Save",
   "delete-btn": "Delete",
   "reset-btn": "Reset",
   "look-btn": "Open",
+  "accept-btn": "Accept",
+  "decline-btn": "Decline",
+  "edit-btn": "Edit",
+  "subscribe-btn": "Subscribe",
+  "unsubscribe-btn": "Unsubscribe",
+  "ban-btn": "Ban user",
+  "unban-btn": "Unban user",
+  "delete-subscriber-btn": "Delete subscriber",
+  "download-btn": "Download more",
+  "blocked-btn": "Open blocked list",
+
+  "sent-request-message": "Request has been sent",
+  "user-banned-message": "You have banned this user",
 
   "success-request": "Success",
   "success-failed": "Request failed",
+  "nothing-found": "Nothing found",
 
   "test": "Test",
   "massive": {

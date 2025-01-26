@@ -38,6 +38,11 @@ export default {
     isMyProfile() {
       return this.profile.name === this.$store.getters.user.name;
     },
+
+   shouldDisplaySubs() {
+      return this.isMyProfile || !this.isBanned && this.profile.accountType === 'public' || this.profile.accountType === 'private' && this.subscriber
+   }
+
   },
 
   methods: {
@@ -225,19 +230,19 @@ export default {
 
               </div>
 
-              <div class="w-1/3 flex flex-col">
+              <div class="w-1/3 flex flex-col justify-center">
                 <div class="flex flex-row justify-between">
                   <div>
-                    <div v-if="!isBanned" class="mb-2 mt-3 p-1 md:px-3 bg-btn_back-primary rounded-lg">
+                    <div v-if="shouldDisplaySubs" class="mb-2 mt-3 p-1 md:px-3 bg-btn_back-primary rounded-lg">
                       <router-link :to="`/subscriptions/${profile.id}`"
                                    class="text-primary_text-dark font-semibold hover:cursor-pointer hover:underline">
-                        Підписки:
+                        {{$t('subscriptions-label')}}:
                         {{ profile.countFollowings }}
                       </router-link>
                       <div>
                         <router-link :to="`/subscribers/${profile.id}`"
                                      class="text-primary_text-dark font-semibold hover:cursor-pointer hover:underline">
-                          Підписники:
+                          {{$t('subscribers-label')}}:
                           {{ profile.countFollowers }}
                         </router-link>
                       </div>
@@ -247,55 +252,57 @@ export default {
                     <div v-if="!isBanned">
                       <div v-if="isMyProfile" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
                   hover:cursor-pointer drop-shadow-md">
-                        <router-link to="/edit-account">Редагувати</router-link>
+                        <router-link to="/edit-account">{{$t('edit-btn')}}</router-link>
                       </div>
                       <template v-else>
                         <div v-if="!subscriber && profile.accountType === 'private' && !wasRequestSent"
                              @click.prevent="sendSubscribeRequest()" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
-                  hover:cursor-pointer drop-shadow-md">Запит на підписку
+                  hover:cursor-pointer drop-shadow-md">{{$t('subscribe-btn')}}
                         </div>
-                        <div v-else-if="!subscriber && profile.accountType === 'private' && wasRequestSent" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
-                  hover:cursor-pointer drop-shadow-md">Запит відправлено
+                        <div v-else-if="!subscriber && profile.accountType === 'private' && wasRequestSent" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl
+                   drop-shadow-md">{{$t('sent-request-message')}}
                         </div>
                         <div v-else-if="!subscriber" @click.prevent="subscribe()" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
-                  hover:cursor-pointer drop-shadow-md">Підписатись
+                  hover:cursor-pointer drop-shadow-md">{{$t('subscribe-btn')}}
                         </div>
                         <div v-else @click.prevent="unsubscribe()" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
-                  hover:cursor-pointer drop-shadow-md">Відписатись
+                  hover:cursor-pointer drop-shadow-md">{{$t('unsubscribe-btn')}}
                         </div>
                       </template>
                     </div>
-                    <div v-if="banned" class="text-btn_back-primary my-1">Користувач заблокований</div>
+                    <div v-if="banned" class="text-btn_back-primary my-1">{{$t('user-banned-message')}}</div>
                   </div>
+                </div>
+              </div>
+              <div v-if="profile">
+                <div class="relative" @click.prevent="openDropdown">
+                  <img v-if="theme === 'light'" src="/src/assets/options-light.svg" alt="Settings"
+                       class="w-8 h-8 md:block image-class rounded  hover:opacity-75 hover:cursor-pointer "/>
+                  <img v-else src="/src/assets/options-dark.svg" alt="Settings"
+                       class="w-8 h-8 md:block image-class rounded hover:opacity-75 hover:cursor-pointer"/>
 
-                  <div v-if="profile">
-                    <div class="relative" @click.prevent="openDropdown">
-                      <img v-if="theme === 'light'" src="/src/assets/options-light.svg" alt="Settings"
-                           class="w-8 h-8 md:block image-class rounded  hover:opacity-75 hover:cursor-pointer "/>
-                      <img v-else src="/src/assets/options-dark.svg" alt="Settings"
-                           class="w-8 h-8 md:block image-class rounded hover:opacity-75 hover:cursor-pointer"/>
-
-                      <div v-show="isDropdownOpen" class="absolute top-1 w-40 right-12 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
+                  <div v-show="isDropdownOpen" class="absolute top-1 w-40 right-12 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
             focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10">
-                        <ul class="py-1 text-primary_text-light dark:text-primary_text-dark">
-                          <li>
-                            <div v-if="isSubscriber" @click.prevent="deleteSubscriber()"
-                                 class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
-                              Delete subscriber
-                            </div>
-                            <div v-if="!banned && !isMyProfile" @click.prevent="blockUser()"
-                                 class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
-                              Block user
-                            </div>
-                            <div v-else-if="!isMyProfile" @click.prevent="unblockUser()"
-                                 class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
-                              Unblock user
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-
-                    </div>
+                    <ul class="py-1 text-primary_text-light dark:text-primary_text-dark">
+                      <li>
+                        <div v-if="isSubscriber" @click.prevent="deleteSubscriber()"
+                             class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                          {{$t('delete-subscriber-btn')}}
+                        </div>
+                        <div v-if="!banned && !isMyProfile" @click.prevent="blockUser()"
+                             class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                          {{$t('ban-btn')}}
+                        </div>
+                        <div v-else-if="!isMyProfile" @click.prevent="unblockUser()"
+                             class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                          {{$t('unban-btn')}}
+                        </div>
+                        <router-link to="/blocked-list" v-if="isMyProfile" @click.prevent="deleteSubscriber()"
+                             class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                          {{$t('blocked-btn')}}
+                        </router-link>
+                      </li>
+                    </ul>
                   </div>
 
                 </div>

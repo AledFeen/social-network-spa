@@ -66,6 +66,16 @@ const router = createRouter({
       props: true,
       component: () => import('../views/Subscribers.vue'),
     },
+    {
+      path: '/sub-requests',
+      name: 'sub-requests',
+      component: () => import('../views/SubRequests.vue'),
+    },
+    {
+      path: '/blocked-list',
+      name: 'blocked-list',
+      component: () => import('../views/BlockedList.vue'),
+    },
   ],
 })
 

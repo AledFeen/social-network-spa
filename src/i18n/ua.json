@@ -30,13 +30,30 @@
   "profile-location": "Місце розташування",
   "profile-about": "Щось про себе",
 
+  "subscribers-label": "Підписники",
+  "subscriptions-label": "Підписки",
+
   "save-btn": "Зберегти",
   "delete-btn": "Видалити",
   "reset-btn": "Cкинути",
   "look-btn": "Дивитись",
+  "accept-btn": "Прийняти",
+  "decline-btn": "Відхилити",
+  "edit-btn": "Редагувати",
+  "subscribe-btn": "Підписатись",
+  "unsubscribe-btn": "Відписатись",
+  "ban-btn": "Заблокувати",
+  "unban-btn": "Розблокувати",
+  "delete-subscriber-btn": "Видалити підписника",
+  "download-btn": "Завантажити ще",
+  "blocked-btn": "Список заблокованих",
+
+  "sent-request-message": "Запит надіслано",
+  "user-banned-message": "Ви заблокували цього користувача",
 
   "success-request": "Успішно виконано",
   "success-failed": "Запит не виконано",
+  "nothing-found": "Нічого не знайдено",
 
   "test": "Тест",
   "massive": {
