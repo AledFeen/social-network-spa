@@ -47,9 +47,15 @@
   "delete-subscriber-btn": "Видалити підписника",
   "download-btn": "Завантажити ще",
   "blocked-btn": "Список заблокованих",
+  "post-btn": "Запостити",
+  "post-placeholder": "Напишіть щось нове",
 
   "sent-request-message": "Запит надіслано",
   "user-banned-message": "Ви заблокували цього користувача",
+
+  "count-request-message": "Кількість запитів на підписку",
+  "no-request-message": "Немає жодного запиту на підписку",
+
 
   "success-request": "Успішно виконано",
   "success-failed": "Запит не виконано",

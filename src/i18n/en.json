@@ -46,9 +46,14 @@
   "delete-subscriber-btn": "Delete subscriber",
   "download-btn": "Download more",
   "blocked-btn": "Open blocked list",
+  "post-btn": "Post",
 
   "sent-request-message": "Request has been sent",
   "user-banned-message": "You have banned this user",
+  "post-placeholder": "Enter something new",
+
+  "count-request-message": "Subscription request count is",
+  "no-request-message": "No requests yet",
 
   "success-request": "Success",
   "success-failed": "Request failed",

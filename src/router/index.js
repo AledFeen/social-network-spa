@@ -76,6 +76,11 @@ const router = createRouter({
       name: 'blocked-list',
       component: () => import('../views/BlockedList.vue'),
     },
+    {
+      path: '/notifications',
+      name: 'notifications',
+      component: () => import('../views/Notifications.vue'),
+    },
   ],
 })
 

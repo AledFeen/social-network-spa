@@ -24,6 +24,36 @@ export default {
     this.getAvatar()
   },
 
+  computed: {
+    srcBurger() {
+      return this.theme === 'light' ? '/src/assets/burger.svg' : '/src/assets/burger-dark.svg'
+    },
+    srcClose() {
+      return this.theme === 'light' ? '/src/assets/closeSidebar.svg' : '/src/assets/closeSidebar-dark.svg'
+    },
+    srcOpen() {
+      return this.theme === 'light' ? '/src/assets/openSidebar.svg' : '/src/assets/openSidebar-dark.svg'
+    },
+    srcHome() {
+      return this.theme === 'light' ? '/src/assets/home.svg' : '/src/assets/home-dark.svg'
+    },
+    srcSearch() {
+      return this.theme === 'light' ? '/src/assets/search.svg' : '/src/assets/search-dark.svg'
+    },
+    srcNotifications() {
+      return this.theme === 'light' ? '/src/assets/bell.svg' : '/src/assets/bell-dark.svg'
+    },
+    srcMessage() {
+      return this.theme === 'light' ? '/src/assets/message.svg' : '/src/assets/message-dark.svg'
+    },
+    srcSettings() {
+      return this.theme === 'light' ? '/src/assets/settings.svg' : '/src/assets/settings-dark.svg'
+    },
+    srcOption() {
+      return this.theme === 'light' ? '/src/assets/options.svg' : '/src/assets/options-dark.svg'
+    }
+  },
+
 
   methods: {
     setTheme() {
@@ -88,23 +118,17 @@ export default {
         <div class="my-2 text-primary_text-light dark:text-primary_text-dark ms-2">Logo</div>
         <div class="block">
           <div class="hidden md:block h-px w-full bg-gray-a9 md:my-2"></div>
-          <div class="hidden md:flex flex-row justify-between items-center me-3 hover:cursor-pointer hover:opacity-85"
-               @click.prevent="openSidebar">
+          <div class="hidden md:flex flex-row justify-between items-center me-3 hover:cursor-pointer hover:opacity-75"
+               @click.prevent="openSidebar" :class="{'hover:scale-110': !isSidebarOpen}">
             <div v-if="isSidebarOpen" class="ms-3 text-primary_text-light dark:text-primary_text-dark">
               {{ $t('turn-label') }}
             </div>
-            <img v-if="isSidebarOpen && theme === 'light'" src="/src/assets/openSidebar.svg" alt="openSidebar"/>
-            <img v-else-if="isSidebarOpen && theme === 'dark'" src="/src/assets/openSidebar-dark.svg"
-                 alt="openSidebar"/>
-            <img v-else-if="theme === 'light'" src="/src/assets/closeSidebar.svg" alt="closeSidebar" class="ms-3"/>
-            <img v-else src="/src/assets/closeSidebar-dark.svg" alt="closeSidebar" class="ms-3"/>
+            <img v-if="isSidebarOpen" :src="srcOpen" alt="openSidebar"/>
+            <img v-else :src="srcClose" alt="closeSidebar" class="ms-3"/>
           </div>
           <div class="block md:hidden">
-            <img v-if="theme === 'light'" src="/src/assets/burger.svg" alt="burger"
-                 class="md:hidden image-class rounded my-2 me-2 hover:cursor-pointer hover:opacity-75"
-                 @click.prevent="openSidebar"/>
-            <img v-else src="/src/assets/burger-dark.svg" alt="burger"
-                 class="md:hidden image-class rounded my-2 me-2 hover:cursor-pointer hover:opacity-75"
+            <img :src="srcBurger" alt="burger"
+                 class="md:hidden image-class rounded my-2 me-2 hover:cursor-pointer hover:opacity-75 , hover:scale-110"
                  @click.prevent="openSidebar"/>
           </div>
           <div class="hidden md:block h-px w-full bg-gray-a9 md:my-2"></div>
@@ -114,47 +138,38 @@ export default {
 
       <router-link to="/"
                    class="flex flex-row items-center md:m-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75 rounded"
-                   :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Home'}">
-        <img v-if="theme === 'light'" src="/src/assets/home.svg" alt="Home"
-             class="hidden md:block image-class rounded ms-2" :class="{'ms-3': isSidebarOpen}"/>
-        <img v-else src="/src/assets/home-dark.svg" alt="Home"
+                   :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Home', 'hover:scale-110': !isSidebarOpen}">
+        <img :src="srcHome" alt="Home"
              class="hidden md:block image-class rounded ms-2" :class="{'ms-3': isSidebarOpen}"/>
         <div v-if="isSidebarOpen" class="ms-3">{{ $t('home-link') }}</div>
       </router-link>
       <router-link to="/"
                    class="flex flex-row items-center md:m-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75 rounded"
-                   :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Search'}">
-        <img v-if="theme === 'light'" src="/src/assets/search.svg" alt="Search"
-             class="hidden md:block image-class rounded ms-2" :class="{'ms-3': isSidebarOpen}"/>
-        <img v-else src="/src/assets/search-dark.svg" alt="Search"
+                   :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Search', 'hover:scale-110': !isSidebarOpen}">
+        <img :src="srcSearch" alt="Search"
              class="hidden md:block image-class rounded ms-2" :class="{'ms-3': isSidebarOpen}"/>
         <div v-if="isSidebarOpen" class="ms-3">{{ $t('search-link') }}</div>
       </router-link>
-      <router-link to="/"
+      <router-link to="/notifications"
                    class="flex flex-row items-center md:m-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75 rounded"
-                   :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Notifications'}">
-        <img v-if="theme === 'light'" src="/src/assets/bell.svg" alt="Bell"
-             class="hidden md:block image-class rounded  ms-2" :class="{'ms-3': isSidebarOpen}"/>
-        <img v-else src="/src/assets/bell-dark.svg" alt="Bell"
+                   :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Notifications', 'hover:scale-110': !isSidebarOpen }">
+        <img :src="srcNotifications" alt="Bell"
              class="hidden md:block image-class rounded  ms-2" :class="{'ms-3': isSidebarOpen}"/>
         <div v-if="isSidebarOpen" class="ms-3">{{ $t('notification-link') }}</div>
       </router-link>
       <router-link to="/"
                    class="flex flex-row items-center md:m-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75 rounded"
-                   :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Messages'}">
-        <img v-if="theme === 'light'" src="/src/assets/message.svg" alt="Message"
-             class="hidden md:block image-class rounded ms-2" :class="{'ms-3': isSidebarOpen}"/>
-        <img v-else src="/src/assets/message-dark.svg" alt="Message"
+                   :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Messages', 'hover:scale-110': !isSidebarOpen}">
+        <img :src="srcMessage" alt="Message"
              class="hidden md:block image-class rounded ms-2" :class="{'ms-3': isSidebarOpen}"/>
         <div v-if="isSidebarOpen" class="ms-3">{{ $t('messenger-link') }}</div>
       </router-link>
       <router-link to="/settings"
                    class="flex flex-row items-center md:m-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75 rounded"
-                   :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Settings'}">
-        <img v-if="theme === 'light'" src="/src/assets/settings.svg" alt="Settings"
+                   :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Settings', 'hover:scale-110': !isSidebarOpen}">
+        <img :src="srcSettings" alt="Settings"
              class="hidden md:block image-class rounded ms-2" :class="{'ms-3': isSidebarOpen}"/>
-        <img v-else src="/src/assets/settings-dark.svg" alt="Settings"
-             class="hidden md:block image-class rounded ms-2" :class="{'ms-3': isSidebarOpen}"/>
+
         <div v-if="isSidebarOpen" class="ms-3">{{ $t('settings-link') }}</div>
       </router-link>
 
@@ -175,9 +190,7 @@ export default {
 
         <div v-if="isSidebarOpen" class="relative md:m-1 md:me-3 " @click.prevent="openDropdown">
           <div class="hover:cursor-pointer hover:opacity-75">
-            <img v-if="theme === 'light'" src="/src/assets/options-light.svg" alt="Settings"
-                 class="md:block image-class rounded ms-2" :class="{'ms-3': isSidebarOpen}"/>
-            <img v-else src="/src/assets/options-dark.svg" alt="Settings"
+            <img :src="srcOption" alt="Settings"
                  class="md:block image-class rounded ms-2" :class="{'ms-3': isSidebarOpen}"/>
           </div>
 

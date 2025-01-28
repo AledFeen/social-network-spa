@@ -31,7 +31,8 @@ export default {
 
 <template>
   <LayoutWithSidebar :page="'Settings'">
-    <main>
+    <div
+      class="block w-full mx-1 md:w-2/4 my-4 md:my-16 rounded-lg shadow-lg border border-gray-a9 border-solid px-3 py-3">
       <div class="flex flex-row items-center">
         <div class="flex items-center text-primary_text-light dark:text-primary_text-dark">
           <label class="flex items-center space-x-2 hover:cursor-pointer">
@@ -76,7 +77,7 @@ export default {
       </div>
 
 
-    </main>
+    </div>
   </LayoutWithSidebar>
 </template>
 
