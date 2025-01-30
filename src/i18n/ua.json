@@ -48,8 +48,10 @@
   "download-btn": "Завантажити ще",
   "blocked-btn": "Список заблокованих",
   "post-btn": "Запостити",
-  "post-placeholder": "Напишіть щось нове",
+  "add-btn": "Додати",
+  "search-placeholder": "Введіть запит",
 
+  "post-placeholder": "Напишіть щось нове",
   "sent-request-message": "Запит надіслано",
   "user-banned-message": "Ви заблокували цього користувача",
 

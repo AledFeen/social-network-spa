@@ -47,6 +47,8 @@
   "download-btn": "Download more",
   "blocked-btn": "Open blocked list",
   "post-btn": "Post",
+  "add-btn": "Add",
+  "search-placeholder": "Input search request",
 
   "sent-request-message": "Request has been sent",
   "user-banned-message": "You have banned this user",
