@@ -58,8 +58,13 @@
   "no-request-message": "No requests yet",
 
   "success-request": "Success",
-  "success-failed": "Request failed",
+  "failed-request": "Request failed",
+
   "nothing-found": "Nothing found",
+
+  "big-file-message": "File is too big. Upload a file up to 25 MB",
+  "uncorrected-format-message": "Uncorrected file format",
+  "file-limit-message": "File limit exceeded",
 
   "test": "Test",
   "massive": {

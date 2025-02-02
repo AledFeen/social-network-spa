@@ -2,10 +2,12 @@
 import LayoutWithSidebar from "@/layouts/PageWithSidebarLayout.vue";
 import ModalMessage from "@/components/ModalMessage.vue";
 import CreatePost from "@/components/CreatePost.vue";
+import PostList from "@/components/PostList.vue";
+import UserListChild from "@/components/UserList.vue";
 
 export default {
   name: "Profile",
-  components: {ModalMessage, LayoutWithSidebar, CreatePost},
+  components: {UserListChild, PostList, ModalMessage, LayoutWithSidebar, CreatePost},
   props: ['username'],
 
   data() {
@@ -19,7 +21,8 @@ export default {
       isBanned: null,
       wasRequestSent: null,
       isModalVisible: false,
-      modalMessage: null
+      modalMessage: null,
+      postsVisible: false
     }
   },
 
@@ -81,6 +84,7 @@ export default {
           this.wasRequestSent = response.data.request
           this.banned = response.data.banned
           this.isBanned = response.data.isBanned
+          this.postsVisible = true
         })
         .catch(err => {
           console.log(err)
@@ -192,6 +196,14 @@ export default {
       }, 500);
     },
 
+    createPost(isSuccess) {
+      if (isSuccess) {
+        this.showModal(this.$t('success-request'))
+      } else {
+        this.showModal(this.$t('failed-request'))
+      }
+
+    }
   }
 }
 
@@ -319,10 +331,18 @@ export default {
 
           </div>
           <div v-if="isMyProfile">
-            <CreatePost/>
+            <CreatePost @post-created="createPost"/>
           </div>
         </div>
       </div>
+
+      <template v-if="postsVisible">
+        <div v-if="shouldDisplaySubs">
+          <PostList :id="profile.id" :page="'profile'"/>
+        </div>
+        <div v-else class="m-5 w-full flex flex-row justify-center"><h1
+          class="text-lg text-primary_text-light dark:text-primary_text-dark">Тут нічого немає</h1></div>
+      </template>
     </div>
   </LayoutWithSidebar>
 

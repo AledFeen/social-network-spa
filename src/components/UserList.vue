@@ -4,7 +4,6 @@ export default {
   props: ['page', 'typeId', 'id'],
   data() {
     return {
-      path: this.$store.getters.serverPath,
       users: null,
       lastPage: 1,
       page_id: 0

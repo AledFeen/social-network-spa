@@ -2,13 +2,15 @@
 import EmojiPanel from "@/components/EmojiPanel.vue";
 import TagPanel from "@/components/TagPanel.vue";
 import LocationPanel from "@/components/LocationPanel.vue";
+import ModalMessage from "@/components/ModalMessage.vue";
 
 export default {
   name: "CreatePost",
-  components: {EmojiPanel, TagPanel, LocationPanel},
+  components: {ModalMessage, EmojiPanel, TagPanel, LocationPanel},
   props: {
     message: String,
   },
+
   data() {
     return {
       theme: null,
@@ -115,35 +117,32 @@ export default {
           if (!file) return
 
           if (file.size >= 25 * 1024 * 1024) {
-            alert('Файл слишком большой')
+            alert(this.$t('big-file-message'))
             return
           }
 
           if (!this.allowedTypes.includes(file.type)) {
-            alert('Недопустимый формат файла')
+            alert(this.$t('uncorrected-format-message'))
             return
           }
 
-          // Определение типа файла (изображение или видео)
           let fileType = file.type.startsWith('image') ? 'image' : 'video'
 
-          // Сохранение файла
           this.files.push(file)
 
-          // Генерация URL
           let url = URL.createObjectURL(file)
           this.urls.push({url, type: fileType})
         } else {
-          alert('Превышен лимит файлов')
+          alert(this.$t('file-limit-message'))
         }
       }
     },
 
     toggleSelection(index) {
       if (this.selectedIndex === index) {
-        this.selectedIndex = null; // Снимаем выделение, если кликнули по уже выбранному файлу
+        this.selectedIndex = null;
       } else {
-       this.selectedIndex = index; // Выбираем новый файл
+       this.selectedIndex = index;
       }
     },
 
@@ -151,6 +150,34 @@ export default {
       this.urls.splice(index, 1)
       this.files.splice(index, 1)
       this.selectedIndex= null;
+    },
+
+    savePost() {
+      const formData = new FormData()
+      formData.append('repost_id', "")
+      formData.append('location', this.location)
+      formData.append('text', this.postText)
+
+      this.tags.forEach(tag => {
+        formData.append('tags[]', tag);
+      });
+
+      this.files.forEach(file => {
+        formData.append('files[]', file);
+      });
+
+      this.axios.post(this.$store.getters.serverPath + '/api/post', formData).then(res => {
+        console.log(res)
+        this.postText = ''
+        this.files = []
+        this.urls = []
+        this.tags = []
+        this.location = ''
+        this.$emit("post-created", true);
+      }).catch(err => {
+        console.log(err)
+        this.$emit("post-created", false);
+      })
     }
 
   },
@@ -158,40 +185,23 @@ export default {
 </script>
 <template>
   <div v-if="theme" class="mt-3 w-full flex flex-col p-3 bg-primary_back-light dark:bg-primary_back-dark rounded-2xl">
+
     <div class="hidden">
       <input type="file" class="form-control" id="inputGroupFile" ref="fileInput" @change="handleFileChange">
     </div>
 
     <template v-if="urls.length > 0">
       <div class="flex flex-wrap justify-center gap-1 items-center">
-        <div
-          v-for="(file, index) in urls"
-          :key="index"
-          class="p-2 flex flex-row justify-center relative"
-          :class="{'md:w-5/12': urls.length > 1}"
-          @click="toggleSelection(index)"
-        >
-          <!-- Контейнер для медиа -->
-          <div
-            class="relative w-full h-24 md:h-64"
-            :class="{'bg-gray-700 opacity-75': selectedIndex === index}">
-            <!-- Медиафайл: изображение или видео -->
-            <img
-              v-if="file.type === 'image'"
-              :src="file.url"
-              :alt="'Media ' + (index + 1)"
-              class="w-full h-full object-cover rounded-lg shadow-md"
-            >
-            <video
-              v-else
-              :src="file.url"
-              controls
-              class="w-full h-full object-cover rounded-lg shadow-md"
-            ></video>
+        <div v-for="(file, index) in urls" :key="index" class="p-2 flex flex-row justify-center relative" :class="{'md:w-5/12': urls.length > 1}"
+             @click="toggleSelection(index)">
+          <div class="relative w-full h-64 md:h-80" :class="{'bg-gray-700 opacity-75': selectedIndex === index, 'h-36 md:h-64': this.urls.length > 1 }">
 
-            <!-- Кнопки (Удалить и Отмена), только если элемент выбран -->
-            <div v-if="selectedIndex === index" class="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50">
-              <button @click.stop="deleteFile(index)" class="bg-red-500 text-white px-4 py-2 rounded-lg mx-2">Удалить</button>
+            <img v-if="file.type === 'image'" :src="file.url" :alt="'Media ' + (index + 1)" class="w-full h-full object-cover rounded-lg shadow-md">
+            <video v-else :src="file.url" controls class=" w-full h-full object-cover rounded-lg shadow-md"></video>
+
+            <div v-if="selectedIndex === index" class="absolute inset-0 flex justify-center items-center rounded-lg bg-black bg-opacity-25">
+              <button @click.stop="deleteFile(index)" class="text-btn_text-light bg-btn_back-primary
+                rounded-2xl px-4 py-2 mx-2 hover:scale-105">{{$t('delete-btn')}}</button>
             </div>
           </div>
         </div>
@@ -202,7 +212,7 @@ export default {
          class="relative my-1 mx-3 w-full text-secondary_text-light dark:text-secondary_text-dark hover:cursor-pointer underline">
       {{ location }}
       <div v-if="selectedLocation === location" @click.prevent="deleteLocation()" class="absolute px-2 left-5 bottom-5 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
-            focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10 mx-1 hover:underline">Удалить
+            focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10 mx-1 hover:underline">{{$t('delete-btn')}}
       </div>
     </div>
 
@@ -258,7 +268,7 @@ export default {
         </div>
 
       </div>
-      <input type="submit" :value="$t('post-btn')" class="w-40 me-3 mx-2 py-1 text-btn_text-light bg-btn_back-primary
+      <input @click.prevent="savePost()" type="submit" :value="$t('post-btn')" class="w-40 me-3 mx-2 py-1 text-btn_text-light bg-btn_back-primary
         rounded-2xl hover:bg-btn_back-primary_hover hover:cursor-pointer drop-shadow-md">
     </div>
 

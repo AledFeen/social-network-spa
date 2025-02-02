@@ -9,7 +9,6 @@
   "name-placeholder": "Нікнейм",
   "error-status": "Помилка. Код статусу",
 
-
   "login": "Увійти",
   "logout": "Вийти з аккаунту",
   "login-link": "Вже маю аккаунт",
@@ -58,10 +57,13 @@
   "count-request-message": "Кількість запитів на підписку",
   "no-request-message": "Немає жодного запиту на підписку",
 
-
   "success-request": "Успішно виконано",
-  "success-failed": "Запит не виконано",
+  "failed-request": "Запит не виконано",
   "nothing-found": "Нічого не знайдено",
+
+  "big-file-message": "Файл занадто великий. Завантажте файл до 25 мб",
+  "uncorrected-format-message": "Некоректний формат файлу",
+  "file-limit-message": "Досягнуто ліміту кількості файлів",
 
   "test": "Тест",
   "massive": {
