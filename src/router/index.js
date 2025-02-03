@@ -81,6 +81,24 @@ const router = createRouter({
       name: 'notifications',
       component: () => import('../views/Notifications.vue'),
     },
+    {
+      path: '/post-likes/:id',
+      name: 'post-likes',
+      props: true,
+      component: () => import('../views/PostLikes.vue'),
+    },
+    {
+      path: '/reposts/:id',
+      name: 'reposts',
+      props: true,
+      component: () => import('../views/Reposts.vue'),
+    },
+    {
+      path: '/posts-by-tag/:id',
+      name: 'posts-by-tag',
+      props: true,
+      component: () => import('../views/PostsByTag.vue'),
+    },
   ],
 })
 

@@ -60,6 +60,7 @@
   "success-request": "Успішно виконано",
   "failed-request": "Запит не виконано",
   "nothing-found": "Нічого не знайдено",
+  "replied-to": "Відповідь на",
 
   "big-file-message": "Файл занадто великий. Завантажте файл до 25 мб",
   "uncorrected-format-message": "Некоректний формат файлу",

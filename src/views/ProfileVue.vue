@@ -22,7 +22,8 @@ export default {
       wasRequestSent: null,
       isModalVisible: false,
       modalMessage: null,
-      postsVisible: false
+      postsVisible: false,
+      postsKey: 0
     }
   },
 
@@ -199,11 +200,20 @@ export default {
     createPost(isSuccess) {
       if (isSuccess) {
         this.showModal(this.$t('success-request'))
+        this.postsKey++
       } else {
         this.showModal(this.$t('failed-request'))
       }
+    },
 
+    deletePost(isSuccess) {
+      if (isSuccess) {
+        this.showModal(this.$t('success-request'))
+      } else {
+        this.showModal(this.$t('failed-request'))
+      }
     }
+
   }
 }
 
@@ -214,6 +224,7 @@ export default {
     <template v-if="isModalVisible">
       <ModalMessage :message="modalMessage"/>
     </template>
+
     <div class="block w-full mx-1 md:w-3/4 my-4 md:my-16 rounded-lg shadow-lg border border-gray-a9 border-solid">
       <div class="w-full rounded-lg bg-secondary_back-light dark:bg-secondary_back-dark">
         <div v-if="profile" class="w-full p-3 rounded-lg">
@@ -338,7 +349,7 @@ export default {
 
       <template v-if="postsVisible">
         <div v-if="shouldDisplaySubs">
-          <PostList :id="profile.id" :page="'profile'"/>
+          <PostList :key="postsKey" :id="profile.id" :page="'profile'" :is-owner="isMyProfile" @post-deleted="deletePost"/>
         </div>
         <div v-else class="m-5 w-full flex flex-row justify-center"><h1
           class="text-lg text-primary_text-light dark:text-primary_text-dark">Тут нічого немає</h1></div>

@@ -59,8 +59,8 @@
 
   "success-request": "Success",
   "failed-request": "Request failed",
-
   "nothing-found": "Nothing found",
+  "replied-to": "Replied to",
 
   "big-file-message": "File is too big. Upload a file up to 25 MB",
   "uncorrected-format-message": "Uncorrected file format",

@@ -11,17 +11,25 @@ export default {
   },
 
   mounted() {
-    if (this.typeId === 'user') {
-      if (this.page === 'subscriptions') {
-        this.getSubscriptions()
-      } else {
-        this.getSubscribers()
-      }
-    }
-
+    this.get()
   },
 
   methods: {
+
+    get() {
+      if (this.typeId === 'user') {
+        if (this.page === 'subscriptions') {
+          this.getSubscriptions()
+        } else {
+          this.getSubscribers()
+        }
+      } else {
+        if(this.page === 'likes') {
+          this.getLikes()
+        }
+      }
+    },
+
     getSubscriptions() {
       this.axios.get(this.$store.getters.serverPath + '/api/subscriptions', {
         params: {
@@ -68,6 +76,29 @@ export default {
         })
     },
 
+    getLikes() {
+      this.axios.get(this.$store.getters.serverPath + '/api/likes', {
+        params: {
+          'post_id': this.id,
+          'page_id': this.page_id += 1
+        }
+      })
+        .then(response => {
+          this.lastPage = response.data.last_page
+          if(this.lastPage >= this.page_id) {
+            if(!this.users) {
+              this.users = response.data.data
+            } else {
+              this.users.push(...response.data.data)
+            }
+            console.log(response)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+
   }
 }
 </script>
@@ -95,12 +126,8 @@ export default {
       </div>
     </template>
 
-    <div v-if="page === 'subscriptions' && this.lastPage >= this.page_id + 1" @click.prevent="getSubscriptions" class="flex justify-center text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
-      {{$t('download-btn') }}
-    </div>
-    <div v-else-if="page === 'subscribers' && this.lastPage >= this.page_id + 1" @click.prevent="getSubscribers" class="flex justify-center text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
-      {{$t('download-btn') }}
-    </div>
+    <div v-if="this.lastPage >= this.page_id + 1" @click.prevent="get()" class="flex justify-center text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
+      {{$t('download-btn') }}</div>
 
   </div>
   <div v-if="!users">
