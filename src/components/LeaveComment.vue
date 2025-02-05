@@ -5,23 +5,16 @@ import LocationPanel from "@/components/LocationPanel.vue";
 import ModalMessage from "@/components/ModalMessage.vue";
 
 export default {
-  name: "CreatePost",
-  components: {ModalMessage, EmojiPanel, TagPanel, LocationPanel},
-  props: ['repost_id'],
+  name: "LeaveComment",
+  components: { EmojiPanel, TagPanel},
+  props: ['post_id', 'reply_id'],
 
   data() {
     return {
       theme: null,
       postText: "",
       isEmojiPanelOpen: false,
-      isTagPanelOpen: false,
-      isLocationPanelOpen: false,
-      tags: [],
-      selectedTag: "",
-      location: "",
-      selectedLocation: "",
-      allowedTypes: ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml',
-        'video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/x-matroska'],
+      allowedTypes: ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'],
       files: [],
       urls: [],
       selectedIndex: null
@@ -43,23 +36,10 @@ export default {
     srcImage() {
       return this.theme === 'light' ? '/src/assets/image-light.svg' : '/src/assets/image-dark.svg'
     },
-    srcTag() {
-      return this.theme === 'light' ? '/src/assets/tag-light.svg' : '/src/assets/tag-dark.svg'
-    },
-    srcLocation() {
-      return this.theme === 'light' ? '/src/assets/location-light.svg' : '/src/assets/location-dark.svg'
-    },
-
   },
   methods: {
     setTheme() {
       this.theme = localStorage.getItem('theme')
-    },
-
-    closeAllPanels() {
-      this.isEmojiPanelOpen = false
-      this.isTagPanelOpen = false
-      this.isLocationPanelOpen = false
     },
 
     openEmojiPanel() {
@@ -68,46 +48,8 @@ export default {
       this.isLocationPanelOpen = false
     },
 
-    openTagPanel() {
-      this.isTagPanelOpen = !this.isTagPanelOpen
-      this.isEmojiPanelOpen = false
-      this.isLocationPanelOpen = false
-    },
-
-    openLocationPanel() {
-      this.isLocationPanelOpen = !this.isLocationPanelOpen
-      this.isEmojiPanelOpen = false
-      this.isTagPanelOpen = false
-    },
-
     addEmoji(emoji) {
       this.postText += emoji
-    },
-
-    addLocation(location) {
-      this.location = location
-    },
-
-    addTag(tag) {
-      if (!this.tags.includes(tag)) {
-        this.tags.push(tag)
-      }
-    },
-
-    selectTag(tag) {
-      this.selectedTag = this.selectedTag === tag ? "" : tag
-    },
-
-    selectLocation() {
-      this.selectedLocation = this.selectedLocation === this.location ? "" : this.location
-    },
-
-    deleteTag(tag) {
-      this.tags.splice(this.tags.indexOf(tag), 1)
-    },
-
-    deleteLocation() {
-      this.location = ''
     },
 
     openLoadFileMenu() {
@@ -116,7 +58,7 @@ export default {
 
     handleFileChange() {
       if (this.$refs.fileInput) {
-        if(this.urls.length < 4) {
+        if(this.urls.length < 2) {
           let file = this.$refs.fileInput.files[0]
           if (!file) return
 
@@ -130,7 +72,7 @@ export default {
             return
           }
 
-          let fileType = file.type.startsWith('image') ? 'image' : 'video'
+          let fileType = 'image'
 
           this.files.push(file)
 
@@ -156,32 +98,28 @@ export default {
       this.selectedIndex= null;
     },
 
-    savePost() {
+    saveComment() {
       const formData = new FormData()
 
-      formData.append('location', this.location)
+      formData.append('post_id', this.post_id)
+      this.reply_id ? formData.append('reply_id', this.reply_id) : formData.append('reply_id', "")
       formData.append('text', this.postText)
-      this.repost_id ? formData.append('repost_id', this.repost_id) : formData.append('repost_id', "")
-
-      this.tags.forEach(tag => {
-        formData.append('tags[]', tag);
-      });
-
       this.files.forEach(file => {
         formData.append('files[]', file);
       });
 
-      this.axios.post(this.$store.getters.serverPath + '/api/post', formData).then(res => {
+      this.axios.post(this.$store.getters.serverPath + '/api/comment', formData).then(res => {
         console.log(res)
         this.postText = ''
         this.files = []
         this.urls = []
-        this.tags = []
-        this.location = ''
-        this.$emit("post-created", true);
+        if(this.reply_id) {
+          this.$emit("comment-created", true, this.reply_id);
+        } else
+        this.$emit("comment-created", true, null);
       }).catch(err => {
         console.log(err)
-        this.$emit("post-created", false);
+        this.$emit("comment-created", false, null);
       })
     }
 
@@ -201,8 +139,7 @@ export default {
              @click="toggleSelection(index)">
           <div class="relative w-full h-64 md:h-80" :class="{'bg-gray-700 opacity-75': selectedIndex === index, 'h-36 md:h-44': this.urls.length > 1 }">
 
-            <img v-if="file.type === 'image'" :src="file.url" :alt="'Media ' + (index + 1)" class="w-full h-full object-cover rounded-lg shadow-md">
-            <video v-else :src="file.url" controls class=" w-full h-full object-cover rounded-lg shadow-md"></video>
+            <img :src="file.url" :alt="'Media ' + (index + 1)" class="w-full h-full object-cover rounded-lg shadow-md">
 
             <div v-if="selectedIndex === index" class="absolute inset-0 flex justify-center items-center rounded-lg bg-black bg-opacity-25">
               <button @click.stop="deleteFile(index)" class="text-btn_text-light bg-btn_back-primary
@@ -213,29 +150,8 @@ export default {
       </div>
     </template>
 
-    <div v-if="location !== ''" @click.prevent="selectLocation()"
-         class="relative my-1 mx-3 w-full text-secondary_text-light dark:text-secondary_text-dark hover:cursor-pointer underline">
-      {{ location }}
-      <div v-if="selectedLocation === location" @click.prevent="deleteLocation()" class="absolute px-2 left-5 bottom-5 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
-            focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10 mx-1 hover:underline">{{$t('delete-btn')}}
-      </div>
-    </div>
-
     <textarea v-model="postText" :placeholder="$t('post-placeholder')" class="mb-1 py-3 ps-3 pe-3 h-12 rounded-lg text-secondary_text-light dark:text-secondary_text-dark
       border border-gray-a9 border-solid border-opacity-50 dark:border-none dark:bg-secondary_back-dark placeholder-gray-a9 focus:outline-none"></textarea>
-
-    <div v-if="tags.length > 0" class="flex flex-row flex-wrap my-1 ms-1">
-      <template v-for="tag in tags">
-        <div @click.prevent="selectTag(tag)"
-             class="relative mx-2 px-3 p-1 text-primary_text-light dark:text-primary_text-dark bg-secondary_back-light dark:bg-secondary_back-dark hover:cursor-pointer rounded-2xl">
-          {{ tag }}
-          <div v-if="selectedTag === tag" @click.prevent="deleteTag(tag)" class="absolute px-2 left-5 bottom-8 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
-            focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10 mx-1 hover:underline">
-            {{ $t('delete-btn') }}
-          </div>
-        </div>
-      </template>
-    </div>
 
     <div class="flex flex-row justify-between my-1">
       <div class="flex flex-row ms-1">
@@ -245,35 +161,17 @@ export default {
                class="image-class rounded ms-2"/>
         </div>
 
-        <div @click.prevent="openTagPanel()" class="hover:cursor-pointer hover:opacity-75 hover:scale-110 rounded">
-          <img :src="srcTag" alt="Tag"
-               class="image-class rounded ms-2"/>
-        </div>
-
         <div @click.prevent="openEmojiPanel()" class="hover:cursor-pointer hover:opacity-75 hover:scale-110 rounded">
           <img :src="srcEmoji" alt="Emoji"
                class="image-class rounded ms-2"/>
-        </div>
-
-        <div @click.prevent="openLocationPanel()" class="hover:cursor-pointer hover:opacity-75 hover:scale-110 rounded">
-          <img :src="srcLocation" alt="Emoji"
-               class="image-class rounded ms-2"/>
-        </div>
-
-        <div v-if="isTagPanelOpen" class="relative">
-          <tag-panel @tag-selected="addTag"></tag-panel>
         </div>
 
         <div v-if="isEmojiPanelOpen" class="relative">
           <emoji-panel @emoji-selected="addEmoji"></emoji-panel>
         </div>
 
-        <div v-if="isLocationPanelOpen" class="relative">
-          <location-panel @location-selected="addLocation"></location-panel>
-        </div>
-
       </div>
-      <input @click.prevent="savePost()" type="submit" :value="$t('post-btn')" class="w-40 me-3 mx-2 py-1 text-btn_text-light bg-btn_back-primary
+      <input @click.prevent="saveComment()" type="submit" :value="$t('comment-btn')" class="w-40 me-3 mx-2 py-1 text-btn_text-light bg-btn_back-primary
         rounded-2xl hover:bg-btn_back-primary_hover hover:cursor-pointer drop-shadow-md">
     </div>
 

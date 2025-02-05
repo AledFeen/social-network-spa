@@ -99,6 +99,18 @@ const router = createRouter({
       props: true,
       component: () => import('../views/PostsByTag.vue'),
     },
+    {
+      path: '/post/:id',
+      name: 'post',
+      props: true,
+      component: () => import('../views/Post.vue'),
+    },
+    {
+      path: '/edit-post/:id',
+      name: 'edit-post',
+      props: true,
+      component: () => import('../views/EditPostView.vue'),
+    },
   ],
 })
 

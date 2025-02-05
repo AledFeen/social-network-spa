@@ -48,6 +48,8 @@
   "blocked-btn": "Open blocked list",
   "post-btn": "Post",
   "add-btn": "Add",
+  "comment-btn": "Leave comment",
+
   "search-placeholder": "Input search request",
 
   "sent-request-message": "Request has been sent",

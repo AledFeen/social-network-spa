@@ -1,8 +1,10 @@
 <script>
 import dayjs from "dayjs";
+import CreatePost from "@/components/CreatePost.vue";
 
 export default {
   name: 'PostList',
+  components: {CreatePost},
   props: ['page', 'id', 'isOwner'],
   data() {
     return {
@@ -11,6 +13,7 @@ export default {
       lastPage: 1,
       page_id: 0,
       selectedDropdown: '',
+      selectedRepost: null
     }
   },
 
@@ -33,6 +36,10 @@ export default {
 
     srcOptions() {
       return this.theme === 'light' ? '/src/assets/options.svg' : '/src/assets/options-dark.svg'
+    },
+
+    srcBack() {
+      return this.theme === 'light' ? '/src/assets/back.svg' : '/src/assets/back-dark.svg'
     },
 
   },
@@ -98,7 +105,7 @@ export default {
         .then(response => {
           this.lastPage = response.data.last_page
           if (this.lastPage >= this.page_id) {
-            if (!this.users) {
+            if (!this.posts) {
               this.posts = response.data.data
             } else {
               this.posts.push(...response.data.data)
@@ -220,6 +227,26 @@ export default {
       })
     },
 
+    selectRepost(post) {
+      this.selectedRepost = post
+    },
+
+    unselectRepost() {
+      this.selectedRepost = null
+    },
+
+    createRepost(success) {
+      if (success) {
+        this.unselectRepost()
+        if(this.isOwner && this.page === 'profile') {
+          this.page_id -= 1
+          this.getProfilePosts()
+        }
+      } else {
+        this.$emit("post-deleted", false)
+      }
+    }
+
   }
 }
 </script>
@@ -227,25 +254,34 @@ export default {
 <template>
   <div v-if="posts" class="pt-1 rounded-lg">
 
+    <div v-if="selectedRepost" class="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center z-20">
+      <div class="bg-secondary_back-light dark:bg-secondary_back-dark p-6 rounded-lg shadow-lg w-5/6 md:w-1/2 max-h-[80vh] overflow-y-auto">
+        <div @click.prevent="unselectRepost" class="flex flex-row justify-end hover:cursor-pointer rounded">
+          <img :src="srcBack" alt="Image" class="image-class rounded ms-2 hover:opacity-75 hover:scale-110"/>
+        </div>
+        <create-post @post-created="createRepost" :repost_id="selectedRepost"/>
+      </div>
+    </div>
+
     <div v-if="posts.length === 0" class="m-5 w-full flex flex-row justify-center"><h1
-      class="text-lg text-primary_text-light dark:text-primary_text-dark">Тут нічого немає</h1></div>
+      class="text-lg text-primary_text-light dark:text-primary_text-dark">{{$t('nothing-found')}}</h1></div>
 
     <div v-else class="md:block h-px w-full bg-gray-a9 mt-1 mb-2"></div>
 
     <div v-for="post in posts">
       <div class="flex flex-row justify-between items-center mx-3 my-3"> <!-- First row -->
         <div class="flex flex-row items-center">
-          <div>
+          <router-link :to="'/profile/' + post.user.name">
             <img v-if="post.user.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
                  alt="Круглое изображение"
                  class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
             <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + post.user.image"
                  alt="Круглое изображение"
                  class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
-          </div>
-          <div class="ms-5 font-semibold text-primary_text-light dark:text-primary_text-dark break-words">
+          </router-link>
+          <router-link :to="'/profile/' + post.user.name" class="ms-5 font-semibold text-primary_text-light dark:text-primary_text-dark break-words hover:underline hover:cursor-pointer">
             {{ post.user.name }}
-          </div>
+          </router-link>
           <div class="ms-5 text-primary_text-light dark:text-primary_text-dark break-words">
             {{ formatDate(post.updated_at) }}
           </div>
@@ -269,10 +305,10 @@ export default {
                 </div>
               </li>
               <li>
-                <div @click.prevent="" v-if="isOwner"
+                <router-link :to="`/edit-post/${post.id}`" @click.prevent="" v-if="isOwner"
                      class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
                   {{ $t('edit-btn') }}
-                </div>
+                </router-link>
               </li>
             </ul>
           </div>
@@ -362,11 +398,11 @@ export default {
           </router-link>
         </div>
 
-        <div class="flex flex-row items-center hover:cursor-pointer hover:opacity-75 hover:scale-110 rounded">
+        <router-link :to="'/post/' + post.id" class="flex flex-row items-center hover:cursor-pointer hover:opacity-75 hover:scale-110 rounded">
           <img :src="srcComment" alt="Image"
                class="image-class rounded ms-2"/>
           <div class="text-primary_text-light dark:text-primary_text-dark">{{ post.comment_count }}</div>
-        </div>
+        </router-link>
 
         <router-link :to="`/reposts/${post.id}`" class="flex flex-row items-center hover:cursor-pointer hover:opacity-75 hover:scale-110 rounded">
           <img :src="srcRepost" alt="Image"
@@ -375,7 +411,7 @@ export default {
         </router-link>
 
         <div class="hover:cursor-pointer hover:opacity-75 hover:scale-110 rounded">
-          <img @click.prevent="" :src="srcMakeRepost" alt="Image"
+          <img @click.prevent="selectRepost(post.id)" :src="srcMakeRepost" alt="Image"
                class="image-class rounded ms-2"/>
         </div>
 

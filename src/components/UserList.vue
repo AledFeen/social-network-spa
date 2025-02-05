@@ -130,7 +130,7 @@ export default {
       {{$t('download-btn') }}</div>
 
   </div>
-  <div v-if="!users">
+  <div v-if="!users || users.length === 0">
     <div class="h-screen flex flex-col justify-center items-center text-primary_text-light dark:text-primary_text-dark">{{$t('nothing-found')}}</div>
   </div>
 </template>
