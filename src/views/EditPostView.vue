@@ -63,6 +63,7 @@ export default {
         .then(response => {
           this.post = response.data.data
           this.postText = this.post.text
+          this.location = this.post.location
           this.post.tags.forEach(tag => {
             this.tags.push(tag.name)
           })
@@ -71,11 +72,11 @@ export default {
             let path = file.type === 'image' ? this.$store.getters.serverPath + '/api/post-image/' + file.filename :
               this.$store.getters.serverPath + '/api/post-video/' + file.filename
 
-            this.axios.get(path, { responseType: 'blob' }).then(response => {
+            this.axios.get(path, {responseType: 'blob'}).then(response => {
               console.log(response)
               let blobUrl = URL.createObjectURL(response.data);
-              this.files.push(new File([response.data], file.filename, { type: file.type }))
-              this.urls.push({ url: blobUrl, type: file.type });
+              this.files.push(new File([response.data], file.filename, {type: file.type}))
+              this.urls.push({url: blobUrl, type: file.type});
             })
           })
 
@@ -190,33 +191,62 @@ export default {
     },
 
     savePost() {
+      this.updateText()
+      this.updateLocation()
+      this.updateTags()
+      this.updateFiles()
+    },
+
+    updateLocation() {
+      this.axios.put(this.$store.getters.serverPath + '/api/post-location', {
+        'post_id': this.id,
+        'location': this.location,
+      }).then(res => {
+        return res.data.success
+      }).catch(err => {
+        console.log(err)
+        return false
+      })
+    },
+
+    updateText() {
+      this.axios.put(this.$store.getters.serverPath + '/api/post', {
+        'post_id': this.id,
+        'text': this.postText,
+      }).then(res => {
+          return res.data.success
+      }).catch(err => {
+        console.log(err)
+        return false
+      })
+    },
+
+    updateTags() {
+      this.axios.put(this.$store.getters.serverPath + '/api/post-tags', {
+        'post_id': this.id,
+        'tags': this.tags
+      }).then(res => {
+        return res.data.success
+      }).catch(err => {
+        console.log(err)
+        return false
+      })
+    },
+
+    updateFiles() {
       const formData = new FormData()
-
-      formData.append('location', this.location)
-      formData.append('text', this.postText)
-      this.repost_id ? formData.append('repost_id', this.repost_id) : formData.append('repost_id', "")
-
-      this.tags.forEach(tag => {
-        formData.append('tags[]', tag);
-      });
-
+      formData.append('post_id', this.id)
       this.files.forEach(file => {
         formData.append('files[]', file);
       });
-
-      this.axios.post(this.$store.getters.serverPath + '/api/post', formData).then(res => {
-        console.log(res)
-        this.postText = ''
-        this.files = []
-        this.urls = []
-        this.tags = []
-        this.location = ''
-        this.$emit("post-created", true);
+      this.axios.post(this.$store.getters.serverPath + '/api/post-files', formData).then(res => {
+        return res.data.success
       }).catch(err => {
         console.log(err)
-        this.$emit("post-created", false);
+        return false
       })
     }
+
 
   },
 }

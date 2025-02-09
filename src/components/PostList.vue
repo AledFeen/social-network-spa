@@ -363,7 +363,7 @@ export default {
                 {{ post.main_post.location }}
               </div>
             </div>
-            <router-link to="" class="italic text-secondary_text-light dark:text-secondary_text-dark hover:underline">{{$t('replied-to')}}</router-link>
+            <router-link :to="'/post/' + post.main_post.id" class="italic text-secondary_text-light dark:text-secondary_text-dark hover:underline">{{$t('replied-to')}}</router-link>
           </div> <!-- First row -->
 
           <div class="ms-3 text-primary_text-light dark:text-primary_text-dark break-words">{{ post.main_post.text }}

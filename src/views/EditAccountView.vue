@@ -49,7 +49,7 @@ export default {
         'about_me': this.account.about_me,
       }).then(res => {
         console.log(res)
-        if(res.data.success) {
+        if(res.data.success === 'true') {
           this.showModal(this.$t('success-request'))
         } else {
           this.showModal(this.$t('failed-request'))

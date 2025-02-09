@@ -49,6 +49,17 @@
   "post-btn": "Post",
   "add-btn": "Add",
   "comment-btn": "Leave comment",
+  "close-btn": "Close",
+  "clear-btn": "Clear",
+
+  "subscribe-message": "You have new subscribers",
+  "like-message": "liked your post",
+  "repost-message": "make repost",
+  "comment-message": "leaved comments",
+  "reply-message": "new comment replies",
+  "for-post": "for post",
+  "make-repost": "make repost",
+  "liked-post": "liked post",
 
   "search-placeholder": "Input search request",
 

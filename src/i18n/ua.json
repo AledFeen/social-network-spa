@@ -49,6 +49,17 @@
   "post-btn": "Запостити",
   "add-btn": "Додати",
   "comment-btn": "Прокоментувати",
+  "close-btn": "Закрити",
+  "clear-btn": "Очистити",
+
+  "subscribe-message": "У вас є нові підписки",
+  "like-message": "лайкнули ваш пост",
+  "repost-message": "зробили репост",
+  "comment-message": "залишили коментарі",
+  "reply-message": "нові відповіді на ваші коментарі",
+  "for-post": "до посту",
+  "make-repost": "зробив репост",
+  "liked-post": "лайкнув пост",
 
   "search-placeholder": "Введіть запит",
 
