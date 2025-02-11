@@ -79,6 +79,23 @@
   "uncorrected-format-message": "Некоректний формат файлу",
   "file-limit-message": "Досягнуто ліміту кількості файлів",
 
+  "public-text": "Публічний",
+  "private-text": "Приватний",
+  "theme-text": "Тема",
+  "language-text": "Мова інтерфейсу",
+  "who-can-comment": "Хто може коментувати",
+  "who-can-repost": "Хто може робити репости",
+  "who-can-message": "Хто може вам писати",
+  "account-type": "Тип аккаунту",
+  "all": "Всі",
+  "subscribers": "Підписники",
+  "subscriptions": "Мої підписки",
+  "none": "Ніхто",
+  "light": "Світла",
+  "dark": "Темна",
+  "english": "Англійська",
+  "ukrainian": "Українська",
+
   "test": "Тест",
   "massive": {
     "object1": "Об'єкт"

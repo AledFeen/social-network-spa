@@ -79,6 +79,23 @@
   "uncorrected-format-message": "Uncorrected file format",
   "file-limit-message": "File limit exceeded",
 
+  "public-text": "Public",
+  "private-text": "Private",
+  "theme-text": "theme",
+  "language-text": "Interface language",
+  "who-can-comment": "Who can comment",
+  "who-can-repost": "Who can do repost",
+  "who-can-message": "Who can send messages",
+  "account-type": "Account type",
+  "all": "All",
+  "subscribers": "Subscribers",
+  "subscriptions": "My subscriptions",
+  "none": "None",
+  "light": "Light",
+  "dark": "Dark",
+  "english": "English",
+  "ukrainian": "Ukrainian",
+
   "test": "Test",
   "massive": {
     "object1": "object"
