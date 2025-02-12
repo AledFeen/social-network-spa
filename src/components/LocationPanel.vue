@@ -2,22 +2,31 @@
   import debounce from 'lodash/debounce';
   export default {
     name: "AddLocation",
+    props: ['search'],
     data(){
       return {
         locations: [],
         location: "",
+        ignoreWatch: false,
       }
     },
 
     watch: {
       location: debounce(function(newValue, oldValue) {
+        if (this.ignoreWatch) return;
         this.getLocations()
       }, 700),
     },
 
     methods: {
       addLocation(tag){
+        this.ignoreWatch = true;
+        this.location = ""
+        this.locations = []
         this.$emit("location-selected", tag);
+        setTimeout(() => {
+          this.ignoreWatch = false;
+        }, 800);
       },
       selectLocation(tag) {
         this.location = tag
@@ -41,8 +50,8 @@
 </script>
 <template>
 
-  <div class="absolute w-60 left-3 bottom-0 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
-            focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10 mx-1">
+  <div class="w-60 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
+            focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10 mx-1" :class="{'absolute left-3 bottom-0': !search}">
     <div class="flex flex-col flex-wrap justify-center">
 
       <div v-if="locations.length > 0" class="my-1 mx-3">

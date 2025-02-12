@@ -2,22 +2,34 @@
   import debounce from 'lodash/debounce';
   export default {
     name: "AddTag",
+    props: ['search'],
     data(){
       return {
         tags: [],
         tag: "",
+        ignoreWatch: false,
       }
     },
 
     watch: {
       tag: debounce(function(newValue, oldValue) {
-        this.getTags()
+        if (this.ignoreWatch) return; // Используем локальную переменную
+        this.getTags();
       }, 700),
     },
 
     methods: {
       addTag(tag){
-        this.$emit("tag-selected", tag);
+        if(tag !== '') {
+          this.ignoreWatch = true;
+          this.tag = "";
+          this.tags = [];
+          this.$emit("tag-selected", tag);
+
+          setTimeout(() => {
+            this.ignoreWatch = false;
+          }, 800);
+        }
       },
       selectTag(tag) {
         this.tag = tag
@@ -41,8 +53,8 @@
 </script>
 <template>
 
-  <div class="absolute w-60 left-3 bottom-0 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
-            focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10 mx-1">
+  <div class="w-60 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
+            focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10 mx-1" :class="{'absolute left-3 bottom-0': !search}">
     <div class="flex flex-col flex-wrap justify-center">
 
       <div v-if="tags.length > 0" class="my-1 mx-3">
@@ -58,8 +70,8 @@
         <div @click.prevent="addTag(tag)" class="p-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:scale-110">{{$t('add-btn')}}</div>
       </div>
     </div>
-
   </div>
+
 </template>
 
 

@@ -95,6 +95,12 @@
   "dark": "Темна",
   "english": "Англійська",
   "ukrainian": "Українська",
+  "post": "Пост",
+  "profile": "Профіль",
+  "search": "Шукати",
+  "user-placeholder": "Введіть нікнейм користвуча",
+  "post-text-placeholder": "Пошук по тексту",
+  "what-find": "Що шукати?",
 
   "test": "Тест",
   "massive": {

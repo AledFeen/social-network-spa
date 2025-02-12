@@ -5,7 +5,7 @@ import CreatePost from "@/components/CreatePost.vue";
 export default {
   name: 'PostList',
   components: {CreatePost},
-  props: ['page', 'id', 'isOwner'],
+  props: ['page', 'id', 'isOwner', 'searchRequest'],
   data() {
     return {
       theme: localStorage.getItem('theme'),
@@ -67,9 +67,39 @@ export default {
           this.getRecommendations()
           break;
 
+        case 'search':
+          this.getSearchPosts()
+          break;
+
         default:
           console.warn('Неизвестная страница:', this.page);
       }
+    },
+
+    getSearchPosts() {
+      this.axios.get(this.$store.getters.serverPath + '/api/search-posts', {
+        params: {
+          'page_id': this.page_id += 1,
+          'user': this.searchRequest.user,
+          'text': this.searchRequest.text,
+          'location': this.searchRequest.location,
+          'tags[]': this.searchRequest.tags
+        }
+      })
+        .then(response => {
+          this.lastPage = response.data.last_page
+          if (this.lastPage >= this.page_id) {
+            if (!this.users) {
+              this.posts = response.data.data
+            } else {
+              this.posts.push(...response.data.data)
+            }
+            console.log(response)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
 
     getProfilePosts() {

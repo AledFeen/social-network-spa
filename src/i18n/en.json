@@ -95,6 +95,12 @@
   "dark": "Dark",
   "english": "English",
   "ukrainian": "Ukrainian",
+  "post": "Post",
+  "profile": "Profile",
+  "search": "Search",
+  "user-placeholder": "Enter username",
+  "post-text-placeholder": "Search by username",
+  "what-find": "What to look for?",
 
   "test": "Test",
   "massive": {

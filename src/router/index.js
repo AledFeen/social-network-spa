@@ -111,6 +111,11 @@ const router = createRouter({
       props: true,
       component: () => import('../views/EditPostView.vue'),
     },
+    {
+      path: '/search',
+      name: 'search',
+      component: () => import('../views/SearchView.vue'),
+    },
   ],
 })
 

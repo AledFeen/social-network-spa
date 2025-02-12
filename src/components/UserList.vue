@@ -26,8 +26,33 @@ export default {
       } else {
         if(this.page === 'likes') {
           this.getLikes()
+        } else if(this.page === 'search') {
+          this.getSearchProfiles()
         }
       }
+    },
+
+    getSearchProfiles() {
+      this.axios.get(this.$store.getters.serverPath + '/api/search-profile', {
+        params: {
+          'search_request': this.id,
+          'page_id': this.page_id += 1
+        }
+      })
+        .then(response => {
+          this.lastPage = response.data.last_page
+          if(this.lastPage >= this.page_id) {
+            if(!this.users) {
+              this.users = response.data.data
+            } else {
+              this.users.push(...response.data.data)
+            }
+            console.log(response)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
 
     getSubscriptions() {
@@ -105,7 +130,7 @@ export default {
 
 <template>
   <div v-if="users && users.length > 0"
-       class="block w-full mx-1 md:w-2/4 my-4 md:my-16 rounded-lg shadow-lg border border-gray-a9 border-solid px-3 py-3">
+       class="block w-full mx-1 md:w-2/4 my-4 md:my-16 rounded-lg shadow-lg border border-gray-a9 border-solid px-3 py-3" :class="{'md:w-full': this.page === 'search'}">
 
     <template v-if="users" v-for="user in users">
       <div class="w-full rounded-lg bg-secondary_back-light dark:bg-secondary_back-dark mb-1">
