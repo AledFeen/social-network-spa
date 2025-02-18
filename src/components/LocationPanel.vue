@@ -61,7 +61,7 @@
       </div>
 
       <div class="px-3 my-1 flex flex-row w-full">
-        <input v-model="location" :placeholder="$t('search-placeholder')" class="w-5/6 p-1 rounded-lg text-primary_text-light dark:text-primary_text-dark
+        <input v-model="location" :placeholder="$t('search-location-placeholder')" class="w-5/6 p-1 rounded-lg text-primary_text-light dark:text-primary_text-dark
           border border-gray-a9 border-solid border-opacity-50 dark:border-none dark:bg-primary_back-dark placeholder-gray-a9 focus:outline-none"/>
         <div @click.prevent="addLocation(location)" class="p-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:scale-110">{{$t('save-btn')}}</div>
       </div>

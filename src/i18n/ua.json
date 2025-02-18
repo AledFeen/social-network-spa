@@ -62,6 +62,8 @@
   "liked-post": "лайкнув пост",
 
   "search-placeholder": "Введіть запит",
+  "search-tag-placeholder": "Введіть тег",
+  "search-location-placeholder": "Введіть назву локації",
 
   "post-placeholder": "Напишіть щось нове",
   "sent-request-message": "Запит надіслано",
@@ -101,6 +103,9 @@
   "user-placeholder": "Введіть нікнейм користвуча",
   "post-text-placeholder": "Пошук по тексту",
   "what-find": "Що шукати?",
+
+  "changed": "змінено",
+  "you": "Ви:",
 
   "test": "Тест",
   "massive": {

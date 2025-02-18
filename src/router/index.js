@@ -116,6 +116,17 @@ const router = createRouter({
       name: 'search',
       component: () => import('../views/SearchView.vue'),
     },
+    {
+      path: '/messenger',
+      name: 'messenger',
+      component: () => import('../views/Messenger.vue'),
+    },
+    {
+      path: '/chat/:id',
+      name: 'chat',
+      props: true,
+      component: () => import('../views/Chat.vue'),
+    },
   ],
 })
 

@@ -157,7 +157,7 @@ export default {
              class="hidden md:block image-class rounded  ms-2" :class="{'ms-3': isSidebarOpen}"/>
         <div v-if="isSidebarOpen" class="ms-3">{{ $t('notification-link') }}</div>
       </router-link>
-      <router-link to="/"
+      <router-link to="/messenger"
                    class="flex flex-row items-center md:m-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75 rounded"
                    :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Messages', 'hover:scale-110': !isSidebarOpen}">
         <img :src="srcMessage" alt="Message"
@@ -204,8 +204,8 @@ export default {
               </li>
             </ul>
           </div>
-        </div>
 
+        </div>
       </div>
 
       <div class="hidden md:block h-px w-full bg-gray-a9 md:my-2"></div>

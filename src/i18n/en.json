@@ -62,6 +62,8 @@
   "liked-post": "liked post",
 
   "search-placeholder": "Input search request",
+  "search-tag-placeholder": "Enter tag",
+  "search-location-placeholder": "Enter location",
 
   "sent-request-message": "Request has been sent",
   "user-banned-message": "You have banned this user",
@@ -101,6 +103,9 @@
   "user-placeholder": "Enter username",
   "post-text-placeholder": "Search by username",
   "what-find": "What to look for?",
+
+  "changed": "updated",
+  "you": "You:",
 
   "test": "Test",
   "massive": {

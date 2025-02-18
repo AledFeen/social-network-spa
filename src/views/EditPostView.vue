@@ -26,7 +26,9 @@ export default {
         'video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/x-matroska'],
       files: [],
       urls: [],
-      selectedIndex: null
+      selectedIndex: null,
+      isModalVisible: false,
+      modalMessage: null,
     }
   },
 
@@ -195,6 +197,7 @@ export default {
       this.updateLocation()
       this.updateTags()
       this.updateFiles()
+      this.showModal()
     },
 
     updateLocation() {
@@ -245,14 +248,26 @@ export default {
         console.log(err)
         return false
       })
-    }
+    },
 
+    showModal() {
+      this.modalMessage = this.$t('success-request');
+      this.isModalVisible = true;
+
+      setTimeout(() => {
+        this.isModalVisible = false;
+      }, 500);
+    },
 
   },
 }
 </script>
 <template>
   <LayoutWithSidebar :page="''">
+    <template v-if="isModalVisible">
+      <ModalMessage :message="modalMessage"/>
+    </template>
+
     <div class="block w-full mx-1 md:w-3/4 my-4 md:my-16 rounded-lg shadow-lg border border-gray-a9 border-solid">
       <div v-if="theme"
            class="mt-3 w-full flex flex-col p-3 bg-primary_back-light dark:bg-primary_back-dark rounded-2xl">
