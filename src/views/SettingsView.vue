@@ -1,13 +1,15 @@
 <script>
 import LayoutWithSidebar from "@/layouts/PageWithSidebarLayout.vue";
 import router from "@/router/index.js";
+import TagPanel from "@/components/TagPanel.vue";
 
 export default {
   name: "Settings",
-  components: {LayoutWithSidebar},
+  components: {TagPanel, LayoutWithSidebar},
 
   beforeMount() {
     this.getPrivacy()
+    this.getTags()
   },
 
   data() {
@@ -15,10 +17,22 @@ export default {
       currentLocale: this.$i18n.locale,
       currentTheme: localStorage.getItem('theme'),
       privacySettings: null,
+      tags: [],
+      selectedTag: "",
     };
   },
 
   methods: {
+    getTags() {
+      this.axios.get(this.$store.getters.serverPath + '/api/preferredTags')
+        .then(response => {
+          this.tags = response.data.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
     changeLocale(locale) {
       this.$i18n.locale = locale;
       localStorage.setItem('appLocale', locale);
@@ -46,6 +60,37 @@ export default {
         'who_can_comment': this.privacySettings.who_can_comment,
         'who_can_repost': this.privacySettings.who_can_repost,
         'who_can_message': this.privacySettings.who_can_message,
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    selectTag(tag) {
+      this.selectedTag = this.selectedTag === tag ? "" : tag
+    },
+
+    deleteTag(tag) {
+      this.axios.delete(this.$store.getters.serverPath + '/api/preferredTag', {
+        params: {
+          'id': tag.id
+        }
+      }).then(res => {
+        if (res.data.success) {
+          this.tags.splice(this.tags.indexOf(tag), 1)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    addTag(tag)
+    {
+      this.axios.post(this.$store.getters.serverPath + '/api/preferredTag', {
+        'text': tag
+      }).then(res => {
+        if(res.data.success) {
+          this.getTags()
+        }
       }).catch(err => {
         console.log(err)
       })
@@ -113,7 +158,7 @@ export default {
         </div> <!-- Language-->
       </div>
 
-      <div class="mt-2 flex flex-row">
+      <div v-if="privacySettings" class="mt-2 flex flex-row">
         <div class="flex flex-row items-center  justify-center w-1/2"> <!-- Account type -->
           <div class="flex flex-col">
             <div class="text-primary_text-light dark:text-primary_text-dark text-lg text-center">{{ $t('account-type') }}</div>
@@ -133,7 +178,7 @@ export default {
           </div>
         </div> <!--  Account type  -->
 
-        <div class="flex flex-row items-center  justify-center w-1/2"> <!-- Can comment -->
+        <div v-if="privacySettings"  class="flex flex-row items-center  justify-center w-1/2"> <!-- Can comment -->
           <div class="flex flex-col">
             <div class="text-primary_text-light dark:text-primary_text-dark text-lg text-center">{{ $t('who-can-comment') }}</div>
             <div class="relative">
@@ -154,7 +199,7 @@ export default {
         </div> <!--  Can comment  -->
       </div>
 
-      <div class="mt-2 flex flex-row">
+      <div v-if="privacySettings"  class="mt-2 flex flex-row">
         <div class="flex flex-row items-center  justify-center w-1/2"> <!-- Can repost -->
           <div class="flex flex-col">
             <div class="text-primary_text-light dark:text-primary_text-dark text-lg text-center">{{ $t('who-can-repost') }}</div>
@@ -175,7 +220,7 @@ export default {
           </div>
         </div> <!--  Can repost  -->
 
-        <div class="flex flex-row items-center  justify-center w-1/2"> <!-- Can message -->
+        <div v-if="privacySettings"  class="flex flex-row items-center  justify-center w-1/2"> <!-- Can message -->
           <div class="flex flex-col">
             <div class="text-primary_text-light dark:text-primary_text-dark text-lg text-center">{{ $t('who-can-message') }}</div>
             <div class="relative">
@@ -197,6 +242,28 @@ export default {
         </div> <!--  Can message  -->
 
       </div>
+
+      <div class="flex flex-col mt-5 md:mt-0">
+        <div class="mt-2 relative flex flex-row justify-center">
+          <tag-panel @tag-selected="addTag" :search="true"></tag-panel>
+        </div>
+
+        <div v-if="tags.length > 0" class="flex flex-row flex-wrap my-1 ms-1">
+          <template v-for="tag in tags">
+            <div @click.prevent="selectTag(tag)"
+                 class="relative mx-2 px-3 p-1 mt-1 text-primary_text-light dark:text-primary_text-dark bg-secondary_back-light dark:bg-secondary_back-dark hover:cursor-pointer rounded-2xl">
+              {{ tag.tag }}
+              <div v-if="selectedTag === tag" @click.prevent="deleteTag(tag)" class="absolute px-2 left-5 bottom-8 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
+            focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10 mx-1 hover:underline">
+                {{ $t('delete-btn') }}
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+
+
 
 
     </div>
