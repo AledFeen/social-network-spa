@@ -51,6 +51,7 @@
   "comment-btn": "Прокоментувати",
   "close-btn": "Закрити",
   "clear-btn": "Очистити",
+  "complaint-btn": "Поскаржитись",
 
   "subscribe-message": "У вас є нові підписки",
   "like-message": "лайкнули ваш пост",
@@ -64,8 +65,9 @@
   "search-placeholder": "Введіть запит",
   "search-tag-placeholder": "Введіть тег",
   "search-location-placeholder": "Введіть назву локації",
-
   "post-placeholder": "Напишіть щось нове",
+  "complain-placeholder": "Опишіть причину",
+
   "sent-request-message": "Запит надіслано",
   "user-banned-message": "Ви заблокували цього користувача",
 

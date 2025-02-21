@@ -1,10 +1,11 @@
 <script>
 import dayjs from "dayjs";
 import CreatePost from "@/components/CreatePost.vue";
+import ModalComplaint from "@/components/ModalComplaint.vue";
 
 export default {
   name: 'PostList',
-  components: {CreatePost},
+  components: {ModalComplaint, CreatePost},
   props: ['page', 'id', 'isOwner', 'searchRequest'],
   data() {
     return {
@@ -13,7 +14,9 @@ export default {
       lastPage: 1,
       page_id: 0,
       selectedDropdown: '',
-      selectedRepost: null
+      selectedRepost: null,
+      modalComplaint: false,
+      selectedPostId: null
     }
   },
 
@@ -117,7 +120,7 @@ export default {
             } else {
               this.posts.push(...response.data.data)
             }
-            console.log(response)
+            //console.log(response)
           }
         })
         .catch(err => {
@@ -185,7 +188,7 @@ export default {
             } else {
               this.posts.push(...response.data.data)
             }
-            console.log(response)
+            //console.log(response)
           }
         })
         .catch(err => {
@@ -275,13 +278,31 @@ export default {
       } else {
         this.$emit("post-deleted", false)
       }
-    }
+    },
+
+    complain(id) {
+      this.selectedPostId = id
+      this.modalComplaint = !this.modalComplaint
+    },
+
+    CheckSendComplaint (success) {
+      if (success) {
+        this.modalComplaint = false
+        this.$emit("complaint-sent", true)
+      } else this.modalComplaint = false
+    },
+
+
 
   }
 }
 </script>
 
 <template>
+  <template v-if="modalComplaint">
+    <ModalComplaint :id="selectedPostId" :type="'post'"  @complaint-sent="CheckSendComplaint"></ModalComplaint>
+  </template>
+
   <div v-if="posts" class="pt-1 rounded-lg">
 
     <div v-if="selectedRepost" class="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center z-20">
@@ -339,6 +360,12 @@ export default {
                      class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
                   {{ $t('edit-btn') }}
                 </router-link>
+              </li>
+              <li>
+                <div @click.prevent="complain(post.id)"
+                     class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                  {{ $t('complaint-btn') }}
+                </div>
               </li>
             </ul>
           </div>

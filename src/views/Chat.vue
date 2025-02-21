@@ -2,14 +2,16 @@
 import LayoutWithSidebar from "@/layouts/PageWithSidebarLayout.vue";
 import dayjs from "dayjs";
 import EmojiPanel from "@/components/EmojiPanel.vue";
+import ModalComplaint from "@/components/ModalComplaint.vue";
 
 export default {
   name: 'Chat',
-  components: {EmojiPanel, LayoutWithSidebar},
+  components: {ModalComplaint, EmojiPanel, LayoutWithSidebar},
   props: ['id'],
 
   data() {
     return {
+      chatId: null,
       theme: localStorage.getItem('theme'),
       messages: [],
       users: [],
@@ -32,13 +34,22 @@ export default {
       companion: null,
       selectedMessage: null,
       editMessage: false,
-      editedMessage: ""
+      editedMessage: "",
+      selectedMessageId: null,
+      modalComplaint: false
     }
   },
 
   beforeMount() {
-    this.readMessages()
+    if (/^n_\d+$/.test(this.id)) {
+      this.chatId = this.id.slice(2)
+      this.createChat()
+    } else {
+      this.chatId = this.id
+      this.readMessages()
+    }
   },
+
 
   computed: {
     srcEmoji() {
@@ -56,6 +67,34 @@ export default {
   },
 
   methods: {
+    createChat() {
+      this.axios.post(this.$store.getters.serverPath + '/api/chat', {
+        'user_id': this.chatId
+      }).then(res => {
+        if (res.data.success) {
+          this.getChatId()
+        }
+      }).catch(err => {
+          console.log(err)
+        }
+      )
+    },
+
+    getChatId() {
+      this.axios.get(this.$store.getters.serverPath + '/api/chatId', {
+        params: {
+          'user_id': this.chatId,
+        }
+      })
+        .then(response => {
+          this.chatId = response.data.data.id
+          this.readMessages()
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
     getLinkIdCurrentUser() {
       this.axios.get(this.$store.getters.serverPath + '/api/user').then(res => {
         let usr = res.data.data
@@ -72,7 +111,7 @@ export default {
 
     readMessages() {
       this.axios.put(this.$store.getters.serverPath + '/api/messages-read', {
-        'chat_id': this.id
+        'chat_id': this.chatId
       }).then(res => {
         if (res.data.success) {
           this.getUsers()
@@ -86,7 +125,7 @@ export default {
     getUsers() {
       this.axios.get(this.$store.getters.serverPath + '/api/chat-users', {
         params: {
-          'chat_id': this.id,
+          'chat_id': this.chatId,
         }
       })
         .then(response => {
@@ -101,7 +140,7 @@ export default {
     getMessages() {
       this.axios.get(this.$store.getters.serverPath + '/api/messages', {
         params: {
-          'chat_id': this.id,
+          'chat_id': this.chatId,
           'page_id': this.page_id += 1
         }
       })
@@ -205,7 +244,7 @@ export default {
       const formData = new FormData()
 
       formData.append('text', this.postText)
-      formData.append('chat_id', this.id)
+      formData.append('chat_id', this.chatId)
       this.files.forEach(file => {
         formData.append('files[]', file);
       });
@@ -286,7 +325,16 @@ export default {
         }
       )
 
-    }
+    },
+
+    CheckSendComplaint() {
+      this.modalComplaint = false
+    },
+
+    complain(id) {
+      this.selectedMessageId = id
+      this.modalComplaint = !this.modalComplaint
+    },
 
   }
 }
@@ -294,6 +342,10 @@ export default {
 
 <template>
   <LayoutWithSidebar :page="''">
+    <template v-if="modalComplaint">
+      <ModalComplaint :id="selectedMessageId" :type="'message'" @complaint-sent="CheckSendComplaint"></ModalComplaint>
+    </template>
+
     <div class="hidden">
       <input type="file" class="form-control" id="inputGroupFile" ref="fileInput" @change="handleFileChange">
     </div>
@@ -367,10 +419,11 @@ export default {
 
 
                 <div class="flex flex-row" :class="{'justify-end' : msg.link_id === link_id}">
-                  <img v-if="msg.link_id === link_id" :src="srcOptions" alt="Settings"
+                  <img :src="srcOptions" alt="Settings"
                        @click.prevent="selectMessage(msg)" class="w-8 h-8 md:block image-class rounded
                     hover:opacity-75 hover:cursor-pointer hover:scale-110"/>
-                  <img v-if="msg.link_id === link_id" :src="srcCheck(msg.is_read)" alt="Tag" class="image-class rounded"/>
+                  <img v-if="msg.link_id === link_id" :src="srcCheck(msg.is_read)" alt="Tag"
+                       class="image-class rounded"/>
                   <div class="my-1 italic text-secondary_text-light dark:text-secondary_text-dark text-sm break-words">
                     <div v-if="msg.created_at === msg.updated_at">
                       {{ this.formatDate(msg.created_at) }}
@@ -383,13 +436,21 @@ export default {
                 </div>
 
                 <div v-if="selectedMessage && selectedMessage.id === msg.id" class="flex flex-row justify-between">
-                  <div @click.prevent="deleteMessage(msg)"
-                       class="text-btn_back-primary hover:underline hover:cursor-pointer">{{ $t('delete-btn') }}
-                  </div>
-                  <div @click.prevent="changeEditMessage(msg.text)"
-                       class="text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
-                    {{ $t('edit-btn') }}
-                  </div>
+                  <template v-if="msg.link_id === link_id">
+                    <div @click.prevent="deleteMessage(msg)"
+                         class="text-btn_back-primary hover:underline hover:cursor-pointer">{{ $t('delete-btn') }}
+                    </div>
+                    <div @click.prevent="changeEditMessage(msg.text)"
+                         class="text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
+                      {{ $t('edit-btn') }}
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div @click.prevent="complain(msg.id)"
+                         class="text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
+                      {{ $t('complaint-btn') }}
+                    </div>
+                  </template>
                 </div>
 
               </div>

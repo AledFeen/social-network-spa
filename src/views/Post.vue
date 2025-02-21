@@ -3,10 +3,12 @@ import LayoutWithSidebar from "@/layouts/PageWithSidebarLayout.vue";
 import dayjs from "dayjs";
 import LeaveComment from "@/components/LeaveComment.vue";
 import CreatePost from "@/components/CreatePost.vue";
+import ModalComplaint from "@/components/ModalComplaint.vue";
+import ModalMessage from "@/components/ModalMessage.vue";
 
 export default {
   name: 'Post',
-  components: {CreatePost, LeaveComment, LayoutWithSidebar},
+  components: {ModalMessage, ModalComplaint, CreatePost, LeaveComment, LayoutWithSidebar},
   props: ['id'],
 
   beforeMount() {
@@ -39,6 +41,11 @@ export default {
       page_id: 0,
       comments: [],
       selectedComment: null,
+      modalComplaint: false,
+      modalComplaintComment: false,
+      selectedCommentId: null,
+      isModalVisible: false,
+      modalMessage: null,
     }
   },
 
@@ -104,6 +111,20 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+
+    deletePost(id) {
+      this.axios.delete(this.$store.getters.serverPath + '/api/post', {
+        params: {
+          'post_id': id
+        }
+      }).then(res => {
+        if (res.data.success) {
+          this.$router.push(`/profile/` + this.post.user.name);
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     },
 
     getComments() {
@@ -180,7 +201,37 @@ export default {
 
     selectReplyComment(commentId) {
       commentId === this.selectedComment ? this.selectedComment = null : this.selectedComment = commentId
-    }
+    },
+
+    complain() {
+      this.modalComplaint = !this.modalComplaint
+    },
+
+    complainComment(id) {
+      this.selectedCommentId = id
+      this.modalComplaintComment = !this.modalComplaintComment
+    },
+
+    CheckSendComplaint (success) {
+      if (success) {
+        this.modalComplaint = false
+        this.modalComplaintComment = false
+        this.showModal(this.$t('success-request'))
+      } else {
+        this.modalComplaint = false
+        this.modalComplaintComment = false
+      }
+
+    },
+
+    showModal(message) {
+      this.modalMessage = message;
+      this.isModalVisible = true;
+
+      setTimeout(() => {
+        this.isModalVisible = false;
+      }, 500);
+    },
 
   }
 }
@@ -188,6 +239,18 @@ export default {
 
 <template>
   <LayoutWithSidebar :page="''">
+    <template v-if="isModalVisible">
+      <ModalMessage :message="modalMessage"/>
+    </template>
+
+    <template v-if="modalComplaint">
+      <ModalComplaint :id="post.id" :type="'post'"  @complaint-sent="CheckSendComplaint"></ModalComplaint>
+    </template>
+
+    <template v-if="modalComplaintComment">
+      <ModalComplaint :id="selectedCommentId" :type="'comment'"  @complaint-sent="CheckSendComplaint"></ModalComplaint>
+    </template>
+
     <div class="block w-full mx-1 md:w-3/4 my-4 md:my-16 rounded-lg shadow-lg border border-gray-a9 border-solid">
       <div v-if="!post" class="m-5 w-full flex flex-row justify-center"><h1
         class="text-lg text-primary_text-light dark:text-primary_text-dark">{{$t('nothing-found')}}</h1></div>
@@ -241,6 +304,12 @@ export default {
                                class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
                     {{ $t('edit-btn') }}
                   </router-link>
+                </li>
+                <li>
+                  <div @click.prevent="complain()"
+                       class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                    {{ $t('complaint-btn') }}
+                  </div>
                 </li>
               </ul>
             </div>
@@ -390,10 +459,10 @@ export default {
                       <div v-show="selectedCommentDropdown === comment.id" class="absolute top-1 w-40 right-12 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
             focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10">
                         <ul class="py-1 text-primary_text-light dark:text-primary_text-dark">
-                          <li>
-                            <div @click.prevent=""
+                          <li v-if="!isOwner">
+                            <div @click.prevent="complainComment(comment.id)"
                                  class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
-                              что-то сделать
+                              {{ $t('complaint-btn') }}
                             </div>
                           </li>
                         </ul>

@@ -51,6 +51,7 @@
   "comment-btn": "Leave comment",
   "close-btn": "Close",
   "clear-btn": "Clear",
+  "complaint-btn": "Complain",
 
   "subscribe-message": "You have new subscribers",
   "like-message": "liked your post",
@@ -68,6 +69,7 @@
   "sent-request-message": "Request has been sent",
   "user-banned-message": "You have banned this user",
   "post-placeholder": "Enter something new",
+  "complain-placeholder": "Describe reason for complaint",
 
   "count-request-message": "Subscription request count is",
   "no-request-message": "No requests yet",

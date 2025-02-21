@@ -4,10 +4,11 @@ import ModalMessage from "@/components/ModalMessage.vue";
 import CreatePost from "@/components/CreatePost.vue";
 import PostList from "@/components/PostList.vue";
 import UserListChild from "@/components/UserList.vue";
+import ModalComplaint from "@/components/ModalComplaint.vue";
 
 export default {
   name: "Profile",
-  components: {UserListChild, PostList, ModalMessage, LayoutWithSidebar, CreatePost},
+  components: {UserListChild, PostList, ModalMessage, LayoutWithSidebar, CreatePost, ModalComplaint},
   props: ['username'],
 
   data() {
@@ -22,8 +23,10 @@ export default {
       wasRequestSent: null,
       isModalVisible: false,
       modalMessage: null,
+      modalComplaint: false,
       postsVisible: false,
-      postsKey: 0
+      postsKey: 0,
+      chat: null
     }
   },
 
@@ -50,6 +53,28 @@ export default {
       return this.theme === 'light' ? '/src/assets/options.svg' : '/src/assets/options-dark.svg'
     },
 
+    computedCanMessage() {
+      if(this.profile) {
+        if(this.isMyProfile) {
+          return false
+        } else {
+          switch (this.profile.whoCanMessage)
+          {
+            case 'all':
+              return true
+            case 'only_subscribers':
+              return this.subscriber
+            case 'only_my_subscriptions':
+              return this.isSubscriber
+            case 'none':
+              return false
+            default:
+              return false
+          }
+        }
+      }
+    }
+
   },
 
   methods: {
@@ -62,10 +87,27 @@ export default {
         if (response.status === 200) {
           this.profile = response.data.data
           this.checkRelations()
+          if(!this.isMyProfile) {
+            this.getChatId()
+          }
         } else {
           //нужно добавить мультиязычные сообщения об ошибке
         }
       })
+    },
+
+    getChatId() {
+      this.axios.get(this.$store.getters.serverPath + '/api/chatId', {
+        params: {
+          'user_id': this.profile.id,
+        }
+      })
+        .then(response => {
+          this.chat = response.data.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
 
     openDropdown() {
@@ -211,6 +253,19 @@ export default {
       } else {
         this.showModal(this.$t('failed-request'))
       }
+    },
+
+    complain() {
+      this.modalComplaint = !this.modalComplaint
+    },
+
+    CheckSendComplaint(isSuccess) {
+      if (isSuccess) {
+        this.modalComplaint = false
+        this.showModal(this.$t('success-request'))
+      } else {
+        this.modalComplaint = false
+      }
     }
 
   }
@@ -222,6 +277,10 @@ export default {
   <LayoutWithSidebar :page="''">
     <template v-if="isModalVisible">
       <ModalMessage :message="modalMessage"/>
+    </template>
+
+    <template v-if="modalComplaint">
+      <ModalComplaint :id="this.profile.id" :type="'user'"  @complaint-sent="CheckSendComplaint"></ModalComplaint>
     </template>
 
     <div class="block w-full mx-1 md:w-3/4 my-4 md:my-16 rounded-lg shadow-lg border border-gray-a9 border-solid">
@@ -272,7 +331,6 @@ export default {
                           {{ profile.countFollowers }}
                         </router-link>
                       </div>
-
                     </div>
 
                     <div v-if="!isBanned">
@@ -325,6 +383,22 @@ export default {
                                      class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
                           {{ $t('blocked-btn') }}
                         </router-link>
+                        <template v-if="computedCanMessage">
+                          <div v-if="chat">
+                            <router-link :to="`/chat/${chat.id}`"  class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                              написати
+                            </router-link>
+                          </div>
+                          <div v-else>
+                            <router-link :to="`/chat/n_${profile.id}`"  class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                              новий чат
+                            </router-link>
+                          </div>
+                        </template>
+                        <div v-if="!isMyProfile" @click.prevent="complain()"
+                             class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                          {{ $t('complaint-btn') }}
+                        </div>
                       </li>
                     </ul>
                   </div>
@@ -348,7 +422,7 @@ export default {
 
       <template v-if="postsVisible">
         <div v-if="shouldDisplaySubs">
-          <PostList :key="postsKey" :id="profile.id" :page="'profile'" :is-owner="isMyProfile" @post-deleted="deletePost"/>
+          <PostList :key="postsKey" :id="profile.id" :page="'profile'" :is-owner="isMyProfile" @post-deleted="deletePost" @complaint-sent="deletePost"/>
         </div>
         <div v-else class="m-5 w-full flex flex-row justify-center"><h1
           class="text-lg text-primary_text-light dark:text-primary_text-dark">Тут нічого немає</h1></div>
