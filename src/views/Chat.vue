@@ -343,7 +343,7 @@ export default {
 <template>
   <LayoutWithSidebar :page="''">
     <template v-if="modalComplaint">
-      <ModalComplaint :id="selectedMessageId" :type="'message'" @complaint-sent="CheckSendComplaint"></ModalComplaint>
+      <ModalComplaint :id="selectedMessageId" :user_id="companion.user.id" :type="'message'" @complaint-sent="CheckSendComplaint"></ModalComplaint>
     </template>
 
     <div class="hidden">
@@ -559,9 +559,9 @@ export default {
                  class="image-class rounded ms-2 me-4"/>
           </div>
         </div>
-
       </div>
     </div>
+
 
 
   </LayoutWithSidebar>

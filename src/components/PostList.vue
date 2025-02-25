@@ -16,7 +16,8 @@ export default {
       selectedDropdown: '',
       selectedRepost: null,
       modalComplaint: false,
-      selectedPostId: null
+      selectedPostId: null,
+      selectedUserId: null
     }
   },
 
@@ -280,19 +281,20 @@ export default {
       }
     },
 
-    complain(id) {
+    complain(id, user_id) {
       this.selectedPostId = id
+      this.selectedUserId = user_id
       this.modalComplaint = !this.modalComplaint
     },
 
     CheckSendComplaint (success) {
       if (success) {
         this.modalComplaint = false
+        this.selectedPostId = null
+        this.selectedUserId = null
         this.$emit("complaint-sent", true)
       } else this.modalComplaint = false
     },
-
-
 
   }
 }
@@ -300,7 +302,7 @@ export default {
 
 <template>
   <template v-if="modalComplaint">
-    <ModalComplaint :id="selectedPostId" :type="'post'"  @complaint-sent="CheckSendComplaint"></ModalComplaint>
+    <ModalComplaint :id="selectedPostId" :user_id="selectedUserId" :type="'post'"  @complaint-sent="CheckSendComplaint"></ModalComplaint>
   </template>
 
   <div v-if="posts" class="pt-1 rounded-lg">
@@ -362,7 +364,7 @@ export default {
                 </router-link>
               </li>
               <li>
-                <div @click.prevent="complain(post.id)"
+                <div @click.prevent="complain(post.id, post.user.id)"
                      class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
                   {{ $t('complaint-btn') }}
                 </div>

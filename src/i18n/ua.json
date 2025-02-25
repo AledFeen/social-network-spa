@@ -23,6 +23,7 @@
   "notification-link": "Сповіщення",
   "messenger-link": "Мессенджер",
   "settings-link": "Налаштування",
+  "admin-panel-link": "Панель адміністратора",
 
   "profile-real-name": "ПІБ",
   "profile-date": "Дата народження",
@@ -52,6 +53,7 @@
   "close-btn": "Закрити",
   "clear-btn": "Очистити",
   "complaint-btn": "Поскаржитись",
+  "block-btn": "Заблокувати",
 
   "subscribe-message": "У вас є нові підписки",
   "like-message": "лайкнули ваш пост",
@@ -108,9 +110,19 @@
 
   "changed": "змінено",
   "you": "Ви:",
+  "date-text": "Дата",
+  "status-text": "Статус",
+  "measure-status-text": "Тип дії",
+  "type-text": "Тип",
+  "all-option": "Всі",
+  "post-option": "Пост",
+  "user-option": "Користувач",
+  "comment-option": "Коментар",
+  "message-option": "Повідомлення",
+  "nothing-option": "Нічого",
+  "checked-option": "Перевірена",
+  "non-checked-option": "Не перевірена",
+  "accepted-option": "Прийнята",
+  "rejected-option": "Відхилена"
 
-  "test": "Тест",
-  "massive": {
-    "object1": "Об'єкт"
-  }
 }

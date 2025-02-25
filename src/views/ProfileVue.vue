@@ -280,7 +280,7 @@ export default {
     </template>
 
     <template v-if="modalComplaint">
-      <ModalComplaint :id="this.profile.id" :type="'user'"  @complaint-sent="CheckSendComplaint"></ModalComplaint>
+      <ModalComplaint :id="this.profile.id" :user_id="this.profile.id" :type="'user'"  @complaint-sent="CheckSendComplaint"></ModalComplaint>
     </template>
 
     <div class="block w-full mx-1 md:w-3/4 my-4 md:my-16 rounded-lg shadow-lg border border-gray-a9 border-solid">

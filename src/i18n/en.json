@@ -23,6 +23,7 @@
   "notification-link": "Notifications",
   "messenger-link": "Messenger",
   "settings-link": "Settings",
+  "admin-panel-link": "Admin panel",
 
   "profile-real-name": "Your real name",
   "profile-date": "Date of birth",
@@ -52,6 +53,7 @@
   "close-btn": "Close",
   "clear-btn": "Clear",
   "complaint-btn": "Complain",
+  "block-btn": "Block",
 
   "subscribe-message": "You have new subscribers",
   "like-message": "liked your post",
@@ -106,11 +108,20 @@
   "post-text-placeholder": "Search by username",
   "what-find": "What to look for?",
 
-  "changed": "updated",
-  "you": "You:",
+  "date-text": "Date",
+  "status-text": "Status",
+  "measure-status-text": "Measure status",
+  "type-text": "Type",
 
-  "test": "Test",
-  "massive": {
-    "object1": "object"
-  }
+  "all-option": "All",
+  "post-option": "Post",
+  "user-option": "User",
+  "comment-option": "Comment",
+  "message-option": "Message",
+  "nothing-option": "Nothing",
+  "checked-option": "Checked",
+  "non-checked-option": "Non-checked",
+  "accepted-option": "Accepted",
+  "rejected-option": "Rejected"
+
 }

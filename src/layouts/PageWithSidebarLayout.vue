@@ -51,7 +51,10 @@ export default {
     },
     srcOption() {
       return this.theme === 'light' ? '/src/assets/options.svg' : '/src/assets/options-dark.svg'
-    }
+    },
+    srcAdmin() {
+      return this.theme === 'light' ? '/src/assets/adminPanel.svg' : '/src/assets/adminPanel-dark.svg'
+    },
   },
 
 
@@ -171,6 +174,15 @@ export default {
              class="hidden md:block image-class rounded ms-2" :class="{'ms-3': isSidebarOpen}"/>
 
         <div v-if="isSidebarOpen" class="ms-3">{{ $t('settings-link') }}</div>
+      </router-link>
+
+      <router-link v-if="user && user.role === 'admin'" to="/admin-panel"
+                   class="flex flex-row items-center md:m-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75 rounded"
+                   :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Admin', 'hover:scale-110': !isSidebarOpen}">
+        <img :src="srcAdmin" alt="Admin"
+             class="hidden md:block image-class rounded ms-2" :class="{'ms-3': isSidebarOpen}"/>
+
+        <div v-if="isSidebarOpen" class="ms-3">{{ $t('admin-panel-link') }}</div>
       </router-link>
 
       <div class="hidden md:block h-px w-full bg-gray-a9 md:my-2"></div>

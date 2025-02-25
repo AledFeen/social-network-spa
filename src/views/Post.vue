@@ -44,6 +44,7 @@ export default {
       modalComplaint: false,
       modalComplaintComment: false,
       selectedCommentId: null,
+      selectedCommentUserId: null,
       isModalVisible: false,
       modalMessage: null,
     }
@@ -207,8 +208,9 @@ export default {
       this.modalComplaint = !this.modalComplaint
     },
 
-    complainComment(id) {
+    complainComment(id, userId) {
       this.selectedCommentId = id
+      this.selectedCommentUserId = userId
       this.modalComplaintComment = !this.modalComplaintComment
     },
 
@@ -216,6 +218,8 @@ export default {
       if (success) {
         this.modalComplaint = false
         this.modalComplaintComment = false
+        this.selectedCommentId = null
+        this.selectedCommentUserId = null
         this.showModal(this.$t('success-request'))
       } else {
         this.modalComplaint = false
@@ -244,11 +248,11 @@ export default {
     </template>
 
     <template v-if="modalComplaint">
-      <ModalComplaint :id="post.id" :type="'post'"  @complaint-sent="CheckSendComplaint"></ModalComplaint>
+      <ModalComplaint :id="post.id" :user_id="post.user.id" :type="'post'"  @complaint-sent="CheckSendComplaint"></ModalComplaint>
     </template>
 
     <template v-if="modalComplaintComment">
-      <ModalComplaint :id="selectedCommentId" :type="'comment'"  @complaint-sent="CheckSendComplaint"></ModalComplaint>
+      <ModalComplaint :id="selectedCommentId" :user_id="selectedCommentUserId" :type="'comment'"  @complaint-sent="CheckSendComplaint"></ModalComplaint>
     </template>
 
     <div class="block w-full mx-1 md:w-3/4 my-4 md:my-16 rounded-lg shadow-lg border border-gray-a9 border-solid">
@@ -460,7 +464,7 @@ export default {
             focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10">
                         <ul class="py-1 text-primary_text-light dark:text-primary_text-dark">
                           <li v-if="!isOwner">
-                            <div @click.prevent="complainComment(comment.id)"
+                            <div @click.prevent="complainComment(comment.id, comment.user.id)"
                                  class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
                               {{ $t('complaint-btn') }}
                             </div>
@@ -531,10 +535,10 @@ export default {
                               <div v-show="selectedCommentDropdown === reply.id" class="absolute top-1 w-40 right-12 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
             focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10">
                                 <ul class="py-1 text-primary_text-light dark:text-primary_text-dark">
-                                  <li>
-                                    <div @click.prevent=""
+                                  <li v-if="!isOwner">
+                                    <div @click.prevent="complainComment(comment.id)"
                                          class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
-                                      что-то сделать
+                                      {{ $t('complaint-btn') }}
                                     </div>
                                   </li>
                                 </ul>

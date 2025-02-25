@@ -1,7 +1,7 @@
 <script>
   export default {
     name: "Complaint",
-    props: ['id', 'type'],
+    props: ['id', 'user_id', 'type'],
     data() {
       return  {
         text: ""
@@ -11,7 +11,6 @@
     methods: {
       sendComplaint() {
         let ids = {
-          user: null,
           post: null,
           comment: null,
           message: null
@@ -20,7 +19,7 @@
 
         if(this.text.length > 10) {
           this.axios.post(this.$store.getters.serverPath + '/api/complaint', {
-            user_id: ids.user,
+            user_id: this.user_id,
             post_id: ids.post,
             comment_id: ids.comment,
             message_id: ids.message,

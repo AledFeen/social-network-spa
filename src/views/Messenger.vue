@@ -96,6 +96,9 @@ export default {
         </div>
       </template>
     </div>
+    <div v-if="chats && chats.length === 0" class="flex flex-col justify-center">
+      {{$t('nothing-found')}}
+    </div>
 
   </LayoutWithSidebar>
 </template>

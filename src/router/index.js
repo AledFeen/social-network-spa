@@ -127,6 +127,17 @@ const router = createRouter({
       props: true,
       component: () => import('../views/Chat.vue'),
     },
+    {
+      path: '/admin-panel',
+      name: 'admin',
+      component: () => import('../views/AdminView.vue'),
+    },
+    {
+      path: '/complaint/:id',
+      name: 'complaint',
+      props: true,
+      component: () => import('../views/Complaint.vue'),
+    },
   ],
 })
 
