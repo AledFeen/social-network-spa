@@ -43,8 +43,12 @@
           .then(response => {
             this.tags = response.data.data
           })
-          .catch(err => {
-            console.log(err)
+          .catch(async err => {
+            const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+              err,
+              locale: this.$i18n.locale
+            });
+            alert(translatedMessage);
           })
       }
     }

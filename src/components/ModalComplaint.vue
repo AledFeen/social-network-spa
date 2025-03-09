@@ -30,8 +30,12 @@
             } else {
               alert(res.data.status)
             }
-          }).catch(err => {
-            console.log(err)
+          }).catch(async err => {
+            const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+              err,
+              locale: this.$i18n.locale
+            });
+            alert(translatedMessage);
           })
         } else alert('Text must have more 10 symbols')
 

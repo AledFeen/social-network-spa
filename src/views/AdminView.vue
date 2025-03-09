@@ -53,8 +53,12 @@ export default {
           this.total = response.data.total
           this.links = Array.from({length: this.last_page}, (_, i) => i + 1)
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 

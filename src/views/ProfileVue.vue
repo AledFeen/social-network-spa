@@ -90,10 +90,14 @@ export default {
           if(!this.isMyProfile) {
             this.getChatId()
           }
-        } else {
-          //нужно добавить мультиязычные сообщения об ошибке
         }
-      })
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
+        })
     },
 
     getChatId() {
@@ -105,8 +109,12 @@ export default {
         .then(response => {
           this.chat = response.data.data
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -128,8 +136,12 @@ export default {
           this.isBanned = response.data.isBanned
           this.postsVisible = true
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -143,8 +155,12 @@ export default {
         } else {
           this.showModal(this.$t('failed-request'))
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -160,8 +176,12 @@ export default {
         } else {
           this.showModal(this.$t('failed-request'))
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -175,8 +195,12 @@ export default {
         } else {
           this.showModal(this.$t('failed-request'))
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -192,8 +216,12 @@ export default {
         } else {
           this.showModal(this.$t('failed-request'))
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -207,8 +235,12 @@ export default {
         } else {
           this.showModal(this.$t('failed-request'))
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -224,8 +256,12 @@ export default {
         } else {
           this.showModal(this.$t('failed-request'))
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -386,12 +422,12 @@ export default {
                         <template v-if="computedCanMessage">
                           <div v-if="chat">
                             <router-link :to="`/chat/${chat.id}`"  class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
-                              написати
+                              {{ $t('message-btn') }}
                             </router-link>
                           </div>
                           <div v-else>
                             <router-link :to="`/chat/n_${profile.id}`"  class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
-                              новий чат
+                              {{ $t('message-btn') }}
                             </router-link>
                           </div>
                         </template>

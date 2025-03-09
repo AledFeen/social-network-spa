@@ -28,9 +28,12 @@ export default {
         .then(() => {
           this.message = this.$t('reset-password-message')
         })
-        .catch(err => {
-          console.log(err)
-          //alert(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     }
 

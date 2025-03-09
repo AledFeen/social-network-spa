@@ -117,8 +117,12 @@ export default {
           this.$emit("comment-created", true, this.reply_id);
         } else
         this.$emit("comment-created", true, null);
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
         this.$emit("comment-created", false, null);
       })
     }

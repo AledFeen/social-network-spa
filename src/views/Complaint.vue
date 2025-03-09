@@ -36,8 +36,12 @@ export default {
           this.complaint = response.data.data
           this.check()
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -64,8 +68,12 @@ export default {
         .then(response => {
           this.comment = response.data.data
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -78,8 +86,12 @@ export default {
         .then(response => {
           this.message = response.data.data
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -92,8 +104,12 @@ export default {
         .then(response => {
           this.profile = response.data.data
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -111,7 +127,7 @@ export default {
           document.body.removeChild(link);
         })
         .catch(err => {
-          console.log("Ошибка загрузки файла:", err);
+          alert("File loading error:" + err);
         });
     },
 
@@ -129,8 +145,12 @@ export default {
         } else {
           console.log(res)
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -143,8 +163,12 @@ export default {
         } else {
           console.log(res)
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -170,8 +194,12 @@ export default {
           this.showModal()
           this.comment = null
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -185,8 +213,12 @@ export default {
           this.showModal()
           this.message = null
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -203,8 +235,12 @@ export default {
       }).then(res => {
         console.log(res)
         window.location.reload();
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -216,8 +252,12 @@ export default {
         if(res.data.success === 'true') {
           this.showModal(this.$t('success-request'))
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -230,8 +270,12 @@ export default {
         if (res.data.success) {
          this.showModal()
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 

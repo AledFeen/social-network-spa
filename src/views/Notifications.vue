@@ -36,8 +36,12 @@ export default {
         .then(response => {
           this.requestCount = response.data.requestCount
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -46,8 +50,12 @@ export default {
         .then(response => {
           this.followers = response.data.data
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -60,8 +68,12 @@ export default {
         } else {
           this.showModal(this.$t('failed-request'))
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
         this.showModal(this.$t('failed-request'))
       })
     },
@@ -71,8 +83,12 @@ export default {
         .then(response => {
           this.likes = response.data.data
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -85,8 +101,12 @@ export default {
         } else {
           this.showModal(this.$t('failed-request'))
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
         this.showModal(this.$t('failed-request'))
       })
     },
@@ -96,8 +116,12 @@ export default {
         .then(response => {
           this.comments = response.data.data
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -110,8 +134,12 @@ export default {
         } else {
           this.showModal(this.$t('failed-request'))
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
         this.showModal(this.$t('failed-request'))
       })
     },
@@ -121,8 +149,12 @@ export default {
         .then(response => {
           this.replies = response.data.data
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -135,8 +167,12 @@ export default {
         } else {
           this.showModal(this.$t('failed-request'))
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
         this.showModal(this.$t('failed-request'))
       })
     },
@@ -146,8 +182,12 @@ export default {
         .then(response => {
           this.reposts = response.data.data
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -160,8 +200,12 @@ export default {
         } else {
           this.showModal(this.$t('failed-request'))
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
         this.showModal(this.$t('failed-request'))
       })
     },
@@ -276,7 +320,7 @@ export default {
           </router-link>
           <router-link :to="`/post/${like.post_id}`"
                        class="ms-3 text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
-            {{$t('liked-post')}}} <b>{{ like.post_id }}</b></router-link>
+            {{$t('liked-post')}} <b>{{ like.post_id }}</b></router-link>
           <div class="ms-3 text-primary_text-light dark:text-primary_text-dark">{{ formatDate(like.created_at) }}</div>
         </div>
       </div>

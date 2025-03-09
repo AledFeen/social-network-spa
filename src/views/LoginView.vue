@@ -20,8 +20,12 @@ export default {
             })
             this.$router.push('/')
           })
-          .catch(err => {
-            alert(err.response.data.message)
+          .catch(async err => {
+            const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+              err,
+              locale: this.$i18n.locale
+            });
+            alert(translatedMessage);
           })
       })
     },

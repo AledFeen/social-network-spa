@@ -74,8 +74,12 @@ export default {
         if (res.data.success) {
           this.getChatId()
         }
-      }).catch(err => {
-          console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
         }
       )
     },
@@ -90,8 +94,12 @@ export default {
           this.chatId = response.data.data.id
           this.readMessages()
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -116,8 +124,12 @@ export default {
         if (res.data.success) {
           this.getUsers()
         }
-      }).catch(err => {
-          console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
         }
       )
     },
@@ -132,8 +144,12 @@ export default {
           this.users = response.data.data
           this.getLinkIdCurrentUser()
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -154,8 +170,12 @@ export default {
             }
           }
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -255,8 +275,12 @@ export default {
         this.files = []
         this.urls = []
         this.tags = []
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -274,7 +298,7 @@ export default {
           document.body.removeChild(link);
         })
         .catch(err => {
-          console.log("Ошибка загрузки файла:", err);
+          alert("File loading error:" + err);
         });
     },
 
@@ -297,8 +321,12 @@ export default {
         if (res.data.success) {
           this.messages.splice(this.messages.indexOf(msg), 1)
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -320,8 +348,12 @@ export default {
           this.editMessage = false
           this.editedMessage = ""
         }
-      }).catch(err => {
-          console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
         }
       )
 

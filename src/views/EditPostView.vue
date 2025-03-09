@@ -83,8 +83,12 @@ export default {
           })
 
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -206,8 +210,12 @@ export default {
         'location': this.location,
       }).then(res => {
         return res.data.success
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
         return false
       })
     },
@@ -218,8 +226,12 @@ export default {
         'text': this.postText,
       }).then(res => {
           return res.data.success
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
         return false
       })
     },
@@ -230,8 +242,12 @@ export default {
         'tags': this.tags
       }).then(res => {
         return res.data.success
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
         return false
       })
     },
@@ -244,8 +260,12 @@ export default {
       });
       this.axios.post(this.$store.getters.serverPath + '/api/post-files', formData).then(res => {
         return res.data.success
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
         return false
       })
     },

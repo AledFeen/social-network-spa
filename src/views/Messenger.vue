@@ -22,6 +22,12 @@ export default {
     getChats() {
       this.axios.get(this.$store.getters.serverPath + '/api/chats').then(res => {
         this.chats = res.data.data
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 

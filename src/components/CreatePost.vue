@@ -179,11 +179,17 @@ export default {
         this.tags = []
         this.location = ''
         this.$emit("post-created", true);
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+
         this.$emit("post-created", false);
+
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
-    }
+    },
 
   },
 }

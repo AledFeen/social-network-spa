@@ -37,7 +37,12 @@ export default {
     getAccount() {
       this.axios.get(this.$store.getters.serverPath + '/api/my-account').then(res => {
         this.account = res.data.data
-      }).catch(error => {
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -54,8 +59,12 @@ export default {
         } else {
           this.showModal(this.$t('failed-request'))
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -78,8 +87,12 @@ export default {
           console.log(res)
           window.location.reload();
           this.$store.dispatch('updateProfileImage', this.account.image);
-        }).catch(err => {
-          console.log(err)
+        }).catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
       }
     },
@@ -88,8 +101,12 @@ export default {
       this.axios.delete(this.$store.getters.serverPath + '/api/profile-image').then(res => {
         console.log(res)
         window.location.reload();
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 

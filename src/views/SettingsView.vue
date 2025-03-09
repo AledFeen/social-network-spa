@@ -28,8 +28,12 @@ export default {
         .then(response => {
           this.tags = response.data.data
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -49,8 +53,12 @@ export default {
         .then(response => {
           this.privacySettings = response.data.data
         })
-        .catch(err => {
-          console.log(err)
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
         })
     },
 
@@ -60,8 +68,12 @@ export default {
         'who_can_comment': this.privacySettings.who_can_comment,
         'who_can_repost': this.privacySettings.who_can_repost,
         'who_can_message': this.privacySettings.who_can_message,
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -78,8 +90,12 @@ export default {
         if (res.data.success) {
           this.tags.splice(this.tags.indexOf(tag), 1)
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     },
 
@@ -91,8 +107,12 @@ export default {
         if(res.data.success) {
           this.getTags()
         }
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
       })
     }
 
