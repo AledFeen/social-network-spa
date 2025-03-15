@@ -24,11 +24,15 @@ export default {
       urls: [],
       allowedTypes: [
         'image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml',
-        'video/mp4', 'video/mov', 'video/avi', 'video/mkv',
+        'video/mp4',           //.mp4
+        'video/quicktime',     //.mov
+        'video/x-msvideo',     //.avi
+        'video/avi',           //.avi
+        'video/x-matroska',
         'audio/mpeg', 'audio/wav', 'audio/ogg',
         'application/pdf', 'text/plain',
-        'application/json', 'application/xml', 'text/xml',
-        'application/zip', 'application/x-rar-compressed'
+        'application/json', 'application/xml', 'text/xml', 'application/zip',
+        'application/x-rar-compressed'
       ],
       selectedIndex: null,
       companion: null,
@@ -210,7 +214,9 @@ export default {
           let file = this.$refs.fileInput.files[0];
           if (!file) return;
 
-          if (file.size >= 10 * 1024 * 1024) { // 10MB ограничение
+          console.log('MIME-тип файла:', file.type);
+
+          if (file.size >= 25 * 1024 * 1024) {
             alert(this.$t('big-file-message'));
             return;
           }
@@ -281,6 +287,7 @@ export default {
           locale: this.$i18n.locale
         });
         alert(translatedMessage);
+        console.log(err)
       })
     },
 
