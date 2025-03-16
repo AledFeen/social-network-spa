@@ -32,12 +32,14 @@ const actions = {
   },
 
   async handleErrorMessage({ dispatch }, { err, locale }) {
+    const errorMessage = err.response && err.response.data && err.response.data.message
+      ? err.response.data.message
+      : err.message || 'An unknown error occurred';
+
     if (locale === 'en') {
-      return err.response.data.message ?  err.response.data.message : err.message
+      return errorMessage;
     } else {
-      return err.response.data.message
-        ? await dispatch('translate', err.response.data.message)
-        : await dispatch('translate', err.message)
+      return await dispatch('translate', errorMessage);
     }
   },
 

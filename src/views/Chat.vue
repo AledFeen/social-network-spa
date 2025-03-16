@@ -11,6 +11,7 @@ export default {
 
   data() {
     return {
+      channel: null,
       chatId: null,
       theme: localStorage.getItem('theme'),
       messages: [],
@@ -54,6 +55,14 @@ export default {
     }
   },
 
+  beforeUnmount() {
+    if (this.channel ) {
+      this.channel.stopListening('.message');
+      this.channel.stopListening('.deleted_message');
+      this.channel.stopListening('.edited_message');
+      window.Echo.leave(`chat.${this.id}`)
+    }
+  },
 
   computed: {
     srcEmoji() {
@@ -71,6 +80,25 @@ export default {
   },
 
   methods: {
+    connectChannel() {
+      if (!this.channel) {
+        this.channel = window.Echo.private('chat.' + this.chatId)
+          .listen('.message', (res) => {
+            this.messages.unshift(res.message);
+          })
+          .listen('.deleted_message', (res) => {
+            const index = this.messages.findIndex(msg => msg.id === Number(res.deleted_message));
+            if (index !== -1) {
+              this.messages.splice(index, 1);
+            }
+          })
+          .listen('.edited_message', (res) => {
+            const index = this.messages.findIndex(msg => msg.id === Number(res.edited_message.id));
+            this.messages[index].text = res.edited_message.text
+          })
+      }
+    },
+
     createChat() {
       this.axios.post(this.$store.getters.serverPath + '/api/chat', {
         'user_id': this.chatId
@@ -127,8 +155,10 @@ export default {
       }).then(res => {
         if (res.data.success) {
           this.getUsers()
+          this.connectChannel()
         }
       }).catch(async err => {
+        console.log(err)
         const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
           err,
           locale: this.$i18n.locale
@@ -276,7 +306,7 @@ export default {
       });
 
       this.axios.post(this.$store.getters.serverPath + '/api/message', formData).then(res => {
-        console.log(res)
+        //console.log(res)
         this.postText = ''
         this.files = []
         this.urls = []
@@ -468,8 +498,7 @@ export default {
                       {{ this.formatDate(msg.created_at) }}
                     </div>
                     <div v-else class="flex flex-col">
-                      <div>{{ $t('changed') }}</div>
-                      <div> {{ this.formatDate(msg.updated_at) }}</div>
+                      <div> {{ this.formatDate(msg.created_at) }}</div>
                     </div>
                   </div>
                 </div>
