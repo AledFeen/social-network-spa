@@ -11,6 +11,7 @@ export default {
 
   data() {
     return {
+      observer: null,
       channel: null,
       chatId: null,
       theme: localStorage.getItem('theme'),
@@ -57,9 +58,11 @@ export default {
 
   beforeUnmount() {
     if (this.channel ) {
-      this.channel.stopListening('.message');
-      this.channel.stopListening('.deleted_message');
-      this.channel.stopListening('.edited_message');
+      this.channel.stopListening('.message')
+      this.channel.stopListening('.deleted_message')
+      this.channel.stopListening('.edited_message')
+      this.channel.stopListening('.read_message')
+      this.channel.stopListening('.read_messages')
       window.Echo.leave(`chat.${this.id}`)
     }
   },
@@ -84,17 +87,32 @@ export default {
       if (!this.channel) {
         this.channel = window.Echo.private('chat.' + this.chatId)
           .listen('.message', (res) => {
-            this.messages.unshift(res.message);
+            this.messages.unshift(res.message)
+            this.observeMessages()
           })
           .listen('.deleted_message', (res) => {
-            const index = this.messages.findIndex(msg => msg.id === Number(res.deleted_message));
+            const index = this.messages.findIndex(msg => msg.id === Number(res.deleted_message))
             if (index !== -1) {
               this.messages.splice(index, 1);
+              this.observeMessages()
             }
           })
           .listen('.edited_message', (res) => {
-            const index = this.messages.findIndex(msg => msg.id === Number(res.edited_message.id));
+            const index = this.messages.findIndex(msg => msg.id === Number(res.edited_message.id))
             this.messages[index].text = res.edited_message.text
+          })
+          .listen('.read_message', (res) => {
+            console.log(res)
+            const index = this.messages.findIndex(msg => msg.id === Number(res.read_message))
+            this.messages[index].is_read = true
+          })
+          .listen('.read_messages', (res) => {
+            console.log(res)
+            this.messages.forEach(msg => {
+              if (msg.link_id === this.link_id && this.link_id !== Number(res.link_messages)) {
+                msg.is_read = true
+              }
+            })
           })
       }
     },
@@ -202,6 +220,7 @@ export default {
             } else {
               this.messages.push(...response.data.data)
             }
+            this.observeMessages()
           }
         })
         .catch(async err => {
@@ -211,6 +230,57 @@ export default {
           });
           alert(translatedMessage);
         })
+    },
+
+    observeMessages() {
+      this.stopObserving();
+      this.observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const messageId = Number(entry.target.dataset.messageId);
+              const message = this.messages.find(msg => msg.id === messageId);
+              if(message && !message.is_read && message.link_id !== this.link_id) {
+                console.log('MessageId:', messageId);
+                console.log('Message:', message);
+                this.readMessage(message)
+              }
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+
+      this.$nextTick(() => {
+        document.querySelectorAll('.message').forEach(el => {
+          this.observer.observe(el);
+        });
+      });
+    },
+
+    stopObserving() {
+      if (this.observer) {
+        this.observer.disconnect();
+        this.observer = null;
+      }
+    },
+
+    readMessage(message) {
+      this.axios.put(this.$store.getters.serverPath + '/api/message-read', {
+        'message_id': message.id
+      }).then(res => {
+        if (res.data.success) {
+          message.is_read = true
+        }
+      }).catch(async err => {
+          console.log(err)
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
+        }
+      )
     },
 
     formatDate(date) {
@@ -439,12 +509,11 @@ export default {
         <div class="flex flex-col items-center space-y-2 p-3 flex-grow overflow-hidden">
           <div class="w-full overflow-y-auto flex flex-col-reverse p-2 rounded-2xl flex-grow">
 
-            <div v-for="msg in messages" :key="msg.id" class="flex flex-row text-white px-4 py-2 rounded-lg w-full"
+            <div v-for="msg in messages" :key="msg.id" :data-message-id="msg.id" class="message flex flex-row text-white px-4 py-2 rounded-lg w-full"
                  :class="{'justify-end' : msg.link_id === link_id}">
               <div
                 class="px-3 py-1 rounded bg-secondary_back-light dark:bg-secondary_back-dark flex flex-col max-w-72 lg:max-w-96"
                 :class="{'bg-opacity-50' : msg.link_id !== link_id}">
-
 
                 <div v-for="(file, index) in msg.files" :key="index">
                   <div v-if="file.type === 'photo'">

@@ -10,6 +10,7 @@ export default {
     return {
       chats: [],
       theme: localStorage.getItem('theme'),
+      channels: []
     }
   },
 
@@ -18,10 +19,74 @@ export default {
     this.getChats()
   },
 
+  beforeUnmount() {
+    this.disconnectChannels()
+  },
+
   methods: {
     getChats() {
+      this.disconnectChannels()
       this.axios.get(this.$store.getters.serverPath + '/api/chats').then(res => {
         this.chats = res.data.data
+        this.connectChannels()
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
+      })
+    },
+
+    connectChannels() {
+      this.channels = [];
+      this.chats.forEach(chat => {
+        const channel = window.Echo.private(`chat.${chat.id}`)
+          .listen('.message', () => {
+            this.getLastMessage(chat.id)
+          })
+          .listen('.deleted_message', () => {
+            this.getLastMessage(chat.id)
+          })
+          .listen('.edited_message', () => {
+            this.getLastMessage(chat.id)
+          })
+          .listen('.read_message', () => {
+            this.getLastMessage(chat.id)
+          })
+          .listen('.read_messages', () => {
+            this.getLastMessage(chat.id)
+          });
+
+        this.channels.push({
+          chatId: chat.id,
+          channel: channel,
+        });
+      });
+      console.log('Connected to channels:', this.channels);
+    },
+
+    disconnectChannels() {
+      this.channels.forEach(({chatId, channel}) => {
+        channel.stopListening('.message');
+        channel.stopListening('.deleted_message');
+        channel.stopListening('.edited_message');
+        channel.stopListening('.read_message');
+        channel.stopListening('.read_messages');
+        window.Echo.leave(`chat.${chatId}`);
+      });
+      this.channels = []; // Очищаем массив
+      console.log('Disconnected from all channels');
+    },
+
+    getLastMessage(id) {
+      this.axios.get(this.$store.getters.serverPath + '/api/last-message', {
+        params: {
+          'chat_id': id,
+        }
+      }).then(res => {
+        const index = this.chats.findIndex(chat => chat.id === id)
+        this.chats[index] = res.data.data
       }).catch(async err => {
         const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
           err,
@@ -43,12 +108,11 @@ export default {
     },
 
     srcCheck(was_read) {
-      if(!was_read) {
+      if (!was_read) {
         return this.theme === 'light' ? '/src/assets/check.svg' : '/src/assets/check-dark.svg'
       } else return '/src/assets/check-read.svg'
     },
-
-  }
+  },
 }
 </script>
 
@@ -71,9 +135,13 @@ export default {
                        class="w-8 h-8 md:w-12 md:h-12 object-cover rounded-full"/>
                 </div>
                 <div class="ms-5 flex flex-col justify-center py-3 w-1/2">
-                  <div class="text-primary_text-light dark:text-primary_text-dark font-bold truncate">{{ chat.user.name }}</div>
+                  <div class="text-primary_text-light dark:text-primary_text-dark font-bold truncate">{{
+                      chat.user.name
+                    }}
+                  </div>
                   <div class="flex flex-row ">
-                    <div v-if="chat.user.id !== chat.last_message.user.id" class="text-secondary_text-light dark:text-secondary_text-dark me-1">
+                    <div v-if="chat.user.id !== chat.last_message.user.id"
+                         class="text-secondary_text-light dark:text-secondary_text-dark me-1">
                       {{ $t('you') }}
                     </div>
                     <div class="text-primary_text-light dark:text-primary_text-dark truncate">
@@ -103,7 +171,7 @@ export default {
       </template>
     </div>
     <div v-if="chats && chats.length === 0" class="flex flex-col justify-center">
-      {{$t('nothing-found')}}
+      {{ $t('nothing-found') }}
     </div>
 
   </LayoutWithSidebar>
