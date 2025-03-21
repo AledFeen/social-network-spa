@@ -13,11 +13,22 @@ export default {
 
   beforeMount() {
     this.setTheme()
+    this.connectChannel()
   },
 
   mounted() {
     this.getPost()
     this.getComments()
+  },
+
+  beforeUnmount() {
+    if (this.channel) {
+      this.channel.stopListening('.like')
+      this.channel.stopListening('.dislike')
+      this.channel.stopListening('.comment')
+      this.channel.stopListening('.deleted_comment')
+      window.Echo.leave(`post.${this.id}`)
+    }
   },
 
   watch: {
@@ -27,11 +38,13 @@ export default {
       this.comments = []
       this.getPost()
       this.getComments()
+      this.connectChannel()
     }
   },
 
   data() {
     return {
+      channel: null,
       theme: null,
       post: null,
       selectedDropdown: '',
@@ -73,11 +86,62 @@ export default {
 
     isOwner() {
       return this.post.user.name === this.$store.getters.user.name
-    }
+    },
 
   },
 
   methods: {
+    isOwnerComment(id) {
+      return Number(id) === this.$store.getters.user.id
+    },
+
+    connectChannel() {
+      if (!this.channel) {
+        this.channel = window.Echo.private('post.' + this.id)
+          .listen('.like', (res) => {
+            console.log('like')
+            console.log(res)
+            this.post.like_count += 1
+            if(Number(res.like) === this.$store.getters.user.id) {
+              this.post.is_liked = true
+            }
+          })
+          .listen('.dislike', (res) => {
+            console.log('dislike')
+            console.log(res)
+            this.post.like_count -= 1
+            if(Number(res.dislike) === this.$store.getters.user.id) {
+              this.post.is_liked = false
+            }
+          })
+          .listen('.comment', (res) => {
+            console.log('comment')
+            console.log(res)
+            this.post.comment_count += 1
+            this.getComment(Number(res.comment))
+          })
+          .listen('.deleted_comment', (res) => {
+            console.log('comment')
+            console.log(res)
+            this.post.comment_count -= 1
+
+            if(res.comment['reply']) {
+              const index = this.comments.findIndex(cnt => cnt.id === Number(res.comment['reply']))
+              this.comments[index].has_replies -= 1
+              if(this.comments[index].replies) {
+                const comIndex = this.comments[index].replies.findIndex(cnt => cnt.id === Number(res.comment['id']))
+                this.comments[index].replies.splice(comIndex, 1)
+              }
+            } else {
+              const index = this.comments.findIndex(cnt => cnt.id === Number(res.comment['id']))
+              this.comments.splice(index, 1)
+              this.post.comment_count -= 1
+            }
+          })
+
+      }
+    },
+
     setTheme() {
       this.theme = localStorage.getItem('theme')
     },
@@ -126,6 +190,48 @@ export default {
       }).then(res => {
         if (res.data.success) {
           this.$router.push(`/profile/` + this.post.user.name);
+        }
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
+      })
+    },
+
+    getComment(id) {
+      this.axios.get(this.$store.getters.serverPath + '/api/comment', {
+        params: {
+          'comment_id': id
+        }
+      })
+        .then(response => {
+          const comment = response.data.data
+          if(comment.reply_id) {
+            const index = this.comments.findIndex(cnt => cnt.id === comment.reply_id)
+            this.comments[index].hasReplies += 1
+            if(this.comments[index].replies) {
+              this.comments[index].replies.push(comment)
+            }
+          } else {
+            this.comments.push(comment)
+            this.post.comment_count += 1
+          }
+        })
+        .catch(async err => {
+          const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+            err,
+            locale: this.$i18n.locale
+          });
+          alert(translatedMessage);
+        })
+    },
+
+    deleteComment(id) {
+      this.axios.delete(this.$store.getters.serverPath + '/api/comment', {
+        params: {
+          'comment_id': id
         }
       }).catch(async err => {
         const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
@@ -241,7 +347,18 @@ export default {
         this.modalComplaint = false
         this.modalComplaintComment = false
       }
+    },
 
+    likeUser(id) {
+      this.axios.post(this.$store.getters.serverPath + '/api/like', {
+        'post_id': id
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
+      })
     },
 
     showModal(message) {
@@ -480,9 +597,13 @@ export default {
             focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10">
                         <ul class="py-1 text-primary_text-light dark:text-primary_text-dark">
                           <li v-if="!isOwner">
-                            <div @click.prevent="complainComment(comment.id, comment.user.id)"
+                            <div v-if="!isOwnerComment(comment.user.id)" @click.prevent="complainComment(comment.id, comment.user.id)"
                                  class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
                               {{ $t('complaint-btn') }}
+                            </div>
+                            <div v-if="isOwnerComment(comment.user.id) || isOwner" @click.prevent="deleteComment(comment.id)"
+                                 class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                              {{ $t('delete-btn') }}
                             </div>
                           </li>
                         </ul>
@@ -552,9 +673,13 @@ export default {
             focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10">
                                 <ul class="py-1 text-primary_text-light dark:text-primary_text-dark">
                                   <li v-if="!isOwner">
-                                    <div @click.prevent="complainComment(comment.id)"
+                                    <div v-if="!isOwnerComment(comment.user.id)" @click.prevent="complainComment(comment.id)"
                                          class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
                                       {{ $t('complaint-btn') }}
+                                    </div>
+                                    <div v-if="isOwnerComment(comment.user.id) || isOwner" @click.prevent="deleteComment(reply.id)"
+                                         class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                                      {{ $t('delete-btn') }}
                                     </div>
                                   </li>
                                 </ul>
