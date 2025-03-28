@@ -632,24 +632,19 @@ export default {
     </div>
 
     <div v-if="urls.length > 0" class="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center z-20">
-      <div
-        class="bg-secondary_back-light dark:bg-secondary_back-dark p-6 rounded-lg shadow-lg text-center max-h-[calc(100vh-6.25rem)] max-w-lg w-full">
-
-        <div class="w-full p-2 flex flex-col justify-center relative max-h-[calc(100vh-12.25rem)] overflow-y-auto">
-          <div v-for="(file, index) in urls" :key="index"
-               class="w-full max-h-screen p-2 flex flex-row justify-center relative"
-               @click="toggleSelection(index)">
-            <div class="relative " :class="{'bg-gray-700 opacity-75': selectedIndex === index}">
+      <div class="bg-secondary_back-light dark:bg-secondary_back-dark p-6 rounded-lg shadow-lg text-center max-w-lg w-full">
+        <!-- Устанавливаем фиксированную высоту контейнера с прокруткой -->
+        <div class="w-full p-2 flex flex-col max-h-[70vh] overflow-y-auto">
+          <div v-for="(file, index) in urls" :key="index" class="w-full p-2 flex flex-row justify-center relative" @click="toggleSelection(index)">
+            <div class="relative" :class="{'bg-gray-700 opacity-75': selectedIndex === index}">
               <!-- Изображения -->
               <div v-if="file.type === 'image'">
-                <img :src="file.url" :alt="'Media ' + (index + 1)"
-                     class="w-full h-full object-cover rounded-lg">
+                <img :src="file.url" :alt="'Media ' + (index + 1)" class="w-full max-h-64 object-cover rounded-lg">
               </div>
 
               <!-- Видео -->
               <div v-else-if="file.type === 'video'">
-                <video :src="file.url" controls
-                       class="w-full h-full object-cover rounded-lg"></video>
+                <video :src="file.url" controls class="w-full max-h-64 object-cover rounded-lg"></video>
               </div>
 
               <!-- Аудио -->
@@ -659,14 +654,15 @@ export default {
                 <span class="text-xs truncate">{{ file.name }}</span>
               </div>
 
+              <!-- Другие файлы -->
               <div v-else class="text-lg text-white flex flex-col items-center">
                 📁 FILE <span class="text-xs truncate">{{ file.name }}</span>
               </div>
 
-              <div v-if="selectedIndex === index"
-                   class="absolute inset-0 flex justify-center items-center rounded-lg bg-black bg-opacity-25">
-                <button @click.stop="deleteFile(index)" class="text-btn_text-light bg-btn_back-primary
-          rounded-2xl px-4 py-2 mx-2 hover:scale-105">{{ $t('delete-btn') }}
+              <!-- Кнопка удаления -->
+              <div v-if="selectedIndex === index" class="absolute inset-0 flex justify-center items-center rounded-lg bg-black bg-opacity-25">
+                <button @click.stop="deleteFile(index)" class="text-btn_text-light bg-btn_back-primary rounded-2xl px-4 py-2 mx-2 hover:scale-105">
+                  {{ $t('delete-btn') }}
                 </button>
               </div>
             </div>
@@ -697,7 +693,7 @@ export default {
           </div>
         </div>
       </div>
-    </div>
+    </div> <!-- Load files -->
 
 
 

@@ -283,7 +283,16 @@ export default {
       this.axios.post(this.$store.getters.serverPath + '/api/like', {
         'post_id': id
       }).then(res => {
-        //logic for change like with websockets
+        if(res.data.success) {
+          const index = this.posts.findIndex(pst => pst.id === id)
+          if(this.posts[index].is_liked) {
+            this.posts[index].is_liked = false
+            this.posts[index].like_count -= 1
+          } else {
+            this.posts[index].is_liked = true
+            this.posts[index].like_count += 1
+          }
+        }
       }).catch(async err => {
         const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
           err,

@@ -289,10 +289,6 @@ export default {
       }
     },
 
-    commentCreated(success, commentId) {
-      ///
-    },
-
     downloadReplies(commentId) {
       const foundComment = this.comments.find(comment => comment.id === commentId);
       let page;
