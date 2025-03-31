@@ -200,9 +200,9 @@ export default {
           <div v-if="isSidebarOpen" class="ms-3">{{ user.name }}</div>
         </router-link>
 
-        <div v-if="isSidebarOpen" class="relative md:m-1 md:me-3 " @click.prevent="openDropdown">
+        <div v-if="isSidebarOpen" class="relative md:m-1 md:me-3" @click.prevent="openDropdown">
           <div class="hover:cursor-pointer hover:opacity-75">
-            <img :src="srcOption" alt="Settings"
+            <img :src="srcOption" alt="Dropdown"
                  class="md:block image-class rounded ms-2" :class="{'ms-3': isSidebarOpen}"/>
           </div>
 

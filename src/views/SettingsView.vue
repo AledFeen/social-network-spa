@@ -183,9 +183,9 @@ export default {
           <div class="flex flex-col">
             <div class="text-primary_text-light dark:text-primary_text-dark text-lg text-center">{{ $t('account-type') }}</div>
             <div class="relative">
-              <label for="locale-select" class="sr-only">Choose account type</label>
+              <label for="account-select" class="sr-only">Choose account type</label>
               <select
-                id="locale-select"
+                id="account-select"
                 class="block w-full px-3 py-2 text-sm border rounded-md shadow-sm bg-secondary_back-light dark:bg-secondary_back-dark
               text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75"
                 v-model="privacySettings.account_type"
@@ -202,9 +202,9 @@ export default {
           <div class="flex flex-col">
             <div class="text-primary_text-light dark:text-primary_text-dark text-lg text-center">{{ $t('who-can-comment') }}</div>
             <div class="relative">
-              <label for="locale-select" class="sr-only">Choose who can comment</label>
+              <label for="comment-select" class="sr-only">Choose who can comment</label>
               <select
-                id="locale-select"
+                id="comment-select"
                 class="block w-full px-3 py-2 text-sm border rounded-md shadow-sm bg-secondary_back-light dark:bg-secondary_back-dark
               text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75"
                 v-model="privacySettings.who_can_comment"
@@ -224,9 +224,9 @@ export default {
           <div class="flex flex-col">
             <div class="text-primary_text-light dark:text-primary_text-dark text-lg text-center">{{ $t('who-can-repost') }}</div>
             <div class="relative">
-              <label for="locale-select" class="sr-only">Choose who can repost</label>
+              <label for="repost-select" class="sr-only">Choose who can repost</label>
               <select
-                id="locale-select"
+                id="repost-select"
                 class="block w-full px-3 py-2 text-sm border rounded-md shadow-sm bg-secondary_back-light dark:bg-secondary_back-dark
               text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75"
                 v-model="privacySettings.who_can_repost"
@@ -244,9 +244,9 @@ export default {
           <div class="flex flex-col">
             <div class="text-primary_text-light dark:text-primary_text-dark text-lg text-center">{{ $t('who-can-message') }}</div>
             <div class="relative">
-              <label for="locale-select" class="sr-only">Choose who can send messages</label>
+              <label for="message-select" class="sr-only">Choose who can send messages</label>
               <select
-                id="locale-select"
+                id="message-select"
                 class="block w-full px-3 py-2 text-sm border rounded-md shadow-sm bg-secondary_back-light dark:bg-secondary_back-dark
               text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75"
                 v-model="privacySettings.who_can_message"
@@ -281,10 +281,6 @@ export default {
           </template>
         </div>
       </div>
-
-
-
-
 
     </div>
   </LayoutWithSidebar>

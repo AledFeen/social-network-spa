@@ -54,7 +54,7 @@ export default {
         'about_me': this.account.about_me,
       }).then(res => {
         console.log(res)
-        if(res.data.success === 'true') {
+        if(res.data.success === true) {
           this.showModal(this.$t('success-request'))
         } else {
           this.showModal(this.$t('failed-request'))
@@ -156,9 +156,9 @@ export default {
               <div class="hidden">
                 <input type="file" class="form-control" id="inputGroupFile" ref="fileInput" @change="handleFileChange">
               </div>
-              <input @click.prevent="updateImage()" type="submit" :value="$t('save-btn')"
+              <input @click.prevent="updateImage()" id="updateImageBtn" type="submit" :value="$t('save-btn')"
                      class="w-full mx-2 mb-5 py-3 ps-3 pe-3 text-btn_text-light bg-btn_back-primary rounded-2xl hover:bg-btn_back-primary_hover hover:cursor-pointer drop-shadow-md">
-              <input v-if="account.image !== 'default_avatar' && !image" @click.prevent="deleteImage()"  type="submit" :value="$t('delete-btn')"
+              <input v-if="account.image !== 'default_avatar' && !image" @click.prevent="deleteImage()" id="deleteImageBtn" type="submit" :value="$t('delete-btn')"
                      class="w-full mx-2 mb-5 py-3 ps-3 pe-3 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover drop-shadow-md">
               <input v-if="image" @click.prevent="reloadImage()"  type="submit" :value="$t('reset-btn')"
                      class="w-full mx-2 mb-5 py-3 ps-3 pe-3 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover drop-shadow-md">
@@ -179,7 +179,7 @@ export default {
           <div class="text-secondary_text-light dark:text-secondary_text-dark mb-1">{{$t('profile-about')}}</div>
           <textarea v-model="account.about_me"
                     class="mb-5 py-3 ps-3 pe-3 rounded-lg text-secondary_text-light dark:text-secondary_text-dark bg-input_back-light dark:bg-input_back-dark placeholder-gray-a9 focus:outline-none drop-shadow-md"></textarea>
-          <input @click.prevent="updateAccount()" type="submit" :value="$t('save-btn')"
+          <input @click.prevent="updateAccount()" type="submit" :value="$t('save-btn')" id="updateAccountBtn"
                  class="w-full mb-5 py-3 ps-3 pe-3 text-btn_text-light bg-btn_back-primary rounded-2xl hover:bg-btn_back-primary_hover hover:cursor-pointer drop-shadow-md">
         </div>
 
