@@ -36,8 +36,12 @@ export default {
     }
   },
 
-  mounted() {
+  beforeMount() {
     this.getProfile()
+  },
+
+  mounted() {
+
   },
 
   computed: {
@@ -379,7 +383,7 @@ export default {
                              @click.prevent="sendSubscribeRequest()" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
                   hover:cursor-pointer drop-shadow-md">{{ $t('subscribe-btn') }}
                         </div>
-                        <div v-else-if="!subscriber && profile.accountType === 'private' && wasRequestSent" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl
+                        <div v-else-if="!subscriber && profile.accountType === 'private' && wasRequestSent" @click.prevent="unsubscribe()" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl
                    drop-shadow-md">{{ $t('sent-request-message') }}
                         </div>
                         <div v-else-if="!subscriber" @click.prevent="subscribe()" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
@@ -396,7 +400,7 @@ export default {
               </div>
               <div v-if="profile">
                 <div class="relative" @click.prevent="openDropdown">
-                  <img :src="srcOptions" alt="Settings"
+                  <img :src="srcOptions" alt="profileSettings"
                        class="w-8 h-8 md:block image-class rounded  hover:opacity-75 hover:cursor-pointer hover:scale-110"/>
 
                   <div v-show="isDropdownOpen" class="absolute top-1 w-40 right-12 rounded-md shadow-lg ring-1 ring-black ring-opacity-5

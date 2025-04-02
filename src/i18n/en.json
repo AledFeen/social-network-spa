@@ -40,6 +40,7 @@
   "accept-btn": "Accept",
   "decline-btn": "Decline",
   "edit-btn": "Edit",
+  "edit-post-btn": "Edit post",
   "subscribe-btn": "Subscribe",
   "unsubscribe-btn": "Unsubscribe",
   "ban-btn": "Ban user",
@@ -69,7 +70,7 @@
   "search-tag-placeholder": "Enter tag",
   "search-location-placeholder": "Enter location",
 
-  "sent-request-message": "Request has been sent",
+  "sent-request-message": "Decline request",
   "user-banned-message": "You have banned this user",
   "post-placeholder": "Enter something new",
   "complain-placeholder": "Describe reason for complaint",
@@ -123,6 +124,8 @@
   "checked-option": "Checked",
   "non-checked-option": "Non-checked",
   "accepted-option": "Accepted",
-  "rejected-option": "Rejected"
+  "rejected-option": "Rejected",
 
+  "for-me": "For me",
+  "recommendations": "Recommendations"
 }

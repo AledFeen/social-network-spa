@@ -1,6 +1,6 @@
 describe('Login and Logout Test with Real Server', () => {
   beforeEach(() => {
-    cy.clearCookies();
+    cy.clearCookies()
   })
 
   it('shows connection error when server is unavailable', () => {
@@ -10,7 +10,7 @@ describe('Login and Logout Test with Real Server', () => {
 
     cy.visit('/');
 
-    cy.wait('@checkAuth');
+    cy.wait('@checkAuth')
 
     cy.get('.text-btn_back-primary')
       .should('be.visible')

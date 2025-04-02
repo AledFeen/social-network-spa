@@ -93,7 +93,7 @@ export default {
         .then(response => {
           this.lastPage = response.data.last_page
           if (this.lastPage >= this.page_id) {
-            if (!this.users) {
+            if (!this.posts) {
               this.posts = response.data.data
             } else {
               this.posts.push(...response.data.data)
@@ -120,7 +120,7 @@ export default {
         .then(response => {
           this.lastPage = response.data.last_page
           if (this.lastPage >= this.page_id) {
-            if (!this.users) {
+            if (!this.posts) {
               this.posts = response.data.data
             } else {
               this.posts.push(...response.data.data)
@@ -174,7 +174,7 @@ export default {
         .then(response => {
           this.lastPage = response.data.last_page
           if (this.lastPage >= this.page_id) {
-            if (!this.users) {
+            if (!this.posts) {
               this.posts = response.data.data
             } else {
               this.posts.push(...response.data.data)
@@ -200,12 +200,11 @@ export default {
         .then(response => {
           this.lastPage = response.data.last_page
           if (this.lastPage >= this.page_id) {
-            if (!this.users) {
+            if (!this.posts) {
               this.posts = response.data.data
             } else {
               this.posts.push(...response.data.data)
             }
-            //console.log(response)
           }
         })
         .catch(async err => {
@@ -226,7 +225,7 @@ export default {
         .then(response => {
           this.lastPage = response.data.last_page
           if (this.lastPage >= this.page_id) {
-            if (!this.users) {
+            if (!this.posts) {
               this.posts = response.data.data
             } else {
               this.posts.push(...response.data.data)
@@ -386,7 +385,7 @@ export default {
         </div>
 
         <div class="relative" @click.prevent="openDropdown(post.id)">
-          <img :src="srcOptions" alt="Settings"
+          <img :src="srcOptions" :alt="'DropdownPostMenu-' + post.location"
                class="w-8 h-8 md:block image-class rounded  hover:opacity-75 hover:cursor-pointer hover:scale-110"/>
 
           <div v-show="selectedDropdown === post.id" class="absolute top-1 w-40 right-12 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
@@ -401,7 +400,7 @@ export default {
               <li>
                 <router-link :to="`/edit-post/${post.id}`" @click.prevent="" v-if="isOwner"
                      class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
-                  {{ $t('edit-btn') }}
+                  {{ $t('edit-post-btn') }}
                 </router-link>
               </li>
               <li>
@@ -516,15 +515,12 @@ export default {
         </div>
 
       </div> <!-- Buttons row -->
-
       <div class="md:block h-px w-full bg-gray-a9 my-2"></div>
-
-      <div v-if="this.lastPage >= this.page_id + 1" @click.prevent="getProfilePosts" class="flex justify-center text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
-        {{$t('download-btn') }}
-      </div>
+    </div>
 
 
-
+    <div v-if="this.lastPage >= this.page_id + 1" @click.prevent="getProfilePosts" class="flex justify-center text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
+      {{$t('download-btn') }}
     </div>
   </div>
 </template>

@@ -262,7 +262,7 @@ export default {
         </div>
 
         <div @click.prevent="openLocationPanel()" class="hover:cursor-pointer hover:opacity-75 hover:scale-110 rounded">
-          <img :src="srcLocation" alt="Emoji"
+          <img :src="srcLocation" alt="Location"
                class="image-class rounded ms-2"/>
         </div>
 

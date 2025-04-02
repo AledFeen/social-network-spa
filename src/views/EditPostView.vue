@@ -237,7 +237,7 @@ export default {
     },
 
     updateTags() {
-      this.axios.put(this.$store.getters.serverPath + '/api/post-tags', {
+        this.axios.put(this.$store.getters.serverPath + '/api/post-tags', {
         'post_id': this.id,
         'tags': this.tags
       }).then(res => {
@@ -365,7 +365,7 @@ export default {
 
             <div @click.prevent="openLocationPanel()"
                  class="hover:cursor-pointer hover:opacity-75 hover:scale-110 rounded">
-              <img :src="srcLocation" alt="Emoji"
+              <img :src="srcLocation" alt="Location"
                    class="image-class rounded ms-2"/>
             </div>
 

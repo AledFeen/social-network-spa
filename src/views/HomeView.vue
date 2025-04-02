@@ -67,9 +67,11 @@
       <div class="flex flex-row items-center w-full">
         <div class="relative flex w-full bg-gray-200 rounded-full overflow-hidden">
           <button @click.prevent="selectPage('feed')" id="btn1" class="w-1/2 py-2 text-center font-medium text-btn_text-light bg-btn_back-primary
-             hover:bg-btn_back-primary_hover hover:cursor-pointer" :class="{'underline underline-offset-4': selectedPage === 'feed'}">Для мене</button>
+             hover:bg-btn_back-primary_hover hover:cursor-pointer" :class="{'underline underline-offset-4': selectedPage === 'feed'}">
+            {{ $t('for-me') }}</button>
           <button @click.prevent="selectPage('recommendations')" id="btn2" class="w-1/2 py-2 text-center font-medium text-btn_text-dark
-             bg-btn_back-secondary hover:bg-btn_back-secondary_hover" :class="{'underline underline-offset-4': selectedPage !== 'feed'}">Рекомендації</button>
+             bg-btn_back-secondary hover:bg-btn_back-secondary_hover" :class="{'underline underline-offset-4': selectedPage !== 'feed'}">
+            {{ $t('recommendations') }}</button>
         </div>
       </div>
 
