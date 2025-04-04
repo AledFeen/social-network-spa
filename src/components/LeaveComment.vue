@@ -154,9 +154,14 @@ export default {
       </div>
     </template>
 
-    <textarea v-model="postText" :placeholder="$t('post-placeholder')" class="mb-1 py-3 ps-3 pe-3 h-12 rounded-lg text-secondary_text-light dark:text-secondary_text-dark
+    <template v-if="reply_id">
+       <textarea v-model="postText" :placeholder="$t('send-reply-placeholder')" class="mb-1 py-3 ps-3 pe-3 h-12 rounded-lg text-secondary_text-light dark:text-secondary_text-dark
       border border-gray-a9 border-solid border-opacity-50 dark:border-none dark:bg-secondary_back-dark placeholder-gray-a9 focus:outline-none"></textarea>
-
+    </template>
+   <template v-else>
+      <textarea v-model="postText" :placeholder="$t('send-comment-placeholder')" class="mb-1 py-3 ps-3 pe-3 h-12 rounded-lg text-secondary_text-light dark:text-secondary_text-dark
+      border border-gray-a9 border-solid border-opacity-50 dark:border-none dark:bg-secondary_back-dark placeholder-gray-a9 focus:outline-none"></textarea>
+   </template>
     <div class="flex flex-row justify-between my-1">
       <div class="flex flex-row ms-1">
 
@@ -175,8 +180,14 @@ export default {
         </div>
 
       </div>
-      <input @click.prevent="saveComment()" type="submit" :value="$t('comment-btn')" class="w-40 me-3 mx-2 py-1 text-btn_text-light bg-btn_back-primary
+      <template v-if="reply_id">
+        <input @click.prevent="saveComment()" type="submit" :value="$t('send-reply-placeholder')" class="w-40 me-3 mx-2 py-1 text-btn_text-light bg-btn_back-primary
         rounded-2xl hover:bg-btn_back-primary_hover hover:cursor-pointer drop-shadow-md">
+      </template>
+      <template v-else>
+        <input @click.prevent="saveComment()" type="submit" :value="$t('comment-btn')" class="w-40 me-3 mx-2 py-1 text-btn_text-light bg-btn_back-primary
+        rounded-2xl hover:bg-btn_back-primary_hover hover:cursor-pointer drop-shadow-md">
+      </template>
     </div>
 
   </div>

@@ -465,7 +465,7 @@ export default {
           <PostList :key="postsKey" :id="profile.id" :page="'profile'" :is-owner="isMyProfile" @post-deleted="deletePost" @complaint-sent="deletePost"/>
         </div>
         <div v-else class="m-5 w-full flex flex-row justify-center"><h1
-          class="text-lg text-primary_text-light dark:text-primary_text-dark">Тут нічого немає</h1></div>
+          class="text-lg text-primary_text-light dark:text-primary_text-dark">{{$t('nothing')}}</h1></div>
       </template>
     </div>
   </LayoutWithSidebar>

@@ -524,7 +524,7 @@ export default {
         <div class="my-2 flex flex-row ms-1"> <!-- Buttons row -->
           <div class="flex flex-row items-center">
             <div class="hover:cursor-pointer hover:opacity-75 hover:scale-110 rounded">
-              <img @click.prevent="likeUser(post.id)" :src="srcLike(post.is_liked)" alt="Image"
+              <img @click.prevent="likeUser(post.id)" :src="srcLike(post.is_liked)" alt="Like"
                    class="image-class rounded ms-2"/>
             </div>
             <router-link :to="`/post-likes/${post.id}`"
@@ -546,7 +546,7 @@ export default {
           </router-link>
 
           <div class="hover:cursor-pointer hover:opacity-75 hover:scale-110 rounded">
-            <img @click.prevent="selectRepost(post.id)" :src="srcMakeRepost" alt="Image"
+            <img @click.prevent="selectRepost(post.id)" :src="srcMakeRepost" alt="make-repost"
                  class="image-class rounded ms-2"/>
           </div>
         </div> <!-- Buttons row -->
@@ -586,13 +586,13 @@ export default {
 
                   <div>
                     <div class="relative flex flex-row" @click.prevent="openCommentDropdown(comment.id)">
-                      <img :src="srcOptions" alt="Settings"
+                      <img :src="srcOptions" alt="openCommentMenu"
                            class="w-8 h-8 md:block rounded  hover:opacity-75 hover:cursor-pointer hover:scale-110"/>
 
                       <div v-show="selectedCommentDropdown === comment.id" class="absolute top-1 w-40 right-12 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
             focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10">
                         <ul class="py-1 text-primary_text-light dark:text-primary_text-dark">
-                          <li v-if="!isOwner">
+                          <li>
                             <div v-if="!isOwnerComment(comment.user.id)" @click.prevent="complainComment(comment.id, comment.user.id)"
                                  class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
                               {{ $t('complaint-btn') }}
@@ -624,7 +624,7 @@ export default {
 
                 <div @click.prevent="selectReplyComment(comment.id)" class="ms-5 mt-3 italic
                   text-secondary_text-light dark:text-secondary_text-dark break-words hover:underline hover:cursor-pointer">
-                  Відповісти
+                  {{$t('make-answer')}}
                 </div>
 
                 <div v-if="this.selectedComment === comment.id">
@@ -662,18 +662,18 @@ export default {
 
                           <div>
                             <div class="relative flex flex-row" @click.prevent="openCommentDropdown(reply.id)">
-                              <img :src="srcOptions" alt="Settings"
+                              <img :src="srcOptions" alt="openReplyMenu"
                                    class="w-8 h-8 md:block rounded  hover:opacity-75 hover:cursor-pointer hover:scale-110"/>
 
                               <div v-show="selectedCommentDropdown === reply.id" class="absolute top-1 w-40 right-12 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
             focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10">
                                 <ul class="py-1 text-primary_text-light dark:text-primary_text-dark">
-                                  <li v-if="!isOwner">
+                                  <li>
                                     <div v-if="!isOwnerComment(comment.user.id)" @click.prevent="complainComment(comment.id)"
                                          class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
                                       {{ $t('complaint-btn') }}
                                     </div>
-                                    <div v-if="isOwnerComment(comment.user.id) || isOwner" @click.prevent="deleteComment(reply.id)"
+                                    <div v-if="isOwner || isOwnerComment(comment.user.id)" @click.prevent="deleteComment(reply.id)" id="delete-reply-btn"
                                          class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
                                       {{ $t('delete-btn') }}
                                     </div>
@@ -706,11 +706,11 @@ export default {
                 </template> <!-- Replied Comment -->
                 <div @click.prevent="downloadReplies(comment.id)" v-if="comment.hasReplies > 0 && !comment.lastPage" class="ms-5 mt-3 italic
                   text-secondary_text-light dark:text-secondary_text-dark break-words hover:underline hover:cursor-pointer">
-                  Дивитись відповіді {{comment.hasReplies}}
+                  {{ $t('have-answers') }} {{comment.hasReplies}}
                 </div>
                 <div @click.prevent="downloadReplies(comment.id)" v-else-if="comment.lastPage > comment.currentPage" class="ms-5 mt-3 italic
                   text-secondary_text-light dark:text-secondary_text-dark break-words hover:underline hover:cursor-pointer">>
-                  Завантажити ще {{ comment.total - comment.replies.length }}
+                  {{ $t('load-more') }} {{ comment.total - comment.replies.length }}
                 </div>
               </div> <!-- Content col -->
             </div>

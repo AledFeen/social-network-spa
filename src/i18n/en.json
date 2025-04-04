@@ -127,5 +127,11 @@
   "rejected-option": "Rejected",
 
   "for-me": "For me",
-  "recommendations": "Recommendations"
+  "recommendations": "Recommendations",
+  "nothing": "Nothing to see here",
+  "make-answer": "Make answer",
+  "have-answers": "Count of answers",
+  "load-more": "Load more",
+  "send-comment-placeholder": "Leave a comment",
+  "send-reply-placeholder": "Leave a reply"
 }

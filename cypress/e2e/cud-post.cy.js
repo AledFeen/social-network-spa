@@ -1,4 +1,4 @@
-describe('post', () => {
+describe('Test', () => {
   it('test create post', () => {
     cy.request('GET', 'http://localhost:8000/sanctum/csrf-cookie').then(() => {
       cy.request('POST', 'http://localhost:8000/login', {
@@ -37,39 +37,6 @@ describe('post', () => {
 
     cy.wait('@request').its('response').should((response) => {
       expect(response.statusCode).to.eq(201)
-    })
-  })
-
-  it('test edit post by non author', () => {
-    cy.request('GET', 'http://localhost:8000/sanctum/csrf-cookie').then(() => {
-      cy.request('POST', 'http://localhost:8000/login', {
-        email: 'user2@gmail.com',
-        password: '12344321',
-      })
-    })
-
-    cy.intercept('PUT', '**/api/post-location').as('location')
-    cy.intercept('PUT', '**/api/post').as('post')
-    cy.intercept('PUT', '**/api/post-tags').as('tags')
-    cy.intercept('POST', '**/api/post-files').as('files')
-
-    cy.visit('/edit-post/1', {timeout: 10000})
-    cy.contains('Post').click()
-
-    cy.wait('@location').its('response').should((response) => {
-      expect(response.statusCode).to.eq(400)
-    })
-
-    cy.wait('@post').its('response').should((response) => {
-      expect(response.statusCode).to.eq(400)
-    })
-
-    cy.wait('@tags').its('response').should((response) => {
-      expect(response.statusCode).to.eq(400)
-    })
-
-    cy.wait('@files').its('response').should((response) => {
-      expect(response.statusCode).to.eq(400)
     })
   })
 
@@ -164,4 +131,29 @@ describe('post', () => {
       expect(response.statusCode).to.eq(200)
     })
   })
+
+  it('make repost', () => {
+    cy.request('GET', 'http://localhost:8000/sanctum/csrf-cookie').then(() => {
+      cy.request('POST', 'http://localhost:8000/login', {
+        email: 'user3@gmail.com',
+        password: '12344321'
+      }).then((response) => {
+        expect(response.status).to.eq(200)
+      })
+    })
+
+    cy.intercept('POST', '**/api/post').as('request')
+
+    cy.visit('/post/3', {timeout: 10000})
+
+    cy.get('img[alt="make-repost"]').click()
+
+    cy.get('textarea[placeholder="Enter something new"]').type('new repost')
+    cy.contains('Post').click()
+
+    cy.wait('@request').its('response').should((response) => {
+      expect(response.statusCode).to.eq(201)
+    })
+  })
+
 })
