@@ -89,7 +89,7 @@ export default {
               <input
                 type="radio"
                 name="theme"
-                value="light"
+                value="Profile"
                 checked
                 @change="() => changeType('profile')"
                 class=" bg-gray-100 border-gray-300 focus:ring-blue-500"
@@ -100,7 +100,7 @@ export default {
               <input
                 type="radio"
                 name="theme"
-                value="dark"
+                value="Post"
                 @change="() => changeType('posts')"
                 class="bg-gray-100 border-gray-300 focus:ring-blue-500"
               />

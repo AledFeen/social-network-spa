@@ -545,7 +545,7 @@ export default {
                 </div>
 
                 <div v-if="editMessage && selectedMessage.id === msg.id" class="flex flex-col">
-                  <textarea v-model="editedMessage"
+                  <textarea v-model="editedMessage" id="edited-textarea"
                             class="w-64 bg-transparent text-primary_text-light dark:text-primary_text-dark"></textarea>
                   <div @click.prevent="updateMessage()" type="submit"
                        class="w-1/3 mt-1 text-btn_text-light bg-btn_back-primary rounded-2xl hover:bg-btn_back-primary_hover hover:cursor-pointer drop-shadow-md text-center">
@@ -557,7 +557,7 @@ export default {
 
 
                 <div class="flex flex-row" :class="{'justify-end' : msg.link_id === link_id}">
-                  <img :src="srcOptions" alt="Settings"
+                  <img :src="srcOptions" :alt="'Options ' + msg.text"
                        @click.prevent="selectMessage(msg)" class="w-8 h-8 md:block image-class rounded
                     hover:opacity-75 hover:cursor-pointer hover:scale-110"/>
                   <img v-if="msg.link_id === link_id" :src="srcCheck(msg.is_read)" alt="Tag"
@@ -621,7 +621,7 @@ export default {
             bg-transparent placeholder-gray-a9 focus:outline-none resize-none"></textarea>
 
             <div @click.prevent="sendMessage()" class="hover:cursor-pointer hover:opacity-75 hover:scale-110 rounded">
-              <img :src="srcSend" alt="Emoji"
+              <img :src="srcSend" alt="Send"
                    class="image-class rounded ms-2 me-4"/>
             </div>
 
@@ -688,7 +688,7 @@ export default {
             bg-transparent placeholder-gray-a9 focus:outline-none resize-none"></textarea>
 
           <div @click.prevent="sendMessage()" class="hover:cursor-pointer hover:opacity-75 hover:scale-110 rounded">
-            <img :src="srcSend" alt="Emoji"
+            <img :src="srcSend" alt="Send-cover"
                  class="image-class rounded ms-2 me-4"/>
           </div>
         </div>

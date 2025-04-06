@@ -420,7 +420,7 @@ export default {
           </div>
 
           <div class="relative" @click.prevent="openDropdown(post.id)">
-            <img :src="srcOptions" alt="Settings"
+            <img :src="srcOptions" alt="openPostDropdown"
                  class="w-8 h-8 md:block image-class rounded  hover:opacity-75 hover:cursor-pointer hover:scale-110"/>
 
             <div v-show="selectedDropdown === post.id" class="absolute top-1 w-40 right-12 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
@@ -593,7 +593,7 @@ export default {
             focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10">
                         <ul class="py-1 text-primary_text-light dark:text-primary_text-dark">
                           <li>
-                            <div v-if="!isOwnerComment(comment.user.id)" @click.prevent="complainComment(comment.id, comment.user.id)"
+                            <div v-if="!isOwnerComment(comment.user.id)" @click.prevent="complainComment(comment.id, comment.user.id)" id="openComplaint"
                                  class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
                               {{ $t('complaint-btn') }}
                             </div>

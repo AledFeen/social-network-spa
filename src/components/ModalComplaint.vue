@@ -56,10 +56,10 @@
       <textarea v-model="text" :placeholder="$t('complain-placeholder')" class="mb-1 py-3 ps-3 pe-3 h-12 rounded-lg text-secondary_text-light dark:text-secondary_text-dark
       border border-gray-a9 border-solid border-opacity-50 dark:border-none dark:bg-secondary_back-dark placeholder-gray-a9 focus:outline-none"></textarea>
 
-      <input @click.prevent="sendComplaint()" type="submit" :value="$t('complaint-btn')" class="w-40 me-3 mx-2 py-1 text-btn_text-light bg-btn_back-primary
+      <input @click.prevent="sendComplaint()" type="submit" :value="$t('complaint-btn')" id="send-complaint" class="w-40 me-3 mx-2 py-1 text-btn_text-light bg-btn_back-primary
         rounded-2xl hover:bg-btn_back-primary_hover hover:cursor-pointer drop-shadow-md">
 
-      <input @click.prevent="close()" type="submit" :value="$t('close-btn')" class="w-40 mt-1 me-3 mx-2 py-1 text-btn_text-dark bg-btn_back-secondary
+      <input @click.prevent="close()" type="submit" :value="$t('close-btn')"  class="w-40 mt-1 me-3 mx-2 py-1 text-btn_text-dark bg-btn_back-secondary
         rounded-2xl hover:bg-btn_back-secondary_hover hover:cursor-pointer drop-shadow-md">
     </div>
   </div>
