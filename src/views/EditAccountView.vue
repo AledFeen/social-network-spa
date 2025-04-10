@@ -168,16 +168,16 @@ export default {
 
         <div class="flex flex-col w-1/2 px-5 py-5">
           <div class="text-secondary_text-light dark:text-secondary_text-dark mb-1">{{$t('profile-real-name')}}</div>
-          <input v-model="account.real_name" type="text"
+          <input v-model="account.real_name" type="text" id="real_name"
                  class="mb-5 py-3 ps-3 pe-3 rounded-lg text-secondary_text-light dark:text-secondary_text-dark bg-input_back-light dark:bg-input_back-dark placeholder-gray-a9 focus:outline-none drop-shadow-md">
           <div class="text-secondary_text-light dark:text-secondary_text-dark mb-1">{{$t('profile-date')}}</div>
-          <input v-model="account.date_of_birth" type="date"
+          <input v-model="account.date_of_birth" type="date" id="date"
                  class="mb-5 py-3 ps-3 pe-3 rounded-lg text-secondary_text-light dark:text-secondary_text-dark bg-input_back-light dark:bg-input_back-dark placeholder-gray-a9 focus:outline-none drop-shadow-md">
           <div class="text-secondary_text-light dark:text-secondary_text-dark mb-1">{{$t('profile-location')}}</div>
-          <input v-model="account.location" type="text"
+          <input v-model="account.location" type="text" id="location"
                  class="mb-5 py-3 ps-3 pe-3 rounded-lg text-secondary_text-light dark:text-secondary_text-dark bg-input_back-light dark:bg-input_back-dark placeholder-gray-a9 focus:outline-none drop-shadow-md">
           <div class="text-secondary_text-light dark:text-secondary_text-dark mb-1">{{$t('profile-about')}}</div>
-          <textarea v-model="account.about_me"
+          <textarea v-model="account.about_me" id="about_me"
                     class="mb-5 py-3 ps-3 pe-3 rounded-lg text-secondary_text-light dark:text-secondary_text-dark bg-input_back-light dark:bg-input_back-dark placeholder-gray-a9 focus:outline-none drop-shadow-md"></textarea>
           <input @click.prevent="updateAccount()" type="submit" :value="$t('save-btn')" id="updateAccountBtn"
                  class="w-full mb-5 py-3 ps-3 pe-3 text-btn_text-light bg-btn_back-primary rounded-2xl hover:bg-btn_back-primary_hover hover:cursor-pointer drop-shadow-md">

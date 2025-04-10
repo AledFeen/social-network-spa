@@ -21,7 +21,7 @@ export default {
       location: "",
       selectedLocation: "",
       allowedTypes: ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml',
-        'video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/x-matroska'],
+        'video/mp4', 'video/webm'],
       files: [],
       urls: [],
       selectedIndex: null

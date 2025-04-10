@@ -26,11 +26,7 @@ export default {
       urls: [],
       allowedTypes: [
         'image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml',
-        'video/mp4',           //.mp4
-        'video/quicktime',     //.mov
-        'video/x-msvideo',     //.avi
-        'video/avi',           //.avi
-        'video/x-matroska',
+        'video/mp4', 'video/webm',
         'audio/mpeg', 'audio/wav', 'audio/ogg',
         'application/pdf', 'text/plain',
         'application/json', 'application/xml', 'text/xml', 'application/zip',
@@ -557,7 +553,7 @@ export default {
 
 
                 <div class="flex flex-row" :class="{'justify-end' : msg.link_id === link_id}">
-                  <img :src="srcOptions" :alt="'Options ' + msg.text"
+                  <img :src="srcOptions" :alt="'Options ' + msg.text" :id="'msg' + msg.id"
                        @click.prevent="selectMessage(msg)" class="w-8 h-8 md:block image-class rounded
                     hover:opacity-75 hover:cursor-pointer hover:scale-110"/>
                   <img v-if="msg.link_id === link_id" :src="srcCheck(msg.is_read)" alt="Tag"
@@ -617,7 +613,7 @@ export default {
               <emoji-panel @emoji-selected="addEmoji"></emoji-panel>
             </div>
 
-            <textarea v-model="postText" :placeholder="$t('post-placeholder')" class="w-full mt-3 mb-1 ps-3 pe-3 h-8 rounded-lg text-secondary_text-light dark:text-secondary_text-dark
+            <textarea v-model="postText" :placeholder="$t('post-placeholder')" maxlength="1024" class="w-full mt-3 mb-1 ps-3 pe-3 h-8 rounded-lg text-secondary_text-light dark:text-secondary_text-dark
             bg-transparent placeholder-gray-a9 focus:outline-none resize-none"></textarea>
 
             <div @click.prevent="sendMessage()" class="hover:cursor-pointer hover:opacity-75 hover:scale-110 rounded">

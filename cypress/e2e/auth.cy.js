@@ -116,4 +116,5 @@ describe('Login and Logout Test with Real Server', () => {
     cy.wait('@registerRequest').its('response.statusCode').should('eq', 201)
     cy.url().should('eq', 'http://localhost:5173/', { timeout: 1000 })
   })
+
 })

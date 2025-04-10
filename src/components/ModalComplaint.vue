@@ -17,7 +17,7 @@
         };
         ids[this.type] = this.id;
 
-        if(this.text.length > 10) {
+        if(this.text.length >= 10) {
           this.axios.post(this.$store.getters.serverPath + '/api/complaint', {
             user_id: this.user_id,
             post_id: ids.post,

@@ -23,7 +23,7 @@ export default {
       location: "",
       selectedLocation: "",
       allowedTypes: ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml',
-        'video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/x-matroska'],
+        'video/mp4', 'video/webm'],
       files: [],
       urls: [],
       selectedIndex: null,
@@ -299,7 +299,7 @@ export default {
         <template v-if="urls.length > 0">
           <div class="flex flex-wrap justify-center gap-1 items-center">
             <div v-for="(file, index) in urls" :key="index" class="p-2 flex flex-row justify-center relative"
-                 :class="{'md:w-5/12': urls.length > 1}"
+                 :class="{'md:w-5/12': urls.length > 1}" :id="'file'+index"
                  @click="toggleSelection(index)">
               <div class="relative w-full h-64 md:h-80"
                    :class="{'bg-gray-700 opacity-75': selectedIndex === index, 'h-36 md:h-44': this.urls.length > 1 }">
@@ -319,7 +319,7 @@ export default {
           </div>
         </template>
 
-        <div v-if="location !== ''" @click.prevent="selectLocation()"
+        <div v-if="location" @click.prevent="selectLocation()" id="select-location"
              class="relative my-1 mx-3 w-full text-secondary_text-light dark:text-secondary_text-dark hover:cursor-pointer underline">
           {{ location }}
           <div v-if="selectedLocation === location" @click.prevent="deleteLocation()" class="absolute px-2 left-5 bottom-5 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
@@ -332,8 +332,8 @@ export default {
       border border-gray-a9 border-solid border-opacity-50 dark:border-none dark:bg-secondary_back-dark placeholder-gray-a9 focus:outline-none"></textarea>
 
         <div v-if="tags.length > 0" class="flex flex-row flex-wrap my-1 ms-1">
-          <template v-for="tag in tags">
-            <div @click.prevent="selectTag(tag)"
+          <template v-for="(tag, index) in tags">
+            <div @click.prevent="selectTag(tag)" :id="'tag'+index"
                  class="relative mx-2 px-3 p-1 text-primary_text-light dark:text-primary_text-dark bg-secondary_back-light dark:bg-secondary_back-dark hover:cursor-pointer rounded-2xl">
               {{ tag }}
               <div v-if="selectedTag === tag" @click.prevent="deleteTag(tag)" class="absolute px-2 left-5 bottom-8 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
