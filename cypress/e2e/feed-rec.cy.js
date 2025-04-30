@@ -15,7 +15,7 @@ describe('Test', () => {
       const expectedResponse = {
         data: [
           {
-            id: 4,
+            id: 5,
             user: {
               id: 10,
               name: "feeduser1",
@@ -33,7 +33,7 @@ describe('Test', () => {
             is_liked: false
           },
           {
-            id: 5,
+            id: 6,
             user: {
               id: 11,
               name: "feeduser2",
@@ -86,7 +86,7 @@ describe('Test', () => {
       const expectedResponse = {
         data: [
           {
-            id: 6,
+            id: 7,
             user: {
               id: 14,
               name: "requser2",
@@ -104,7 +104,7 @@ describe('Test', () => {
             is_liked: false
           },
           {
-            id: 7,
+            id: 8,
             user: {
               id: 14,
               name: "requser2",

@@ -1,4 +1,5 @@
 describe('chat tests', () => {
+
   it('get chats', () => {
     cy.request('GET', 'http://localhost:8000/sanctum/csrf-cookie').then(() => {
       cy.request('POST', 'http://localhost:8000/login', {
@@ -176,7 +177,7 @@ describe('chat tests', () => {
   it('delete message', () => {
     cy.request('GET', 'http://localhost:8000/sanctum/csrf-cookie').then(() => {
       cy.request('POST', 'http://localhost:8000/login', {
-        email: 'user3@gmail.com',
+        email: 'user1@gmail.com',
         password: '12344321'
       })
     })

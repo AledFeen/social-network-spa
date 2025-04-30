@@ -65,7 +65,7 @@ describe('Search', () => {
       const expectedResponse = {
         data: [
           {
-            id: 5,
+            id: 6,
             user: {
               id: 11,
               name: "feeduser2",
@@ -83,7 +83,7 @@ describe('Search', () => {
             is_liked: false
           },
           {
-            id: 7,
+            id: 8,
             user: {
               id: 14,
               name: "requser2",
@@ -146,7 +146,7 @@ describe('Search', () => {
       const expectedResponse = {
         data: [
           {
-            id: 7,
+            id: 8,
             user: {
               id: 14,
               name: "requser2",
@@ -204,7 +204,7 @@ describe('Search', () => {
       const expectedResponse = {
         data: [
           {
-            id: 4,
+            id: 5,
             user: {
               id: 10,
               name: "feeduser1",
@@ -222,7 +222,7 @@ describe('Search', () => {
             is_liked: false
           },
           {
-            id: 5,
+            id: 6,
             user: {
               id: 11,
               name: "feeduser2",
@@ -256,7 +256,6 @@ describe('Search', () => {
     })
   })
 
-
   it('search posts by location', () => {
     cy.request('GET', 'http://localhost:8000/sanctum/csrf-cookie').then(() => {
       cy.request('POST', 'http://localhost:8000/login', {
@@ -278,7 +277,29 @@ describe('Search', () => {
       const expectedResponse = {
         data: [
           {
-            id: 4,
+            id: 10,
+            user: {
+              id: 16,
+              name: "validateuser",
+              image: "default_avatar"
+            },
+            repost_id: null,
+            location: "location2",
+            text: "post for validate testing",
+            repost_count: 0,
+            like_count: 0,
+            comment_count: 0,
+            tags: [
+              {
+                name: "new tag tag"
+              }
+            ],
+            files: [],
+            main_post: null,
+            is_liked: false
+          },
+          {
+            id: 5,
             user: {
               id: 10,
               name: "feeduser1",
@@ -296,7 +317,7 @@ describe('Search', () => {
             is_liked: false
           },
           {
-            id: 6,
+            id: 7,
             user: {
               id: 14,
               name: "requser2",
@@ -316,7 +337,7 @@ describe('Search', () => {
         ],
         current_page: 1,
         last_page: 1,
-        total: 2
+        total: 3
       }
 
       const cleanResponse = Cypress._.cloneDeep(response.body)
@@ -351,7 +372,7 @@ describe('Search', () => {
       const expectedResponse = {
         data: [
           {
-            id: 7,
+            id: 8,
             user: {
               id: 14,
               name: "requser2",

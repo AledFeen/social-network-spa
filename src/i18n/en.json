@@ -77,6 +77,7 @@
 
   "count-request-message": "Subscription request count is",
   "no-request-message": "No requests yet",
+  "no-notifications-message": "No notifications yet",
 
   "success-request": "Success",
   "failed-request": "Request failed",

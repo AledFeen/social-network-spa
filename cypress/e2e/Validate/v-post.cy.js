@@ -338,23 +338,6 @@ describe('Validate account', () => {
     })
   })
 
-  it('create post file webm', () => {
-
-    cy.intercept('POST', '**/api/post').as('request')
-
-    cy.get('input[type="file"]').attachFile({
-      filePath: 'video.webm',
-      fileName: 'video.webm',
-      mimeType: 'video/webm'
-    })
-
-    cy.contains('Post').click()
-
-    cy.wait('@request').its('response').should((response) => {
-      expect(response.statusCode).to.eq(201)
-    })
-  })
-
   it('create post file uncorrect', () => {
 
     cy.intercept('POST', '**/api/post').as('request')

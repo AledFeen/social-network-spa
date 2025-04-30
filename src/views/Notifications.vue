@@ -15,9 +15,9 @@ export default {
       comments: [],
       replies: [],
       reposts: [],
-      openedMenu: '',
       isModalVisible: false,
       modalMessage: null,
+      selectedMenu: 'like'
     }
   },
 
@@ -28,6 +28,25 @@ export default {
     this.getComments()
     this.getReplies()
     this.getReposts()
+  },
+
+  computed: {
+    srcRepost() {
+      return this.theme === 'light' ? '/src/assets/repost.svg' : '/src/assets/repost-dark.svg'
+    },
+
+    srcComment() {
+      return this.theme === 'light' ? '/src/assets/comment.svg' : '/src/assets/comment-dark.svg'
+    },
+
+    srcLike() {
+      return this.theme === 'light' ? '/src/assets/heart.svg' : '/src/assets/heart-dark.svg'
+    },
+
+    srcSub() {
+      return this.theme === 'light' ? '/src/assets/sub.svg' : '/src/assets/sub-dark.svg'
+    },
+
   },
 
   methods: {
@@ -63,7 +82,6 @@ export default {
       this.axios.delete(this.$store.getters.serverPath + '/api/notification/followers').then(res => {
         if (res.data.success) {
           this.showModal(this.$t('success-request'))
-          this.closeMenu()
           this.followers = []
         } else {
           this.showModal(this.$t('failed-request'))
@@ -96,7 +114,6 @@ export default {
       this.axios.delete(this.$store.getters.serverPath + '/api/notification/likes').then(res => {
         if (res.data.success) {
           this.showModal(this.$t('success-request'))
-          this.closeMenu()
           this.likes = []
         } else {
           this.showModal(this.$t('failed-request'))
@@ -129,7 +146,6 @@ export default {
       this.axios.delete(this.$store.getters.serverPath + '/api/notification/comments').then(res => {
         if (res.data.success) {
           this.showModal(this.$t('success-request'))
-          this.closeMenu()
           this.comments = []
         } else {
           this.showModal(this.$t('failed-request'))
@@ -162,7 +178,6 @@ export default {
       this.axios.delete(this.$store.getters.serverPath + '/api/notification/comment-replies').then(res => {
         if (res.data.success) {
           this.showModal(this.$t('success-request'))
-          this.closeMenu()
           this.replies = []
         } else {
           this.showModal(this.$t('failed-request'))
@@ -195,7 +210,6 @@ export default {
       this.axios.delete(this.$store.getters.serverPath + '/api/notification/reposts').then(res => {
         if (res.data.success) {
           this.showModal(this.$t('success-request'))
-          this.closeMenu()
           this.reposts = []
         } else {
           this.showModal(this.$t('failed-request'))
@@ -214,14 +228,6 @@ export default {
       return dayjs(date).format("DD.MM.YYYY HH:mm");
     },
 
-    openMenu(menu) {
-      this.openedMenu === menu ? this.openedMenu = '' : this.openedMenu = menu
-    },
-
-    closeMenu() {
-      this.openedMenu = ''
-    },
-
     showModal(message) {
       this.modalMessage = message;
       this.isModalVisible = true;
@@ -230,6 +236,10 @@ export default {
         this.isModalVisible = false;
       }, 500);
     },
+
+    selectMenu(name) {
+      this.selectedMenu = name
+    }
 
   }
 }
@@ -242,34 +252,72 @@ export default {
     </template>
 
     <div class="block w-full mx-1 md:w-2/4 my-4 md:my-16 rounded-lg shadow-lg border border-gray-a9 border-solid px-3 py-3">
-      <div v-if="requestCount !== null" class="w-full">
-        <div v-if="requestCount" class="flex flex-row justify-around mx-3">
+
+
+      <div class="flex flex-row justify-center">
+
+        <div @click.prevent="selectMenu('like')" class="flex flex-row items-center rounded hover:opacity-75 hover:cursor-pointer ms-5 me-5" :class="{'bg-btn_back-primary': selectedMenu === 'like'}">
+          <div class="rounded">
+            <img :src="srcLike" alt="Image"
+                 class="image-class rounded ms-2"/>
+          </div>
+          <div class="ms-1 me-3 text-primary_text-light dark:text-primary_text-dark">
+            {{likes.length}}
+          </div>
+        </div>
+
+        <div @click.prevent="selectMenu('sub')" class="flex flex-row items-center rounded hover:opacity-75 hover:cursor-pointer ms-5 me-5" :class="{'bg-btn_back-primary': selectedMenu === 'sub'}">
+          <div class="rounded">
+            <img :src="srcSub" alt="Image"
+                 class="image-class rounded ms-2"/>
+          </div>
+          <div class="ms-1 me-3 text-primary_text-light dark:text-primary_text-dark">
+            {{requestCount + followers.length}}
+          </div>
+        </div>
+
+        <div @click.prevent="selectMenu('comment')" class="flex flex-row items-center rounded hover:opacity-75 hover:cursor-pointer ms-5 me-5" :class="{'bg-btn_back-primary': selectedMenu === 'comment'}">
+          <div class="rounded">
+            <img :src="srcComment" alt="Image"
+                 class="image-class rounded ms-2"/>
+          </div>
+          <div class="ms-1 me-3 text-primary_text-light dark:text-primary_text-dark">
+            {{ comments.length + replies.length }}
+          </div>
+        </div>
+
+        <div @click.prevent="selectMenu('repost')" class="flex flex-row items-center rounded hover:opacity-75 hover:cursor-pointer ms-5 me-5" :class="{'bg-btn_back-primary': selectedMenu === 'repost'}">
+          <div class="rounded">
+            <img :src="srcRepost" alt="Image"
+                 class="image-class rounded ms-2"/>
+          </div>
+          <div class="ms-1 me-3 text-primary_text-light dark:text-primary_text-dark">
+            {{ reposts.length }}
+          </div>
+        </div>
+      </div>
+
+      <div v-if="selectedMenu === 'sub' && requestCount !== null" class="w-full mt-3">
+        <div v-if="requestCount" class="flex flex-row justify-between mx-3">
           <div class="mt-2 text-primary_text-light dark:text-primary_text-dark">{{ $t('count-request-message') }}
             {{ requestCount }}
           </div>
-          <router-link to="/sub-requests" class="py-2 px-3 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
+          <router-link to="/sub-requests" class="py-1 px-3 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
                   hover:cursor-pointer drop-shadow-md"> {{ $t('look-btn') }}
           </router-link>
         </div>
         <div v-else class="text-primary_text-light dark:text-primary_text-dark">{{ $t('no-request-message') }}</div>
       </div>
 
-      <div v-if="followers.length > 0" class="flex flex-row justify-between">
-        <div @click.prevent="openMenu('followers')"
-             class="text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">{{$t('subscribe-message')}}
-          {{ followers.length }}
+      <div v-if="selectedMenu === 'sub'" class="flex flex-col">
+        <div class="flex flex-row justify-end" v-if="followers.length > 0">
+          <div @click.prevent="deleteFollowers"
+               class="me-3 mt-3 text-end text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
+            {{ $t('clear-btn') }}
+          </div>
         </div>
-        <div @click.prevent="closeMenu" v-if="openedMenu === 'followers'"
-             class="me-3 text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
-          {{ $t('close-btn') }}
-        </div>
+        <div v-else class="text-primary_text-light dark:text-primary_text-dark">{{ $t('no-notifications-message') }}</div>
 
-      </div>
-      <div v-if="openedMenu === 'followers'" class="flex flex-col">
-        <div @click.prevent="deleteFollowers" v-if="openedMenu === 'followers'"
-             class="me-3 mt-3 text-end text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
-          {{ $t('clear-btn') }}
-        </div>
         <div v-for="follow in followers" class="flex flex-row items-center mt-1">
           <router-link :to="`/profile/${follow.follower.name}`">
             <img v-if="follow.follower.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
@@ -289,21 +337,15 @@ export default {
         </div>
       </div>
 
-      <div v-if="likes.length > 0" class="flex flex-row justify-between">
-        <div @click.prevent="openMenu('likes')"
-             class="text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
-          {{ likes.length }} {{$t('like-message')}}
+      <div v-if="selectedMenu === 'like'" class="flex flex-col">
+        <div class="flex flex-row justify-end" v-if="likes.length > 0">
+          <div @click.prevent="deleteLikes"
+               class="me-3 mt-3 text-end text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
+            {{ $t('clear-btn') }}
+          </div>
         </div>
-        <div @click.prevent="closeMenu" v-if="openedMenu === 'likes'"
-             class="me-3 text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
-          {{ $t('close-btn') }}
-        </div>
-      </div>
-      <div v-if="openedMenu === 'likes'" class="flex flex-col">
-        <div @click.prevent="deleteLikes" v-if="openedMenu === 'likes'"
-             class="me-3 mt-3 text-end text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
-          {{ $t('clear-btn') }}
-        </div>
+        <div v-else class="text-primary_text-light dark:text-primary_text-dark">{{ $t('no-notifications-message') }}</div>
+
         <div v-for="like in likes" class="flex flex-row items-center mt-1">
           <router-link :to="`/profile/${like.user.name}`">
             <img v-if="like.user.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
@@ -325,21 +367,15 @@ export default {
         </div>
       </div>
 
-      <div v-if="reposts.length > 0" class="flex flex-row justify-between">
-        <div @click.prevent="openMenu('reposts')"
-             class="text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
-          {{ reposts.length }} {{$t('repost-message')}}
+      <div v-if="selectedMenu === 'repost'" class="flex flex-col">
+        <div class="flex flex-row justify-end" v-if="reposts.length > 0">
+          <div @click.prevent="deleteReposts"
+               class="me-3 mt-3 text-end text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
+            {{ $t('clear-btn') }}
+          </div>
         </div>
-        <div @click.prevent="closeMenu" v-if="openedMenu === 'reposts'"
-             class="me-3 text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
-          {{ $t('close-btn') }}
-        </div>
-      </div>
-      <div v-if="openedMenu === 'reposts'" class="flex flex-col">
-        <div @click.prevent="deleteReposts" v-if="openedMenu === 'reposts'"
-             class="me-3 mt-3 text-end text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
-          {{ $t('clear-btn') }}
-        </div>
+        <div v-else class="text-primary_text-light dark:text-primary_text-dark">{{ $t('no-notifications-message') }}</div>
+
         <div v-for="repost in reposts" class="flex flex-row items-center mt-1">
           <router-link :to="`/profile/${repost.user.name}`">
             <img v-if="repost.user.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
@@ -362,21 +398,14 @@ export default {
         </div>
       </div>
 
-      <div v-if="comments.length > 0" class="flex flex-row justify-between">
-        <div @click.prevent="openMenu('comments')"
-             class="text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
-          {{ comments.length }} {{$t('comment-message')}}
+      <div v-if="selectedMenu === 'comment'" class="flex flex-col">
+        <div class="flex flex-row justify-end" v-if="comments.length > 0">
+          <div @click.prevent="deleteComments"
+               class="me-3 mt-3 text-end text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
+            {{ $t('clear-btn') }}
+          </div>
         </div>
-        <div @click.prevent="closeMenu" v-if="openedMenu === 'comments'"
-             class="me-3 text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
-          {{ $t('close-btn') }}
-        </div>
-      </div>
-      <div v-if="openedMenu === 'comments'" class="flex flex-col">
-        <div @click.prevent="deleteComments" v-if="openedMenu === 'comments'"
-             class="me-3 mt-3 text-end text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
-          {{ $t('clear-btn') }}
-        </div>
+
         <div v-for="comment in comments" class="flex flex-col mt-1">
           <div class="flex flex-row mb-1  items-center">
             <router-link :to="`/profile/${comment.user.name}`">
@@ -402,22 +431,15 @@ export default {
         </div>
       </div>
 
+      <div v-if="selectedMenu === 'comment'" class="flex flex-col">
+        <div class="flex flex-row justify-end" v-if="replies.length > 0">
+          <div @click.prevent="deleteCommentReplies"
+               class="me-3 mt-3 text-end text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
+            {{ $t('clear-btn') }}
+          </div>
+        </div>
+        <div v-if="comments.length + replies.length === 0" class="text-primary_text-light dark:text-primary_text-dark">{{ $t('no-notifications-message') }}</div>
 
-      <div v-if="replies.length > 0" class="flex flex-row justify-between">
-        <div @click.prevent="openMenu('replies')"
-             class="text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
-          {{ replies.length }} {{$t('reply-message')}}
-        </div>
-        <div @click.prevent="closeMenu" v-if="openedMenu === 'replies'"
-             class="me-3 text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
-          {{ $t('close-btn') }}
-        </div>
-      </div>
-      <div v-if="openedMenu === 'replies'" class="flex flex-col">
-        <div @click.prevent="deleteCommentReplies" v-if="openedMenu === 'replies'"
-             class="me-3 mt-3 text-end text-secondary_text-light dark:text-secondary_text-dark hover:underline hover:cursor-pointer">
-          {{ $t('clear-btn') }}
-        </div>
         <div v-for="reply in replies" class="flex flex-col mt-1">
           <div class="flex flex-row mb-1  items-center">
             <router-link :to="`/profile/${reply.user.name}`">

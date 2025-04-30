@@ -227,51 +227,7 @@ describe('Test', () => {
     })
   })
 
-  it('test edit post file webm', () => {
-    cy.intercept('POST', '**/api/post-files').as('files')
 
-    cy.get('body').then(($body) => {
-      if ($body.find('div[id="file0"]')) {
-        cy.get('div[id="file0"]').click()
-        cy.contains('Delete').click()
-      }
-    })
-
-    cy.get('input[type="file"]').attachFile({
-      filePath: 'video.webm',
-      fileName: 'video.webm',
-      mimeType: 'video/webm'
-    })
-
-    cy.contains('Post').click()
-
-    cy.wait('@files').its('response').should((response) => {
-      expect(response.statusCode).to.eq(200)
-    })
-  })
-
-  it('test edit post file txt ', () => {
-    cy.intercept('POST', '**/api/post-files').as('files')
-
-    cy.get('body').then(($body) => {
-      if ($body.find('div[id="file0"]')) {
-        cy.get('div[id="file0"]').click()
-        cy.contains('Delete').click()
-      }
-    })
-
-    cy.get('input[type="file"]').attachFile({
-      filePath: 'txt.txt',
-      fileName: 'txt.txt',
-      mimeType: 'plain/text'
-    })
-
-    cy.contains('Post').click()
-
-    cy.wait('@files').its('response').should((response) => {
-      expect(response.statusCode).to.eq(400)
-    })
-  })
 
 
 

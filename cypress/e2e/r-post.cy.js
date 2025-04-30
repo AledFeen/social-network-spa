@@ -231,24 +231,24 @@ describe('post', () => {
 
     cy.wait('@getPost').its('response').then((response) => {
       const expectedResponse = {
-        data: {
-          id: 1,
-          user: {
-            id: 2,
-            name: "user2",
-            image: "default_avatar",
+          data: {
+            id: 1,
+            user: {
+              id: 2,
+              name: "user2",
+              image: "default_avatar",
+            },
+            repost_id: null,
+            location: "location",
+            text: "solo test post",
+            repost_count: 1,
+            like_count: 2,
+            comment_count: 2,
+            tags: [],
+            files: [],
+            main_post: null,
+            is_liked: true,
           },
-          repost_id: null,
-          location: "location",
-          text: "solo test post",
-          repost_count: 1,
-          like_count: 2,
-          comment_count: 2,
-          tags: [],
-          files: [],
-          main_post: null,
-          is_liked: true,
-        },
       }
 
       const cleanResponse = Cypress._.cloneDeep(response.body);
