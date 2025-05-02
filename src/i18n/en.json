@@ -134,5 +134,6 @@
   "have-answers": "Count of answers",
   "load-more": "Load more",
   "send-comment-placeholder": "Leave a comment",
-  "send-reply-placeholder": "Leave a reply"
+  "send-reply-placeholder": "Leave a reply",
+  "ignore-same-btn": "Ignore same posts"
 }

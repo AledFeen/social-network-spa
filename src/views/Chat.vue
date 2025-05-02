@@ -484,7 +484,7 @@ export default {
     <div class="hidden">
       <input type="file" class="form-control" id="inputGroupFile" ref="fileInput" @change="handleFileChange">
     </div>
-    <div class="flex flex-col w-full mx-1 md:w-2/4 my-4" :style="{ height: 'calc(100vh - 8rem)' }">
+    <div class="flex flex-col w-full mx-1 md:w-2/4 my-4" :style="{ height: 'calc(100vh - 6rem)' }">
       <router-link :to="'/profile/' + companion.user.name" v-if="companion"
                    class="flex flex-row items-center justify-center rounded-full mb-3 border border-gray-a9 border-solid hover:opacity-75 cursor-pointer">
         <div class="flex flex-col justify-center items-center py-1">

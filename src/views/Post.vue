@@ -242,6 +242,22 @@ export default {
       })
     },
 
+    ignoreTags(id) {
+      this.axios.delete(this.$store.getters.serverPath + '/api/ignoreTag', {
+        params: {
+          'post_id': id
+        }
+      }).then(() => {
+        alert(this.$t('success-request'))
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage)
+      })
+    },
+
     getComments() {
       this.axios.get(this.$store.getters.serverPath + '/api/comments', {
         params: {
@@ -430,6 +446,12 @@ export default {
                   <div @click.prevent="deletePost(post.id)" v-if="isOwner"
                        class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
                     {{ $t('delete-btn') }}
+                  </div>
+                </li>
+                <li>
+                  <div @click.prevent="ignoreTags(post.id)" v-if="post.tags.length > 0"
+                       class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                    {{ $t('ignore-same-btn') }}
                   </div>
                 </li>
                 <li>

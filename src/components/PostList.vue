@@ -264,6 +264,22 @@ export default {
       })
     },
 
+    ignoreTags(id) {
+      this.axios.delete(this.$store.getters.serverPath + '/api/ignoreTag', {
+        params: {
+          'post_id': id
+        }
+      }).then(() => {
+        alert(this.$t('success-request'))
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage)
+      })
+    },
+
     formatDate(date) {
       return dayjs(date).format("DD.MM.YYYY HH:mm");
     },
@@ -398,6 +414,12 @@ export default {
                 </div>
               </li>
               <li>
+                <div @click.prevent="ignoreTags(post.id)" v-if="post.tags.length > 0"
+                     class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
+                  {{ $t('ignore-same-btn') }}
+                </div>
+              </li>
+              <li>
                 <router-link :to="`/edit-post/${post.id}`" @click.prevent="" v-if="isOwner"
                      class="block px-4 py-2 hover:cursor-pointer hover:underline hover:opacity-75">
                   {{ $t('edit-post-btn') }}
@@ -443,17 +465,17 @@ export default {
 
           <div class="flex flex-row justify-between items-center mx-3 my-1"> <!-- First row -->
             <div class="flex flex-row items-center">
-              <div>
+              <router-link :to="'/profile/' + post.main_post.user.name">
                 <img v-if="post.main_post.user.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
                      alt="Круглое изображение"
                      class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
                 <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + post.main_post.user.image"
                      alt="Круглое изображение"
                      class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
-              </div>
-              <div class="ms-5 font-semibold text-primary_text-light dark:text-primary_text-dark break-words">
+              </router-link>
+              <router-link :to="'/profile/' + post.main_post.user.name" class="ms-5 font-semibold text-primary_text-light dark:text-primary_text-dark break-words">
                 {{ post.main_post.user.name }}
-              </div>
+              </router-link>
               <div class="ms-5 text-primary_text-light dark:text-primary_text-dark break-words">
                 {{ formatDate(post.main_post.updated_at) }}
               </div>
