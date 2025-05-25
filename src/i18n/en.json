@@ -9,6 +9,7 @@
   "name-placeholder": "Nickname",
   "error-status": "Error. status code",
 
+  "reset": "Reset",
   "login": "Login",
   "logout": "Logout",
   "register": "Register",

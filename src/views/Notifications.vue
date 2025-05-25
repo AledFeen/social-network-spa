@@ -17,7 +17,8 @@ export default {
       reposts: [],
       isModalVisible: false,
       modalMessage: null,
-      selectedMenu: 'like'
+      selectedMenu: 'like',
+      theme: localStorage.getItem('theme'),
     }
   },
 

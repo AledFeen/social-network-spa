@@ -29,8 +29,7 @@ export default {
         'video/mp4', 'video/webm',
         'audio/mpeg', 'audio/wav', 'audio/ogg',
         'application/pdf', 'text/plain',
-        'application/json', 'application/xml', 'text/xml', 'application/zip',
-        'application/x-rar-compressed'
+        'application/json', 'application/xml', 'text/xml', 'application/zip', 'application/x-zip-compressed'
       ],
       selectedIndex: null,
       companion: null,
@@ -342,7 +341,7 @@ export default {
       if (type === 'application/pdf') return 'document';
       if (type === 'text/plain') return 'document';
       if (['application/json', 'application/xml', 'text/xml'].includes(type)) return 'document';
-      if (['application/zip', 'application/x-rar-compressed'].includes(type)) return 'document';
+      if (['application/zip', 'application/x-zip-compressed'].includes(type)) return 'document';
 
       return 'other';
     },
@@ -484,7 +483,7 @@ export default {
     <div class="hidden">
       <input type="file" class="form-control" id="inputGroupFile" ref="fileInput" @change="handleFileChange">
     </div>
-    <div class="flex flex-col w-full mx-1 md:w-2/4 my-4" :style="{ height: 'calc(100vh - 6rem)' }">
+    <div class="flex flex-col w-full mx-1 md:w-2/4 my-4" :style="{ height: 'calc(100vh - 7rem)' }">
       <router-link :to="'/profile/' + companion.user.name" v-if="companion"
                    class="flex flex-row items-center justify-center rounded-full mb-3 border border-gray-a9 border-solid hover:opacity-75 cursor-pointer">
         <div class="flex flex-col justify-center items-center py-1">

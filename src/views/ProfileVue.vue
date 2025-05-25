@@ -383,7 +383,7 @@ export default {
                              @click.prevent="sendSubscribeRequest()" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover
                   hover:cursor-pointer drop-shadow-md">{{ $t('subscribe-btn') }}
                         </div>
-                        <div v-else-if="!subscriber && profile.accountType === 'private' && wasRequestSent" @click.prevent="unsubscribe()" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl
+                        <div v-else-if="!subscriber && profile.accountType === 'private' && wasRequestSent" @click.prevent="unsubscribe()" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl cursor-pointer
                    drop-shadow-md">{{ $t('sent-request-message') }}
                         </div>
                         <div v-else-if="!subscriber" @click.prevent="subscribe()" class="py-2 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover

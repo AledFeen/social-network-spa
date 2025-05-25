@@ -117,13 +117,13 @@ export default {
           .listen('.comment', (res) => {
             console.log('comment')
             console.log(res)
-            this.post.comment_count += 1
+
             this.getComment(Number(res.comment))
           })
           .listen('.deleted_comment', (res) => {
             console.log('comment')
             console.log(res)
-            this.post.comment_count -= 1
+
 
             if(res.comment['reply']) {
               const index = this.comments.findIndex(cnt => cnt.id === Number(res.comment['reply']))
