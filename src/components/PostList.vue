@@ -541,7 +541,7 @@ export default {
     </div>
 
 
-    <div v-if="this.lastPage >= this.page_id + 1" @click.prevent="getProfilePosts" class="flex justify-center text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
+    <div v-if="this.lastPage >= this.page_id + 1" @click.prevent="get" class="flex justify-center text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
       {{$t('download-btn') }}
     </div>
   </div>
