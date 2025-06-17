@@ -372,7 +372,11 @@ export default {
       </div>
     </div>
 
-    <div v-if="posts.length === 0" class="m-5 w-full flex flex-row justify-center"><h1
+    <div v-if="posts.length === 0 && this.page === 'feed'" class="m-5 w-full flex flex-row justify-center"><h1
+      class="text-lg text-primary_text-light dark:text-primary_text-dark">{{$t('nothing-feed')}}</h1></div>
+    <div v-else-if="posts.length === 0 && this.page === 'recommendations'" class="m-5 w-full flex flex-row justify-center"><h1
+      class="text-lg text-primary_text-light dark:text-primary_text-dark">{{$t('nothing-rec')}}</h1></div>
+    <div v-else-if="posts.length === 0" class="m-5 w-full flex flex-row justify-center"><h1
       class="text-lg text-primary_text-light dark:text-primary_text-dark">{{$t('nothing-found')}}</h1></div>
 
     <div v-else class="md:block h-px w-full bg-gray-a9 mt-1 mb-2"></div>

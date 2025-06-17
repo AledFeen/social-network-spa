@@ -17,7 +17,7 @@ export default {
       reposts: [],
       isModalVisible: false,
       modalMessage: null,
-      selectedMenu: 'like',
+      selectedMenu: 'sub',
       theme: localStorage.getItem('theme'),
     }
   },
@@ -257,16 +257,6 @@ export default {
 
       <div class="flex flex-row justify-center">
 
-        <div @click.prevent="selectMenu('like')" class="flex flex-row items-center rounded hover:opacity-75 hover:cursor-pointer ms-5 me-5" :class="{'bg-btn_back-primary': selectedMenu === 'like'}">
-          <div class="rounded">
-            <img :src="srcLike" alt="Image"
-                 class="image-class rounded ms-2"/>
-          </div>
-          <div class="ms-1 me-3 text-primary_text-light dark:text-primary_text-dark">
-            {{likes.length}}
-          </div>
-        </div>
-
         <div @click.prevent="selectMenu('sub')" class="flex flex-row items-center rounded hover:opacity-75 hover:cursor-pointer ms-5 me-5" :class="{'bg-btn_back-primary': selectedMenu === 'sub'}">
           <div class="rounded">
             <img :src="srcSub" alt="Image"
@@ -274,6 +264,16 @@ export default {
           </div>
           <div class="ms-1 me-3 text-primary_text-light dark:text-primary_text-dark">
             {{requestCount + followers.length}}
+          </div>
+        </div>
+
+        <div @click.prevent="selectMenu('like')" class="flex flex-row items-center rounded hover:opacity-75 hover:cursor-pointer ms-5 me-5" :class="{'bg-btn_back-primary': selectedMenu === 'like'}">
+          <div class="rounded">
+            <img :src="srcLike" alt="Image"
+                 class="image-class rounded ms-2"/>
+          </div>
+          <div class="ms-1 me-3 text-primary_text-light dark:text-primary_text-dark">
+            {{likes.length}}
           </div>
         </div>
 
@@ -424,7 +424,7 @@ export default {
             </router-link>
             <router-link :to="`/post/${comment.post_id}`"
                          class="ms-3 text-primary_text-light dark:text-primary_text-dark hover:underline hover:cursor-pointer">
-              {{$t('for-post')}}<b>{{ comment.post_id }}</b></router-link>
+              {{$t('for-post')}} <b>{{ comment.post_id }}</b></router-link>
             <div class="ms-3 text-primary_text-light dark:text-primary_text-dark">{{ formatDate(comment.created_at) }}
             </div>
           </div>

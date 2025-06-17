@@ -1,10 +1,10 @@
 <script>
-import { useI18n } from 'vue-i18n'
+import {useI18n} from 'vue-i18n'
 
 export default {
   setup() {
-    const { t, locale } = useI18n()
-    return { t, locale }
+    const {t, locale} = useI18n()
+    return {t, locale}
   },
 
   mounted() {
@@ -17,6 +17,7 @@ export default {
     return {
       mount: false,
       hasConnect: true,
+      token: false
     };
   },
 
@@ -44,6 +45,8 @@ export default {
         this.hasConnect = false
       })
     },
+
+
   }
 };
 </script>

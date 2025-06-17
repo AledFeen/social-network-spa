@@ -14,7 +14,10 @@ export default {
       isDropdownOpen: false,
       theme: null,
       user: null,
-      avatar: null
+      avatar: null,
+      messagesCount: 0,
+      chats: [],
+      channels: []
     }
   },
 
@@ -22,6 +25,11 @@ export default {
     this.setTheme()
     this.getUser()
     this.getAvatar()
+    this.getUnreadMessagesCount()
+  },
+
+  beforeUnmount() {
+    this.disconnectChannels()
   },
 
   computed: {
@@ -87,6 +95,54 @@ export default {
       } else {
         this.avatar = avatar;
       }
+    },
+
+    getUnreadMessagesCount() {
+      this.disconnectChannels()
+      this.axios.get(this.$store.getters.serverPath + '/api/unread-messages').then(res => {
+        console.log(res)
+        this.chats = res.data.data.chats
+        this.messagesCount = res.data.data.count
+        this.connectChannels()
+      }).catch(async err => {
+        const translatedMessage = await this.$store.dispatch('handleErrorMessage', {
+          err,
+          locale: this.$i18n.locale
+        });
+        alert(translatedMessage);
+      })
+    },
+
+    connectChannels() {
+      this.channels = [];
+      this.chats.forEach(chat => {
+        const channel = window.Echo.private(`chat.${chat}`)
+          .listen('.message', (res) => {
+            if(res.data.user_id !== this.user.id) {
+              this.messagesCount += 1
+            }
+          })
+          .listen('.deleted_message', (res) => {
+            if(res.data.user_id !== this.user.id) {
+              this.messagesCount -= 1
+            }
+          })
+        this.channels.push({
+          chatId: chat,
+          channel: channel,
+        });
+      });
+      console.log('Connected to channels:', this.channels);
+    },
+
+    disconnectChannels() {
+      this.channels.forEach(({chatId, channel}) => {
+        channel.stopListening('.message');
+        channel.stopListening('.deleted_message');
+        window.Echo.leave(`chat.${chatId}`);
+      });
+      this.channels = []; // Очищаем массив
+      console.log('Disconnected from all channels');
     },
 
     openSidebar() {
@@ -161,11 +217,14 @@ export default {
         <div v-if="isSidebarOpen" class="ms-3">{{ $t('notification-link') }}</div>
       </router-link>
       <router-link to="/messenger"
-                   class="flex flex-row items-center md:m-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75 rounded"
+                   class="flex flex-row items-center md:m-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75 rounded relative"
                    :class="{'bg-secondary_back-light dark:bg-secondary_back-dark rounded': page === 'Messages', 'hover:scale-110': !isSidebarOpen}">
         <img :src="srcMessage" alt="Message"
              class="hidden md:block image-class rounded ms-2" :class="{'ms-3': isSidebarOpen}"/>
         <div v-if="isSidebarOpen" class="ms-3">{{ $t('messenger-link') }}</div>
+        <span v-if="messagesCount > 0" class="absolute -top-1 -right-1 bg-btn_back-primary 0 text-primary_text-dark font-bold px-1 py-0.5 rounded-full text-[10px]">
+          {{ messagesCount }}
+        </span>
       </router-link>
       <router-link to="/settings"
                    class="flex flex-row items-center md:m-1 text-primary_text-light dark:text-primary_text-dark hover:cursor-pointer hover:opacity-75 rounded"

@@ -82,11 +82,11 @@ export default {
       if (!this.channel) {
         this.channel = window.Echo.private('chat.' + this.chatId)
           .listen('.message', (res) => {
-            this.messages.unshift(res.message)
+            this.messages.unshift(res.data.message)
             this.observeMessages()
           })
           .listen('.deleted_message', (res) => {
-            const index = this.messages.findIndex(msg => msg.id === Number(res.deleted_message))
+            const index = this.messages.findIndex(msg => msg.id === Number(res.data.deleted_message))
             if (index !== -1) {
               this.messages.splice(index, 1);
               this.observeMessages()

@@ -28,6 +28,16 @@ const router = createRouter({
       component: () => import('../views/VerifyView.vue'),
     },
     {
+      path: '/unverified',
+      name: 'unverified',
+      component: () => import('../views/UnverifiedView.vue'),
+    },
+    {
+      path: '/banned',
+      name: 'banned',
+      component: () => import('../views/BannedView.vue'),
+    },
+    {
       path: '/forgot-password',
       name: 'forgot',
       component: () => import('../views/ForgotView.vue'),
@@ -143,8 +153,10 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   let token = store.getters.token;
+  let isVerified = false
+  let isBanned = false
 
-  if ( token === undefined) { //token undefined after app restart
+  if (token === undefined) { //token undefined after app restart
     await axios.get(store.getters.serverPath + '/api/checkAuth').then(res => {
       token = res.data.token
     }).catch(err => {
@@ -152,26 +164,55 @@ router.beforeEach(async (to, from, next) => {
     })
   }
 
-  console.log(store.getters.token)
-
   if (token === false) {
     if (to.name === 'login' || to.name === 'register' || to.name === 'forgot' || to.name === 'reset-password') {
       next();
     } else {
-      next({ name: 'login' });
+      next({name: 'login'});
     }
   } else {
+    await axios.get(store.getters.serverPath + '/api/checkVerify').then(res => {
+      isVerified = res.data
+    }).catch(err => {
+      console.log(err.response.data.message)
+    })
+
+    if (!isVerified) {
+      if(to.name === 'verify') {
+        return next()
+      } else if (to.name !== 'unverified') {
+        return next({name: 'unverified'});
+      } else {
+        return next()
+      }
+    }
+
+    await axios.get(store.getters.serverPath + '/api/checkBanned').then(res => {
+      isBanned = res.data
+      console.log(res.data)
+    }).catch(err => {
+      console.log(err.response.data.message)
+    })
+
+    if (isBanned) {
+      if (to.name !== 'banned') {
+        return next({name: 'banned'});
+      } else {
+        return next()
+      }
+    }
+
     switch (to.name) {
       case 'login':
       case 'register':
-        next({name: 'home'});
-        break;
+        next({name: 'home'})
+        break
       default:
-        next();
-        break;
+        next()
+        break
     }
-  }
 
+  }
 })
 
 export default router

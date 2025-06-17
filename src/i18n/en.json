@@ -83,6 +83,8 @@
   "success-request": "Success",
   "failed-request": "Request failed",
   "nothing-found": "Nothing found",
+  "nothing-feed": "Nothing found. Try to subscribe someone :)",
+  "nothing-rec": "Nothing found. Try to add some preferred tags in settings :)",
   "replied-to": "Replied to",
 
   "big-file-message": "File is too big. Upload a file up to 25 MB",
