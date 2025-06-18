@@ -141,7 +141,7 @@ export default {
                 @change="() => changeTheme('light')"
                 class="bg-gray-100 border-gray-300 focus:ring-blue-500"
               />
-              <span>{{ $t('light') }}</span>
+              <span class="text-primary_text-light dark:text-primary_text-dark">{{ $t('light') }}</span>
             </label>
             <label class="flex items-center space-x-2 hover:cursor-pointer">
               <input
@@ -152,7 +152,7 @@ export default {
                 @change="() => changeTheme('dark')"
                 class="bg-gray-100 border-gray-300 focus:ring-blue-500"
               />
-              <span>{{ $t('dark') }}</span>
+              <span class="text-primary_text-light dark:text-primary_text-dark">{{ $t('dark') }}</span>
             </label>
           </div>
         </div>

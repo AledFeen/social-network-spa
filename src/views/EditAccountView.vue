@@ -134,22 +134,22 @@ export default {
     </template>
     <div v-if="account"
          class="block w-full mx-1 md:w-3/4 my-4 md:my-16 rounded-lg shadow-lg border border-gray-a9 border-solid">
-      <div class="flex flex-col md:flex-row items-center md:items-start">
+      <div class="md:mt-10 flex flex-col md:flex-row items-center md:items-start">
         <div class="flex flex-col w-1/2 px-5 py-5 items-center">
           <div class="flex flex-col">
 
             <div v-if="!image" @click.prevent="openLoadImageMenu()" class="hover:opacity-75 hover:cursor-pointer">
-              <img v-if="account.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
+              <img v-if="account.image === 'default_avatar'" src="/src/assets/default_avatar.png"
                    alt="Круглое изображение"
-                   class="w-64 h-64 object-cover rounded-full"/>
+                   class="w-32 h-32 lg:w-64 lg:h-64 object-cover rounded-full"/>
               <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + account.image"
                    alt="Круглое изображение"
-                   class="w-64 h-64 object-cover rounded-full"/>
+                   class="w-32 h-32 lg:w-64 lg:h-64 object-cover rounded-full"/>
             </div>
             <div v-else @click.prevent="openLoadImageMenu()" class="hover:opacity-75 hover:cursor-pointer">
               <img :src="imageUrl"
                    alt="Круглое изображение"
-                   class="w-64 h-64 object-cover rounded-full"/>
+                   class="w-32 h-32 lg:w-64 lg:h-64 object-cover rounded-full"/>
             </div>
 
             <div class="flex flex-row mt-5">

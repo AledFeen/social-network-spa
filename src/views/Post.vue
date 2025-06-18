@@ -416,7 +416,7 @@ export default {
         <div class="flex flex-row justify-between items-center mx-3 my-3"> <!-- First row -->
           <div class="flex flex-row items-center">
             <router-link :to="'/profile/' + post.user.name">
-              <img v-if="post.user.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
+              <img v-if="post.user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
                    alt="Круглое изображение"
                    class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
               <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + post.user.image"
@@ -502,7 +502,7 @@ export default {
             <div class="flex flex-row justify-between items-center mx-3 my-1"> <!-- First row -->
               <div class="flex flex-row items-center">
                 <div>
-                  <img v-if="post.main_post.user.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
+                  <img v-if="post.main_post.user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
                        alt="Круглое изображение"
                        class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
                   <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + post.main_post.user.image"
@@ -583,7 +583,7 @@ export default {
             <div class="flex flex-row w-full">
               <div class="items-center flex flex-col">
                 <router-link :to="'/profile/' + comment.user.name">
-                  <img v-if="comment.user.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
+                  <img v-if="comment.user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
                        alt="Круглое изображение"
                        class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
                   <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + comment.user.image"
@@ -660,7 +660,7 @@ export default {
                     <div class="flex flex-row w-full">
                       <div class="items-center">
                         <router-link :to="'/profile/' + reply.user.name">
-                          <img v-if="reply.user.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
+                          <img v-if="reply.user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
                                alt="Круглое изображение"
                                class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
                           <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + reply.user.image"

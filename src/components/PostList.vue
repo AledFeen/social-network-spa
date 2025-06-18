@@ -385,7 +385,7 @@ export default {
       <div class="flex flex-row justify-between items-center mx-3 my-3"> <!-- First row -->
         <div class="flex flex-row items-center">
           <router-link :to="'/profile/' + post.user.name">
-            <img v-if="post.user.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
+            <img v-if="post.user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
                  alt="Круглое изображение"
                  class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
             <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + post.user.image"
@@ -458,7 +458,7 @@ export default {
 
       <div v-if="post.tags.length > 0" class="flex flex-row flex-wrap my-1 ms-1"><!-- Tags row -->
         <template v-for="tag in post.tags">
-          <div class="mx-2 px-3 p-1 text-primary_text-light dark:text-primary_text-dark bg-secondary_back-light dark:bg-secondary_back-dark hover:cursor-pointer rounded-2xl">
+          <div class="mx-2 my-1 px-3 p-1 text-primary_text-light dark:text-primary_text-dark bg-secondary_back-light dark:bg-secondary_back-dark hover:cursor-pointer rounded-2xl">
             <router-link :to="`/posts-by-tag/${tag.name}`">{{ tag.name }}</router-link>
           </div>
         </template>
@@ -470,7 +470,7 @@ export default {
           <div class="flex flex-row justify-between items-center mx-3 my-1"> <!-- First row -->
             <div class="flex flex-row items-center">
               <router-link :to="'/profile/' + post.main_post.user.name">
-                <img v-if="post.main_post.user.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
+                <img v-if="post.main_post.user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
                      alt="Круглое изображение"
                      class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
                 <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + post.main_post.user.image"
@@ -491,7 +491,7 @@ export default {
             <router-link :to="'/post/' + post.main_post.id" class="italic text-secondary_text-light dark:text-secondary_text-dark hover:underline">{{$t('replied-to')}}</router-link>
           </div> <!-- First row -->
 
-          <div class="ms-3 text-primary_text-light dark:text-primary_text-dark break-words">{{ post.main_post.text }}
+          <div class="ms-3 me-3 text-primary_text-light dark:text-primary_text-dark break-words mb-3">{{ post.main_post.text }}
           </div>
 
           <template v-if="post.main_post.files.length > 0"><!-- Media row -->

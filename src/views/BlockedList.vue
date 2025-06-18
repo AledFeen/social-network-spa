@@ -97,7 +97,7 @@ export default {
         <div class="w-full rounded-lg bg-secondary_back-light dark:bg-secondary_back-dark mb-1">
           <div class="flex flex-row justify-between">
             <div class="flex flex-col justify-center items-center py-2 ms-10">
-              <img v-if="user.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
+              <img v-if="user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
                    alt="Круглое изображение"
                    class="w-8 h-8 md:w-12 md:h-12 object-cover rounded-full"/>
               <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + user.image"

@@ -98,13 +98,13 @@ export default {
           })
           .listen('.read_message', (res) => {
             console.log(res)
-            const index = this.messages.findIndex(msg => msg.id === Number(res.read_message))
+            const index = this.messages.findIndex(msg => msg.id === Number(res.data.read_message))
             this.messages[index].is_read = true
           })
           .listen('.read_messages', (res) => {
             console.log(res)
             this.messages.forEach(msg => {
-              if (msg.link_id === this.link_id && this.link_id !== Number(res.link_messages)) {
+              if (msg.link_id === this.link_id && this.link_id !== Number(res.data.link_messages)) {
                 msg.is_read = true
               }
             })
@@ -487,7 +487,7 @@ export default {
       <router-link :to="'/profile/' + companion.user.name" v-if="companion"
                    class="flex flex-row items-center justify-center rounded-full mb-3 border border-gray-a9 border-solid hover:opacity-75 cursor-pointer">
         <div class="flex flex-col justify-center items-center py-1">
-          <img v-if="companion.user.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
+          <img v-if="companion.user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
                alt="Круглое изображение"
                class="w-10 h-10 object-cover rounded-full"/>
           <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + companion.user.image"

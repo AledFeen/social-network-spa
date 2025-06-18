@@ -329,7 +329,7 @@ export default {
           <div class="w-full p-1 rounded-lg bg-primary_back-light dark:bg-primary_back-dark">
             <div class="flex flex-row">
               <div class="w-1/3 flex flex-col justify-center items-center py-3">
-                <img v-if="profile.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
+                <img v-if="profile.image === 'default_avatar'" src="/src/assets/default_avatar.png"
                      alt="Круглое изображение"
                      class="w-16 h-16 md:w-24 md:h-24 object-cover rounded-full"/>
                 <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + profile.image"

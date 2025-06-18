@@ -394,7 +394,7 @@ export default {
         <div class="flex flex-row w-full">
           <div class="items-center flex flex-col">
             <router-link :to="'/profile/' + comment.user.name">
-              <img v-if="comment.user.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
+              <img v-if="comment.user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
                    alt="Круглое изображение"
                    class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
               <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + comment.user.image"
@@ -440,7 +440,7 @@ export default {
 
       <div v-if="profile" class="flex flex-row"> <!-- Profile -->
         <div class="w-1/3 flex flex-col justify-center items-center py-3">
-          <img v-if="profile.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
+          <img v-if="profile.image === 'default_avatar'" src="/src/assets/default_avatar.png"
                alt="Круглое изображение"
                class="w-16 h-16 md:w-24 md:h-24 object-cover rounded-full"/>
           <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + profile.image"

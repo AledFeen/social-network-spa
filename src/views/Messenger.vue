@@ -67,12 +67,12 @@ export default {
 
     disconnectChannels() {
       this.channels.forEach(({chatId, channel}) => {
-        channel.stopListening('.message');
-        channel.stopListening('.deleted_message');
-        channel.stopListening('.edited_message');
-        channel.stopListening('.read_message');
-        channel.stopListening('.read_messages');
-        window.Echo.leave(`chat.${chatId}`);
+        channel.stopListening('.message')
+        channel.stopListening('.deleted_message')
+        channel.stopListening('.edited_message')
+        channel.stopListening('.read_message')
+        channel.stopListening('.read_messages')
+        window.Echo.leave(`chat.${chatId}`)
       });
       this.channels = []; // Очищаем массив
       console.log('Disconnected from all channels');
@@ -116,7 +116,7 @@ export default {
 </script>
 
 <template>
-  <LayoutWithSidebar :page="''">
+  <LayoutWithSidebar :page="'Messages'">
     <div v-if="chats && chats.length > 0"
          class="flex flex-col w-full md:w-2/4 my-4 md:my-16 rounded-lg shadow-lg border border-gray-a9 border-solid px-3 py-3">
 
@@ -126,7 +126,7 @@ export default {
             <div class="flex flex-row">
               <div class="flex flex-row w-2/3">
                 <div class="flex flex-col justify-center items-center py-2 ms-10">
-                  <img v-if="chat.user.image === 'default_avatar'" src="/src/assets/default_avatar.jpg"
+                  <img v-if="chat.user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
                        alt="Круглое изображение"
                        class="w-8 h-8 md:w-12 md:h-12 object-cover rounded-full"/>
                   <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + chat.user.image"
@@ -151,7 +151,7 @@ export default {
               </div>
               <div class="flex flex-row w-1/3 justify-end items-center">
                 <div v-if="chat.count_unread > 0"
-                     class="flex flex-row justify-center items-center me-5 bg-gray-a9 rounded-full w-6 h-6 text-primary_text-light">
+                     class="text-xs md:text-sm flex flex-row justify-center items-center me-5 md:bg-gray-a9 rounded-full w-6 h-6 text-primary_text-light dark:text-primary_text-dark">
                   {{ chat.count_unread }}
                 </div>
                 <div v-else>
@@ -159,7 +159,7 @@ export default {
                        class="image-class rounded me-5"/>
                 </div>
 
-                <div class="my-1 italic text-secondary_text-light dark:text-secondary_text-dark break-words me-10">
+                <div class="text-xs md:text-sm my-1 italic text-secondary_text-light dark:text-secondary_text-dark break-words me-10">
                   {{ this.formatDate(chat.last_message.created_at) }}
                 </div>
               </div>
