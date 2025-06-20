@@ -334,7 +334,7 @@ export default {
         <div v-if="tags.length > 0" class="flex flex-row flex-wrap my-1 ms-1">
           <template v-for="(tag, index) in tags">
             <div @click.prevent="selectTag(tag)" :id="'tag'+index"
-                 class="relative mx-2 px-3 p-1 text-primary_text-light dark:text-primary_text-dark bg-secondary_back-light dark:bg-secondary_back-dark hover:cursor-pointer rounded-2xl">
+                 class="relative my-1 mx-2 px-3 p-1 text-primary_text-light dark:text-primary_text-dark bg-secondary_back-light dark:bg-secondary_back-dark hover:cursor-pointer rounded-2xl">
               {{ tag }}
               <div v-if="selectedTag === tag" @click.prevent="deleteTag(tag)" class="absolute px-2 left-5 bottom-8 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
             focus:outline-none bg-secondary_back-light dark:bg-secondary_back-dark z-10 mx-1 hover:underline">

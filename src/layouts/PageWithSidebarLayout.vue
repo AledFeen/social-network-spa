@@ -274,16 +274,16 @@ export default {
           <div v-if="isSidebarOpen" class="ms-3">{{ user.name }}</div>
         </router-link>
 
-        <div v-if="!isSidebarOpen" class="m-1 md:me-3" @click.prevent="openDropdown">
+        <div v-if="!isSidebarOpen" class="" @click.prevent="openDropdown">
           <div class="hover:cursor-pointer hover:opacity-75">
             <img :src="srcOption" alt="Dropdown"
-                 class="image-class rounded w-6 h-6 mx-2" :class="{'md:ms-3': isSidebarOpen}"/>
+                 class="image-class rounded w-7 h-6 mx-3" :class="{'md:ms-3': isSidebarOpen}"/>
           </div>
 
           <div v-show="isDropdownOpen" class="rounded-md focus:outline-none">
             <ul class="text-primary_text-light dark:text-primary_text-dark">
               <li @click.prevent="logout">
-                <div class="hover:cursor-pointer hover:underline hover:opacity-75 text-xs">
+                <div class="hover:cursor-pointer hover:opacity-75 text-xs text-center p-1 bg-btn_back-secondary text-secondary_text-dark rounded-full">
                   {{ $t('logout') }}
                 </div>
               </li>

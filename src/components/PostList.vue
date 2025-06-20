@@ -383,15 +383,15 @@ export default {
 
     <div v-for="post in posts">
       <div class="flex flex-row justify-between items-center mx-3 my-3"> <!-- First row -->
-        <div class="flex flex-row items-center">
-          <router-link :to="'/profile/' + post.user.name">
-            <img v-if="post.user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
-                 alt="Круглое изображение"
-                 class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
-            <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + post.user.image"
-                 alt="Круглое изображение"
-                 class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
-          </router-link>
+        <router-link :to="'/profile/' + post.user.name" class="w-6 md:w-11">
+          <img v-if="post.user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
+               alt="Круглое изображение"
+               class="w-5 h-5 md:w-10 md:h-10 object-cover rounded-full"/>
+          <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + post.user.image"
+               alt="Круглое изображение"
+               class="w-5 h-5 md:w-10 md:h-10 object-cover rounded-full"/>
+        </router-link>
+        <div class="flex flex-row flex-wrap w-full">
           <router-link :to="'/profile/' + post.user.name" class="ms-5 font-semibold text-primary_text-light dark:text-primary_text-dark break-words hover:underline hover:cursor-pointer">
             {{ post.user.name }}
           </router-link>
@@ -440,7 +440,7 @@ export default {
         </div>
       </div> <!-- First row -->
 
-      <div class="ms-3 text-primary_text-light dark:text-primary_text-dark break-words">{{ post.text }}</div>
+      <div class="ms-3 text-primary_text-light dark:text-primary_text-dark break-words pe-3">{{ post.text }}</div>
 
       <template v-if="post.files.length > 0"><!-- Media row -->
         <div class="flex flex-wrap justify-center gap-1 items-center">
@@ -468,15 +468,15 @@ export default {
         <div class="ms-3 me-3 pt-1 my-3 rounded-lg shadow-lg border border-gray-a9 md:w-3/4">
 
           <div class="flex flex-row justify-between items-center mx-3 my-1"> <!-- First row -->
-            <div class="flex flex-row items-center">
-              <router-link :to="'/profile/' + post.main_post.user.name">
-                <img v-if="post.main_post.user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
-                     alt="Круглое изображение"
-                     class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
-                <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + post.main_post.user.image"
-                     alt="Круглое изображение"
-                     class="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"/>
-              </router-link>
+            <router-link :to="'/profile/' + post.main_post.user.name" class="w-5 md:w-11">
+              <img v-if="post.main_post.user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
+                   alt="Круглое изображение"
+                   class="w-4 h-4 md:w-10 md:h-10 object-cover rounded-full"/>
+              <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + post.main_post.user.image"
+                   alt="Круглое изображение"
+                   class="w-4 h-4 md:w-10 md:h-10 object-cover rounded-full"/>
+            </router-link>
+            <div class="flex flex-row flex-wrap w-full">
               <router-link :to="'/profile/' + post.main_post.user.name" class="ms-5 font-semibold text-primary_text-light dark:text-primary_text-dark break-words">
                 {{ post.main_post.user.name }}
               </router-link>
@@ -491,7 +491,7 @@ export default {
             <router-link :to="'/post/' + post.main_post.id" class="italic text-secondary_text-light dark:text-secondary_text-dark hover:underline">{{$t('replied-to')}}</router-link>
           </div> <!-- First row -->
 
-          <div class="ms-3 me-3 text-primary_text-light dark:text-primary_text-dark break-words mb-3">{{ post.main_post.text }}
+          <div class="ms-3 me-3 text-primary_text-light dark:text-primary_text-dark break-words mb-3 pe-1">{{ post.main_post.text }}
           </div>
 
           <template v-if="post.main_post.files.length > 0"><!-- Media row -->

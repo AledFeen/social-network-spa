@@ -11,7 +11,7 @@
 
   "reset": "Оновити пароль",
   "login": "Увійти",
-  "logout": "Вийти з аккаунту",
+  "logout": "Вийти",
   "login-link": "Вже маю аккаунт",
   "register": "Зареєструватись",
   "forgot-link": "Забули пароль?",
@@ -69,7 +69,7 @@
 
   "search-placeholder": "Введіть запит",
   "search-tag-placeholder": "Введіть тег",
-  "search-location-placeholder": "Введіть назву локації",
+  "search-location-placeholder": "Введіть локацію",
   "post-placeholder": "Напишіть щось нове",
   "complain-placeholder": "Опишіть причину",
 
@@ -85,7 +85,7 @@
   "nothing-found": "Нічого не знайдено",
   "nothing-feed": "Нічого не знайдено. Спробуй на когось підписатись :)",
   "nothing-rec": "Нічого не знайдено. Спробуй додати вподобаних тегів у налаштуваннях :)",
-  "replied-to": "Відповідь на",
+  "replied-to": "Репост",
 
   "big-file-message": "Файл занадто великий. Завантажте файл до 25 мб",
   "uncorrected-format-message": "Некоректний формат файлу",

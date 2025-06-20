@@ -490,7 +490,7 @@ export default {
 
         <div v-if="post.tags.length > 0" class="flex flex-row flex-wrap my-1 ms-1"><!-- Tags row -->
           <template v-for="tag in post.tags">
-            <div class="mx-2 px-3 p-1 text-primary_text-light dark:text-primary_text-dark bg-secondary_back-light dark:bg-secondary_back-dark hover:cursor-pointer rounded-2xl">
+            <div class="mx-2 my-1 px-3 p-1 text-primary_text-light dark:text-primary_text-dark bg-secondary_back-light dark:bg-secondary_back-dark hover:cursor-pointer rounded-2xl">
               <router-link :to="`/posts-by-tag/${tag.name}`">{{ tag.name }}</router-link>
             </div>
           </template>

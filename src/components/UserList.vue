@@ -149,19 +149,25 @@ export default {
        class="block w-full mx-1 md:w-2/4 my-4 md:my-16 rounded-lg shadow-lg border border-gray-a9 border-solid px-3 py-3" :class="{'md:w-full': this.page === 'search'}">
 
     <template v-if="users" v-for="user in users">
-      <div class="w-full rounded-lg bg-secondary_back-light dark:bg-secondary_back-dark mb-1">
-        <div class="flex flex-row justify-between">
-          <div class="flex flex-col justify-center items-center py-2 ms-10">
+      <div class="w-full rounded-lg bg-secondary_back-light dark:bg-secondary_back-dark mb-2">
+        <div class="flex flex-row items-center justify-between py-2 px-4">
+          <!-- Avatar container: square dimensions to prevent squashing -->
+          <div class="flex-shrink-0 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center">
             <img v-if="user.image === 'default_avatar'" src="/src/assets/default_avatar.png"
-                 alt="Круглое изображение"
+                 alt="Profile"
                  class="w-8 h-8 md:w-12 md:h-12 object-cover rounded-full"/>
             <img v-else :src="$store.getters.serverPath + '/api/profile-image/' + user.image"
-                 alt="Круглое изображение"
+                 alt="Profile"
                  class="w-8 h-8 md:w-12 md:h-12 object-cover rounded-full"/>
           </div>
-          <div class="flex flex-col justify-center items-center py-3 text-primary_text-light dark:text-primary_text-dark">{{ user.name }}</div>
-          <router-link :to="`/profile/${user.name}`" class="w-40 me-10 mx-2 my-4 py-1 text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover drop-shadow-md">
-            <div>{{$t('look-btn')}}</div>
+          <!-- User name: flexible width, centered text -->
+          <div class="flex-grow text-center text-sm md:text-base text-primary_text-light dark:text-primary_text-dark">
+            {{ user.name }}
+          </div>
+          <!-- Profile link button -->
+          <router-link :to="`/profile/${user.name}`"
+                       class="flex-shrink-0 w-24 md:w-32 py-1 px-3 text-sm md:text-base text-btn_text-dark text-center bg-btn_back-secondary rounded-2xl hover:bg-btn_back-secondary_hover drop-shadow-md">
+            {{ $t('look-btn') }}
           </router-link>
         </div>
       </div>

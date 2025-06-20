@@ -75,7 +75,7 @@
         </div>
       </div>
 
-      <div class="block w-full mx-1 my-4 md:my-8 rounded-lg shadow-lg border border-gray-a9 border-solid">
+      <div class="block w-full my-4 md:my-8 rounded-lg shadow-lg border border-gray-a9 border-solid">
         <template v-if="selectedPage === 'feed'">
           <PostList :page="'feed'" :isOwner="false" @complaint-sent="complaintSent"/>
         </template>
